@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>凍廊のサンクトゥム — Crypta Sanctum</title>
+<style>
+:root {
+  --ink:#04060b; --ink2:#070b13; --fog:#c7d6df; --dim:#7d8f9b; --ice:#9fd8e8; --ice2:#5fa8c4;
+  --warm:#ffb75e; --line:#1c2836; --line2:#27394c;
+  --serif:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP",serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--ink); color:var(--fog); font-family:var(--serif); line-height:1.9; overflow-x:hidden; }
+::selection { background:var(--ice2); color:var(--ink); }
+img { max-width:100%; }
+
+/* ══ 洞窟レイヤー（全ページ共通の空気）══ */
+body::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image: linear-gradient(180deg, #000 0%, rgba(4,6,11,0) 22%, rgba(4,6,11,0) 74%, #01020a 100%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' seed='7'/><feColorMatrix type='matrix' values='0 0 0 0 0.045  0 0 0 0 0.07  0 0 0 0 0.105  0 0 0 0.35 0'/></filter><rect width='420' height='420' filter='url(%23r)'/></svg>");
+  background-size: 100% 100vh, 420px 420px; opacity:.9; }
+/* 左右の氷壁イラスト（内側へ溶けるマスク・パララックス） */
+.wall { position:fixed; top:-12vh; height:126vh; width:clamp(40px, 9vw, 150px); z-index:1; pointer-events:none;
+  background-size:cover; background-position:center; will-change:transform;
+  -webkit-mask-image:linear-gradient(90deg, #000 42%, transparent 100%);
+  mask-image:linear-gradient(90deg, #000 42%, transparent 100%); }
+.wall-l { left:0; }
+.wall-r { right:0;
+  -webkit-mask-image:linear-gradient(270deg, #000 42%, transparent 100%);
+  mask-image:linear-gradient(270deg, #000 42%, transparent 100%); }
+@media (max-width:680px) { .wall { width:34px; opacity:.8; } }
+#snow { position:fixed; inset:0; z-index:2; pointer-events:none; opacity:.5; }
+
+/* ══ ヘッダー（公式サイトの顔）══ */
+header.gnav { position:fixed; top:0; left:0; right:0; z-index:30; display:flex; align-items:stretch;
+  background:rgba(3,5,10,.9); border-bottom:1px solid var(--line); backdrop-filter:blur(6px); }
+.brand { display:flex; flex-direction:column; justify-content:center; padding:9px 18px 9px clamp(14px,4vw,30px);
+  text-decoration:none; line-height:1.3; margin-right:auto; }
+.brand .bj { color:#e9f3f7; font-size:15px; letter-spacing:.3em; white-space:nowrap; }
+.brand .be { color:var(--ice2); font-size:8.5px; letter-spacing:.42em; }
+nav.menu { display:flex; align-items:stretch; }
+nav.menu a { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+  min-width:86px; padding:8px 10px; text-decoration:none; border-left:1px solid rgba(28,40,54,.6); position:relative; }
+nav.menu a .en { color:#dfeaf0; font-size:12.5px; letter-spacing:.22em; }
+nav.menu a .jp { color:var(--dim); font-size:9.5px; letter-spacing:.3em; }
+nav.menu a::after { content:""; position:absolute; left:22%; right:22%; bottom:0; height:2px;
+  background:var(--ice); opacity:0; transform:scaleX(.4); transition:opacity .3s, transform .3s; }
+nav.menu a:hover::after, nav.menu a.act::after { opacity:1; transform:scaleX(1); }
+nav.menu a.act .en { color:var(--ice); }
+#burger { display:none; background:none; border:none; color:var(--fog); font-size:22px; padding:0 18px; cursor:pointer; }
+/* 「設定」グループ */
+.navgrp { position:relative; display:flex; }
+.navgrp > button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+  min-width:86px; padding:8px 10px; background:none; border:none; border-left:1px solid rgba(28,40,54,.6);
+  cursor:pointer; font-family:var(--serif); position:relative; }
+.navgrp > button .en { color:#dfeaf0; font-size:12.5px; letter-spacing:.22em; }
+.navgrp > button .jp { color:var(--dim); font-size:9.5px; letter-spacing:.3em; }
+.navgrp > button::after { content:""; position:absolute; left:22%; right:22%; bottom:0; height:2px;
+  background:var(--ice); opacity:0; transform:scaleX(.4); transition:opacity .3s, transform .3s; }
+.navgrp:hover > button::after, .navgrp.hasact > button::after { opacity:1; transform:scaleX(1); }
+.navgrp.hasact > button .en { color:var(--ice); }
+.grpdd { position:absolute; top:100%; right:0; min-width:180px; display:none; flex-direction:column;
+  background:rgba(4,7,13,.97); border:1px solid var(--line); padding:6px 0; }
+.navgrp.open .grpdd { display:flex; }
+/* デスクトップ＝マウスオーバーだけで開く（後輩くん希望 2026-07-12・クリックはタッチ用に残す） */
+@media (hover:hover) and (min-width:901px) { .navgrp:hover .grpdd { display:flex; } }
+.grpdd a { border-left:none; flex-direction:row; gap:10px; justify-content:flex-start; padding:13px 20px; }
+@media (max-width:900px) {
+  .brand .bj { letter-spacing:.16em; font-size:14px; }
+  .brand .be { letter-spacing:.3em; }
+  nav.menu { position:fixed; inset:0; top:52px; flex-direction:column; background:rgba(2,4,9,.97);
+    display:none; padding:12px 0; overflow:auto; }
+  nav.menu.open { display:flex; }
+  nav.menu a { border-left:none; border-bottom:1px solid rgba(28,40,54,.5); padding:16px 10px; }
+  #burger { display:block; }
+  /* モバイルでは「設定」グループを平置き展開 */
+  .navgrp { flex-direction:column; }
+  .navgrp > button { display:none; }
+  .grpdd { position:static; display:flex; border:none; background:none; padding:0; }
+  .grpdd a { flex-direction:column; gap:1px; justify-content:center; }
+}
+
+/* ══ ページ切替 ══ */
+main { position:relative; z-index:3; }
+.page { display:none; min-height:100vh; padding-top:52px; }
+.page.act { display:block; animation:pagein .7s ease both; }
+@keyframes pagein { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+
+.wrap { position:relative; max-width:860px; margin:0 auto; padding:0 clamp(34px,9vw,120px); }
+@media (min-width:1100px) { .wrap { padding:0 22px; } }
+
+/* ページ見出し（EN大＋JP・墨流し背景スロット） */
+.phead { position:relative; padding:9vh 0 5vh; }
+.phm { position:absolute; inset:0; background-size:cover; background-position:right center; opacity:.45;
+  pointer-events:none; -webkit-mask-image:linear-gradient(90deg, transparent 4%, rgba(0,0,0,.95) 62%);
+  mask-image:linear-gradient(90deg, transparent 4%, rgba(0,0,0,.95) 62%); }
+.phead .ghost { position:absolute; top:2vh; left:-6px; font-size:clamp(54px,11vw,110px); letter-spacing:.06em;
+  color:transparent; -webkit-text-stroke:1px rgba(120,190,215,.14); pointer-events:none; white-space:nowrap; }
+.phead h2 { position:relative; font-size:clamp(22px,3.4vw,30px); letter-spacing:.3em; color:#e9f3f7; font-weight:600; }
+.phead .sub { position:relative; font-size:11px; letter-spacing:.5em; color:var(--ice2); margin-top:6px; }
+.phead::after { content:""; display:block; width:64px; height:1px; margin-top:26px;
+  background:linear-gradient(90deg, var(--ice2), transparent); }
+
+/* ══ TOP／KV ══ */
+.kv { position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  align-items:center; text-align:center; padding:16vh 8vw 12vh; overflow:hidden; }
+.kv-bg { position:absolute; inset:0; z-index:-1; background-size:cover; background-position:center 30%;
+  filter:saturate(.92); }
+.kv-bg::after { content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(2,4,9,.82) 0%, rgba(2,4,9,.28) 34%, rgba(2,4,9,.3) 62%, #04060b 100%); }
+/* KVスライドショー＝12秒ごとにクロスフェード（後輩くん希望 2026-07-12） */
+.kv-slide { opacity:0; transition:opacity 2.8s ease; }
+.kv-slide.show { opacity:1; }
+.kv .logo { max-width:min(440px, 78vw); height:auto; filter:drop-shadow(0 0 36px rgba(120,190,215,.3)); }
+.sr { position:absolute; width:1px; height:1px; clip-path:inset(50%); overflow:hidden; }
+.kv h1.tx { font-size:clamp(32px,7vw,56px); font-weight:600; letter-spacing:.22em; color:#e9f3f7;
+  text-shadow:0 0 34px rgba(120,190,215,.25); }
+.kv .en { font-size:13px; letter-spacing:.6em; color:var(--ice2); margin-top:10px; }
+.kv .tagline { margin-top:40px; font-size:clamp(15px,2.6vw,19px); letter-spacing:.14em;
+  text-shadow:0 1px 14px rgba(0,0,0,.8); }
+.kv .meta { margin-top:34px; font-size:12.5px; color:#a8bac4; letter-spacing:.1em; line-height:2.2; }
+.kv .start { margin-top:26px; display:inline-block; border:1px solid rgba(159,216,232,.4); padding:9px 26px;
+  font-size:14px; letter-spacing:.3em; color:var(--ice); background:rgba(4,7,13,.55); }
+.breath { position:absolute; width:120px; height:36px; border-radius:50%; filter:blur(18px);
+  background:rgba(200,225,235,.05); animation:breath 6.5s ease-in-out infinite; }
+@keyframes breath { 0%,100% { opacity:0; transform:translateY(0) scale(.7);} 40% { opacity:.8; } 70% { opacity:0; transform:translateY(-26px) scale(1.15);} }
+.kv .cue { position:absolute; bottom:70px; left:50%; width:1px; height:44px; overflow:hidden; }
+.kv .cue::before { content:""; position:absolute; top:-44px; left:0; width:1px; height:44px;
+  background:linear-gradient(180deg, transparent, var(--ice)); animation:cue 2.2s ease-in-out infinite; }
+@keyframes cue { 60%,100% { transform:translateY(88px); } }
+
+/* TOPのNEWSダイジェスト・導線 */
+.topnews { margin:0 auto; max-width:760px; padding:7vh 22px 2vh; }
+.topnews h2 { font-size:13px; letter-spacing:.5em; color:var(--ice2); margin-bottom:18px; }
+.tn-row { display:flex; gap:16px; align-items:baseline; border-bottom:1px solid var(--line); padding:12px 4px;
+  font-size:13.5px; }
+.tn-row .d { color:var(--dim); font-size:11.5px; letter-spacing:.12em; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.tn-row .tag { font-size:9.5px; letter-spacing:.2em; color:var(--ice); border:1px solid rgba(95,168,196,.5);
+  padding:1px 8px; white-space:nowrap; }
+.tn-more { text-align:right; padding:12px 4px 0; }
+.tn-more a, .btnrow a { color:var(--ice); text-decoration:none; font-size:12.5px; letter-spacing:.2em; }
+.btnrow { display:flex; gap:18px; justify-content:center; flex-wrap:wrap; padding:6vh 22px 12vh; }
+.btnrow a { border:1px solid var(--line2); padding:15px 34px; background:rgba(6,10,17,.7); transition:border-color .3s, color .3s; }
+.btnrow a:hover { border-color:var(--ice2); color:#e9f3f7; }
+
+/* ══ NEWS ══ */
+.newslist { padding-bottom:12vh; }
+.nw { display:flex; gap:18px; align-items:baseline; border-bottom:1px solid var(--line); padding:20px 4px; font-size:14.5px; }
+.nw .d { color:var(--dim); font-size:12px; letter-spacing:.12em; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.nw .tag { font-size:10px; letter-spacing:.2em; color:var(--ice); border:1px solid rgba(95,168,196,.5); padding:1px 9px; white-space:nowrap; }
+@media (max-width:600px) { .nw, .tn-row { flex-wrap:wrap; row-gap:4px; } }
+
+/* ══ STORY ══ */
+.story-body { padding-bottom:6vh; }
+.story-body p { margin:0 0 2em; font-size:16px; line-height:2.4; }
+.story-body p:last-child { color:var(--ice); }
+.storyfig { margin:4vh 0 10vh; border:1px solid var(--line); }
+.storyfig img { display:block; width:100%; }
+
+/* ══ WORLD ══ */
+.mapfig { margin:2vh 0 8vh; border:1px solid var(--line2); background:rgba(6,10,17,.7); padding:10px; }
+.mapfig img { display:block; width:100%; }
+.mapfig figcaption { font-size:11.5px; color:var(--dim); letter-spacing:.14em; padding:10px 4px 2px; text-align:right; }
+.mapwrap { position:relative; }
+.maproute { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.maproute polyline { stroke:rgba(255,183,94,.6); stroke-width:.55; stroke-dasharray:1.6 1.4;
+  vector-effect:non-scaling-stroke; stroke-width:2px; }
+.pin { position:absolute; transform:translate(-50%, -6px); display:flex; flex-direction:column; align-items:center;
+  font-size:11.5px; letter-spacing:.12em; color:#eef6fa; white-space:nowrap; pointer-events:none; }
+/* ラベルは暗色プレート＋縁取りで地図から浮かせる（読みやすさ・後輩くんFB 2026-07-12） */
+.pin em { font-style:normal; background:rgba(2,5,10,.78); border:1px solid rgba(95,168,196,.35);
+  border-radius:2px; padding:1.5px 8px; line-height:1.6; text-shadow:0 1px 3px #000; }
+.pin i { width:7px; height:7px; border-radius:50%; margin-bottom:4px; background:var(--ice);
+  box-shadow:0 0 10px rgba(159,216,232,.7); }
+.pin.warm i { background:var(--warm); box-shadow:0 0 10px rgba(255,183,94,.7); }
+.pin.warm em { border-color:rgba(255,183,94,.4); color:#ffe9c9; }
+.pin.dim { color:#b9c8d2; }
+.pin.dim em { border-color:rgba(125,143,155,.3); background:rgba(2,5,10,.66); }
+.pin.dim i { background:#48607a; box-shadow:none; }
+.pin.snow { color:#fff; font-size:12px; letter-spacing:.14em; }
+.pin.snow em { background:rgba(8,18,30,.72); border-color:rgba(255,255,255,.55);
+  text-shadow:0 0 8px rgba(200,230,255,.9); }
+.pin.snow i { width:9px; height:9px; background:#fff; box-shadow:0 0 16px rgba(255,255,255,.95); }
+.snowglow { position:absolute; width:44%; height:16%; transform:translate(-50%,-50%); pointer-events:none;
+  background:radial-gradient(ellipse, rgba(240,250,255,.4), rgba(240,250,255,.1) 55%, transparent 78%); }
+/* 地図タブ（コナカタ詳細⇄西方広域・後輩くん案 2026-07-12） */
+.maptabs { display:flex; gap:10px; margin:2vh 0 14px; }
+.mtab { font-family:var(--serif); font-size:12px; letter-spacing:.18em; color:var(--dim);
+  background:none; border:1px solid var(--line2); padding:9px 16px; cursor:pointer; transition:color .3s, border-color .3s; }
+.mtab.act { color:var(--ice); border-color:var(--ice2); background:rgba(10,16,24,.7); }
+.mappane { display:none; }
+.mappane.act { display:block; }
+@media (max-width:680px) { .pin { font-size:9px; letter-spacing:.06em; } .pin i { width:5px; height:5px; } }
+h3.wsec { font-size:17px; letter-spacing:.34em; color:#dcebf1; margin:9vh 0 34px; font-weight:600; }
+h3.wsec small { display:block; font-size:10px; letter-spacing:.5em; color:var(--ice2); margin-top:6px; }
+
+.journey { position:relative; padding-bottom:4vh; }
+.journey { background:
+  radial-gradient(340px 180px at 18% 22%, rgba(120,190,215,.05), transparent 70%),
+  radial-gradient(300px 160px at 82% 58%, rgba(120,190,215,.04), transparent 70%); }
+.road { position:absolute; left:9px; top:16px; bottom:30px; width:1px;
+  background:linear-gradient(180deg, transparent, var(--line) 6%, var(--line) 94%, transparent); }
+.station { position:relative; padding:0 0 8vh 46px; }
+.st-marker { position:absolute; left:0; top:6px; display:flex; align-items:center; gap:10px; }
+.st-lamp { width:9px; height:9px; border-radius:50%; background:#2a3a48; border:1px solid #3d5162;
+  transition:background .8s ease, box-shadow .8s ease; }
+.station.lit .st-lamp { background:var(--warm); box-shadow:0 0 14px 3px rgba(255,183,94,.35); }
+.station[data-tone="alchemy"].lit .st-lamp { background:#7de8c9; box-shadow:0 0 14px 3px rgba(125,232,201,.3); }
+.st-km { font-size:11px; letter-spacing:.2em; color:var(--dim); font-variant-numeric:tabular-nums; }
+.st-body h4 { font-size:18px; letter-spacing:.2em; color:#e2eef3; margin-bottom:10px; font-weight:600; }
+.st-en { display:block; font-size:10px; letter-spacing:.55em; color:var(--ice2); margin-bottom:6px; }
+.st-body p { font-size:14.5px; color:#aebfc9; max-width:600px; }
+.st-img { margin:16px 0 0; max-width:600px; border:1px solid var(--line2); }
+.st-img img { display:block; width:100%; }
+.station[data-tone="warm"] .st-body h4 { color:#ffd9a8; }
+.station[data-tone="warm"] .st-body p { color:#c9bda9; }
+
+.j-outro { font-size:13.5px; color:#9fb2bd; max-width:620px; line-height:2.2; letter-spacing:.06em;
+  border-left:2px solid rgba(95,168,196,.35); padding-left:18px; margin:1vh 0 2vh; }
+.card { border:1px solid var(--line); background:rgba(6,10,17,.72); padding:26px 26px 20px; margin-bottom:22px; }
+.card h4 { font-size:16px; letter-spacing:.14em; color:#e2eef3; margin-bottom:10px; font-weight:600; }
+.card p { font-size:14px; color:#b7c7d0; }
+.fmore { margin-top:14px; }
+.fmore summary { display:inline-block; cursor:pointer; list-style:none; font-size:12px; letter-spacing:.22em;
+  color:var(--ice); border:1px solid rgba(95,168,196,.45); padding:7px 22px; background:rgba(4,7,13,.5);
+  transition:border-color .3s, color .3s; user-select:none; }
+.fmore summary::-webkit-details-marker { display:none; }
+.fmore summary::after { content:"　▾"; font-size:10px; }
+.fmore[open] summary::after { content:"　▴"; }
+.fmore summary:hover { border-color:var(--ice2); color:#e9f3f7; }
+.fmore > div { padding:16px 2px 4px; border-top:1px dotted var(--line2); margin-top:14px; }
+.fmore > div p { margin-bottom:1.2em; font-size:13.5px; line-height:2.1; }
+.fmore > div p:last-child { margin-bottom:0; }
+
+/* 年表 */
+.tl { position:relative; margin:0 0 4vh; padding-left:30px; }
+.tl::before { content:""; position:absolute; left:8px; top:8px; bottom:8px; width:1px;
+  background:linear-gradient(180deg, transparent, var(--line2) 8%, var(--line2) 92%, transparent); }
+.tl-row { position:relative; padding:0 0 40px; }
+.tl-row::before { content:""; position:absolute; left:-26px; top:12px; width:7px; height:7px; border-radius:50%;
+  background:var(--ink); border:1px solid var(--ice2); box-shadow:0 0 10px rgba(120,190,215,.25); }
+.tl-year { font-size:17px; letter-spacing:.18em; color:var(--ice); font-variant-numeric:tabular-nums; }
+.tl-text { font-size:14px; color:#b7c7d0; max-width:620px; margin-top:6px; }
+.tl-note { font-size:11.5px; color:var(--dim); letter-spacing:.14em; text-align:right; padding-bottom:6vh; }
+.tl-intro { font-size:14px; color:#b7c7d0; margin-bottom:36px; }
+
+.god { display:flex; gap:18px; align-items:baseline; border-bottom:1px solid var(--line); padding:13px 4px; }
+.g-name { min-width:9.5em; font-size:15px; letter-spacing:.18em; color:#e2eef3; }
+.g-dom { font-size:13px; color:#9fb2bd; }
+.g-outro { margin:26px 0 12vh; font-size:13.5px; color:var(--ice); letter-spacing:.1em; }
+.g-intro { margin-bottom:26px; font-size:14px; color:#b7c7d0; }
+
+/* ══ MYTH（神話＝五つの時代と粛清） ══ */
+.myth-intro { margin:2vh 0 46px; font-size:14px; color:#b7c7d0; line-height:2.15; }
+.era { position:relative; border-left:1px solid var(--line2); margin:0 0 34px; padding:2px 0 6px 26px; }
+.era::before { content:""; position:absolute; left:-4px; top:9px; width:7px; height:7px; border-radius:50%;
+  background:var(--ice); box-shadow:0 0 10px rgba(120,190,215,.7); }
+.era:last-of-type::before { background:var(--warm); box-shadow:0 0 10px rgba(255,183,94,.7); }
+.era h4 { font-size:16px; letter-spacing:.3em; color:#dcebf1; font-weight:600; }
+.era .een { display:block; font-size:9.5px; letter-spacing:.42em; color:var(--ice2); margin:5px 0 13px; }
+.era p { font-size:13.5px; line-height:2.1; color:#b7c7d0; }
+.prophecy { margin:44px 0; padding:24px 26px; border:1px solid var(--line2); background:rgba(6,10,17,.7);
+  font-size:13.5px; line-height:2.15; color:var(--ice); letter-spacing:.05em; }
+.arc-note { font-size:12.5px; color:var(--dim); letter-spacing:.14em; margin:-2vh 0 6vh; }
+
+/* ══ ページ送りスクロール＝底まで来たら次ページへ（後輩くん希望 2026-07-12） ══ */
+.nextcue { display:flex; flex-direction:column; align-items:center; gap:6px; margin:7vh auto 9vh;
+  background:none; border:none; cursor:pointer; font-family:var(--serif);
+  color:var(--dim); font-size:12px; letter-spacing:.26em; transition:color .3s; }
+.nextcue:hover { color:var(--ice); }
+.nextcue .arr { font-size:15px; color:var(--ice2); animation:cuebob 2.2s ease-in-out infinite; }
+@keyframes cuebob { 0%,100% { transform:translateY(0); opacity:.6; } 50% { transform:translateY(6px); opacity:1; } }
+@media (prefers-reduced-motion: reduce) { .nextcue .arr { animation:none; } }
+.myth-outro { margin:36px 0 6vh; font-size:13px; color:var(--dim); line-height:2.1; letter-spacing:.1em; }
+
+/* ══ 人物と勢力（合体ページ） ══ */
+.fgroup { margin:0 0 7vh; }
+.fgroup .chgrid { margin-top:20px; padding-left:14px; border-left:1px solid var(--line2); }
+
+/* ══ CHARACTER ══ */
+.chgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:22px; padding-bottom:4vh; }
+.ch { border:1px solid var(--line); background:rgba(6,10,17,.72); display:flex; flex-direction:column; }
+.ch-face { aspect-ratio:1/1; position:relative; overflow:hidden; border-bottom:1px solid var(--line);
+  background:linear-gradient(160deg, #0a1420, #050910 60%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.18' numOctaves='2' seed='11'/><feColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0 0.74  0 0 0 0.28 0'/></filter><rect width='300' height='300' filter='url(%23i)'/></svg>"); background-blend-mode:screen; }
+.ch-face img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; padding:8px 8px 0; }
+.ch-face .mono { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size:44px; color:rgba(159,216,232,.34); letter-spacing:0; text-shadow:0 0 26px rgba(120,190,215,.3); }
+.ch-body { padding:20px 22px 18px; }
+.ch-body h4 { font-size:16.5px; letter-spacing:.14em; color:#e2eef3; font-weight:600; }
+.ch-body .role { display:block; font-size:11px; letter-spacing:.2em; color:var(--ice2); margin:5px 0 12px; }
+.ch-body p { font-size:13.5px; color:#b7c7d0; }
+.ch-more { text-align:center; font-size:13px; color:var(--dim); letter-spacing:.18em; padding:20px 0 12vh; }
+
+/* ══ RECORD ══ */
+.ep { border:1px solid var(--line); background:rgba(6,10,17,.72); padding:26px 26px 20px; margin-bottom:22px; }
+.ep-head { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:12px; }
+.ep-no { font-size:12px; letter-spacing:.25em; color:var(--ice2); }
+.ep-head h4 { font-size:18px; letter-spacing:.16em; color:#e2eef3; font-weight:600; }
+.ep-date { margin-left:auto; font-size:11.5px; color:var(--dim); letter-spacing:.12em; }
+.ep-sum { font-size:14px; color:#b7c7d0; }
+.ep-log { margin-top:12px; font-size:11.5px; color:var(--dim); letter-spacing:.08em; }
+.ep-loglink { color:var(--ice); text-decoration:none; border-bottom:1px solid rgba(95,168,196,.4); padding-bottom:1px; }
+.ep-loglink:hover { color:#e9f3f7; }
+.ep-next { border-style:dashed; }
+.ep-tba { color:var(--ice2); letter-spacing:.2em; }
+.ep-locked { text-align:center; font-size:13px; color:var(--dim); letter-spacing:.2em; padding:14px 0 12vh; }
+
+/* ══ GALLERY ══ */
+.g-tba { color:var(--dim); font-size:13.5px; letter-spacing:.14em; padding:0 0 5vh; }
+.mv { margin-bottom:5vh; }
+.mv-frame { aspect-ratio:16/9; border:1px solid var(--line2); background:#000; }
+.mv-frame iframe { width:100%; height:100%; border:0; display:block; }
+.mv-t { font-size:13px; color:#b7c7d0; letter-spacing:.14em; padding-top:10px; }
+.ggrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:16px; padding-bottom:10vh; }
+.gitem { margin:0; }
+.gbtn { display:block; width:100%; padding:0; border:1px solid var(--line2); background:none; cursor:zoom-in; }
+.gbtn img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; transition:opacity .3s; }
+.gbtn:hover img { opacity:.82; }
+.gitem figcaption { font-size:11px; color:var(--dim); letter-spacing:.1em; padding:8px 2px 0; }
+#lb { position:fixed; inset:0; z-index:50; display:none; align-items:center; justify-content:center;
+  background:rgba(2,4,9,.95); cursor:zoom-out; }
+#lb.on { display:flex; }
+#lb figure { max-width:94vw; }
+#lb img { max-width:94vw; max-height:82vh; display:block; border:1px solid var(--line2); }
+#lb figcaption { text-align:center; font-size:12px; color:var(--fog); letter-spacing:.14em; padding-top:12px; }
+
+/* ══ JOIN ══ */
+.join-body { padding-bottom:12vh; }
+.join-body p { font-size:14.5px; color:#b7c7d0; max-width:640px; margin-bottom:2em; }
+
+/* ══ 共通・装飾 ══ */
+/* 氷晶ディバイダー＝中央の◆から左右へ光の線が伸びる（旧ギザギザ稜線は後輩くんFBで廃止 2026-07-12） */
+.icedvd { position:relative; height:22px; margin:4vh 0; display:flex; align-items:center; justify-content:center; }
+.icedvd::before { content:""; position:absolute; left:6%; right:6%; top:50%; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(95,168,196,.5) 20%, rgba(159,216,232,.8) 50%,
+  rgba(95,168,196,.5) 80%, transparent); transform:scaleX(0); transition:transform 1.8s ease; }
+.icedvd i { width:7px; height:7px; transform:rotate(45deg); background:rgba(159,216,232,.95);
+  box-shadow:0 0 14px rgba(159,216,232,.85); opacity:0; transition:opacity .9s ease .6s; }
+.icedvd.on::before { transform:scaleX(1); }
+.icedvd.on i { opacity:1; }
+/* GALLERY音楽棚（SUNO曲・tracksが空なら出ない） */
+.track { display:flex; align-items:center; gap:16px; border:1px solid var(--line2);
+  background:rgba(6,10,17,.6); padding:12px 16px; margin-bottom:12px; flex-wrap:wrap; }
+.track .tt { min-width:200px; color:#e9f3f7; font-size:13px; letter-spacing:.12em; }
+.track audio { flex:1; min-width:220px; height:36px; }
+.reveal { opacity:0; transform:translateY(18px); transition:opacity .9s ease, transform .9s ease; }
+.reveal.on { opacity:1; transform:none; }
+
+#odo { display:none; position:fixed; right:16px; bottom:14px; z-index:10; font-size:14px; letter-spacing:.18em;
+  color:var(--dim); background:rgba(5,7,12,.78); border:1px solid var(--line); border-radius:2px;
+  padding:10px 16px; font-variant-numeric:tabular-nums; opacity:0; transition:opacity .5s; }
+body[data-page="world"].onj #odo { display:block; opacity:1; }
+body[data-page="world"] #odo { display:block; }
+#odo b { color:var(--ice); font-weight:normal; font-size:21px; letter-spacing:.08em;
+  text-shadow:0 0 12px rgba(120,190,215,.35); }
+@media (max-width:680px) { #odo { font-size:12px; padding:7px 12px; } #odo b { font-size:17px; } }
+#bgmBox { position:fixed; left:14px; bottom:12px; z-index:10; display:flex; align-items:center; gap:8px;
+  background:rgba(5,7,12,.7); border:1px solid var(--line); border-radius:2px; padding:5px 10px; }
+#bgmBtn { background:none; border:none; color:var(--dim); cursor:pointer; font-family:var(--serif);
+  font-size:12px; letter-spacing:.1em; transition:color .3s; }
+#bgmBtn.on { color:var(--warm); }
+#bgmVol { width:64px; accent-color:var(--ice2); display:none; }
+#bgmBox.playing #bgmVol { display:block; }
+
+footer { position:relative; z-index:3; border-top:1px solid var(--line); padding:5vh 22px 7vh; text-align:center; }
+footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; line-height:2.1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity:1; transform:none; transition:none; }
+  .tsec > * { opacity:1; transform:none; filter:none; transition:none; }
+  .tsec.on h3.wsec::before { animation:none; content:none; }
+  .breath, .cue::before { animation:none; }
+  .breath { opacity:0; }
+  #snow { display:none; }
+  .icedvd::before { transform:scaleX(1); transition:none; }
+  .icedvd i { opacity:1; transition:none; }
+  .page.act { animation:none; }
+  html { scroll-behavior:auto; }
+}
+</style>
+</head>
+<body data-page="top">
+<div class="wall wall-l" style="background-image:url(assets/wall_l.jpg)" aria-hidden="true"></div>
+<div class="wall wall-r" style="background-image:url(assets/wall_r.jpg)" aria-hidden="true"></div>
+<canvas id="snow" aria-hidden="true"></canvas>
+
+<header class="gnav">
+  <a class="brand" href="#/">
+    <span class="bj">凍廊のサンクトゥム</span>
+    <span class="be">CRYPTA SANCTUM</span>
+  </a>
+  <button id="burger" aria-label="メニュー" aria-expanded="false">≡</button>
+  <nav class="menu" aria-label="サイト内メニュー">
+    <a href="#/" data-page="top"><span class="en">TOP</span><span class="jp">トップ</span></a>
+    <a href="#/news" data-page="news"><span class="en">NEWS</span><span class="jp">お知らせ</span></a>
+    <span class="navgrp" id="navgrp">
+      <button id="grpBtn" aria-haspopup="true" aria-expanded="false"><span class="en">SETTING ▾</span><span class="jp">設定</span></button>
+      <span class="grpdd">
+        <a href="#/story" data-page="story"><span class="en">STORY</span><span class="jp">物語</span></a>
+        <a href="#/world" data-page="world"><span class="en">WORLD</span><span class="jp">世界</span></a>
+        <a href="#/myth" data-page="myth"><span class="en">MYTH</span><span class="jp">神話</span></a>
+        <a href="#/character" data-page="character"><span class="en">CHARACTER</span><span class="jp">人物・勢力</span></a>
+      </span>
+    </span>
+    <a href="#/gallery" data-page="gallery"><span class="en">GALLERY</span><span class="jp">ギャラリー</span></a>
+    <a href="#/record" data-page="record"><span class="en">ARCHIVE</span><span class="jp">記録保管庫</span></a>
+    <a href="#/join" data-page="join"><span class="en">JOIN</span><span class="jp">参加案内</span></a>
+  </nav>
+</header>
+
+<div id="odo" aria-hidden="true">プリムスより <b>000.0</b> km</div>
+<div id="bgmBox"><button id="bgmBtn" data-track="Frozen Echoes">♪ Frozen Echoes</button><input type="range" id="bgmVol" min="0" max="100" value="35" aria-label="音量"></div>
+<audio id="bgm" loop preload="none" src="assets/bgm.mp3"></audio>
+
+<main>
+
+<!-- ════ TOP ════ -->
+<div class="page act" data-page="top">
+  <section class="kv">
+    <div class="kv-bg kv-slide show" style="background-image:url(assets/kv.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_follow.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_front.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_bird.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_side.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_camp.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_vista.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_frostgate.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_lantern_inn.jpg)"></div>
+    <div class="breath" style="top:38%;"></div>
+    <h1 class="sr">凍廊のサンクトゥム（Crypta Sanctum）</h1><img class="logo" src="assets/logo.png" alt="アリアンロッドRPG2E改訂版　レギュレーション：氷原開拓団『凍廊のサンクトゥム』ロゴ">
+    
+    <p class="meta">Discordサーバー〈辺境TRPG村〉<br>アリアンロッドRPG2E改訂版　レギュレーション：氷原開拓団<br>DLC型サブキャンペーン（長期連作・毎回参加メンバー入替OK）<br>レギュレーション主催：Mizshiro<br>GM：カテナドルグ</p>
+    <p class="start">2026年8月 開始予定</p>
+    <span class="cue" aria-hidden="true"></span>
+  </section>
+</div>
+
+<!-- ════ NEWS ════ -->
+<div class="page" data-page="news">
+  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">NEWS</span><h2>お知らせ</h2><p class="sub">NEWS</p></div></div>
+  <div class="wrap newslist">
+      <div class="nw reveal"><span class="d">2026.07.12</span><span class="tag">UPDATE</span><span>「設定」に『神話』を追加。世界に広域地図を、ギャラリーに新しい情景を追加しました。</span></div>
+      <div class="nw reveal"><span class="d">2026.07.11</span><span class="tag">MUSIC</span><span>テーマ曲「Frozen Echoes」を公開しました。画面左下の♪ボタンからどうぞ。</span></div>
+      <div class="nw reveal"><span class="d">2026.07.11</span><span class="tag">SITE</span><span>『凍廊のサンクトゥム』特設サイトを開設しました。</span></div>
+      <div class="nw reveal"><span class="d">2026.07.05</span><span class="tag">INFO</span><span>第1話「回路へようこそ」は2026年8月開催予定。募集要項は確定し次第掲載します。</span></div>
+      <div class="nw reveal"><span class="d">2026.05.25</span><span class="tag">SESSION</span><span>プロローグ「月は誰の夢を見る」を実施しました。記録保管庫に掲載しています。</span></div>
+  </div>
+</div>
+
+<!-- ════ STORY ════ -->
+<div class="page" data-page="story">
+  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">STORY</span><h2>物語</h2><p class="sub">STORY</p></div></div>
+  <div class="wrap story-body">
+      <p class="reveal">沈黙の氷原とエリンディル西方を繋ぐたったひとつの道。コナカタ山脈の腹の底を全長171kmにわたって貫く地下回廊——人はそれを、凍結の回路と呼ぶ。</p>
+      <p class="reveal">明かりを持たない者にとって、回路は端から端までひたすら続く長大な闇である。松明の火が届くところまでが人の世界で、その先には環境に適応した原生生物が息を潜めている。</p>
+      <p class="reveal">伝承は語る——かつてこの氷原には、&quot;古の民&quot;エルダの都市が広がっていた。だが彼らは禁忌に触れ、神々の&quot;風の粛清&quot;によって滅びたのだと。南の果てのラーフ大洞窟もまた、&quot;地の粛清&quot;の時に生まれた大空洞だという。世界が洗い清められた時代の傷跡が、この地にはいまも静かに残っている。</p>
+      <p class="reveal">……いや。長く回路を歩く者は、時折こう感じる事がある。あれはただ暗いのではない。何かが「ある」闇なのだと。</p>
+    <figure class="storyfig reveal"><img src="assets/story.jpg" loading="lazy" alt="凍結の回路の情景"></figure>
+    <div class="icedvd" aria-hidden="true"><i></i></div>
+    <p class="reveal" style="padding-bottom:10vh; color:var(--dim); font-size:13px; letter-spacing:.16em;">
+      ——この回路を舞台に、開拓団の記録者たちの旅が始まる。</p>
+  </div>
+</div>
+
+<!-- ════ WORLD ════ -->
+<div class="page" data-page="world">
+  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">WORLD</span><h2>世界</h2><p class="sub">WORLD</p></div></div>
+  <div class="wrap">
+    <div class="maptabs reveal">
+      <button class="mtab act" data-map="detail">コナカタ山脈と回路</button>
+      <button class="mtab" data-map="wide">エリンディル西方 全図</button>
+    </div>
+    <div class="mappane act" id="mapDetail">
+    <figure class="mapfig reveal"><div class="mapwrap"><img src="assets/map.jpg" loading="lazy" alt="コナカタ山脈と凍結の回路の地図"><svg class="maproute" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="52,8 47,31 43,52 53,70 62,86" fill="none"/></svg><span class="pin warm" style="left:52%;top:8%"><i></i><em>プリムス開拓団</em></span><span class="pin ice" style="left:47%;top:31%"><i></i><em>フロストゲート</em></span><span class="pin warm" style="left:43%;top:52%"><i></i><em>ランタン亭</em></span><span class="pin ice" style="left:53%;top:70%"><i></i><em>坩堝横丁</em></span><span class="pin ice" style="left:62%;top:86%"><i></i><em>ラーフ大洞窟</em></span><span class="pin dim" style="left:71%;top:19%"><i></i><em>群青の湖</em></span><span class="pin dim" style="left:13%;top:62%"><i></i><em>氷の遺跡</em></span></div><figcaption>コナカタ山脈と凍結の回路 — 開拓団資料室蔵</figcaption></figure>
+    </div>
+    <div class="mappane" id="mapWide">
+    <figure class="mapfig reveal"><div class="mapwrap"><img src="assets/widemap.jpg" loading="lazy" alt="エリンディル西方の広域地図"><i class="snowglow" style="left:46%;top:8%" aria-hidden="true"></i><span class="pin snow" style="left:46%;top:6.5%"><i></i><em>沈黙の氷原</em></span><span class="pin warm" style="left:42%;top:16.3%"><i></i><em>コナカタ山脈</em></span><span class="pin warm" style="left:29%;top:21.7%"><i></i><em>ラーフ大洞窟</em></span><span class="pin dim" style="left:78%;top:13.0%"><i></i><em>魔都ベルヴェ</em></span><span class="pin ice" style="left:55%;top:32.6%"><i></i><em>霧の森</em></span><span class="pin dim" style="left:44%;top:42.4%"><i></i><em>グランフェルデン</em></span><span class="pin dim" style="left:39%;top:56.5%"><i></i><em>パリス同盟の中原</em></span><span class="pin dim" style="left:85%;top:45.7%"><i></i><em>無限の砂漠</em></span><span class="pin ice" style="left:72%;top:66.3%"><i></i><em>聖都ディアスロンド</em></span><span class="pin dim" style="left:13%;top:77.2%"><i></i><em>神聖ヴァンスター帝国</em></span><span class="pin dim" style="left:68%;top:91.3%"><i></i><em>エルーラン王国</em></span></div><figcaption>エリンディル西方 —— 舞台は大陸の最北、沈黙の氷原とコナカタ山脈の地下</figcaption></figure>
+    </div>
+    <h3 class="wsec reveal">凍結の回路<small>THE FROZEN CIRCUIT — 171km</small></h3>
+    <div class="journey">
+      <div class="road" aria-hidden="true"></div>
+
+    <section class="station reveal" data-km="0" data-tone="surface">
+      <div class="st-marker"><span class="st-lamp"></span><span class="st-km">  0 km</span></div>
+      <div class="st-body">
+        <h4><span class="st-en">PRIMUS</span>プリムス開拓団</h4>
+        <p>北端。沈黙の氷原に築かれた人口500人の開拓拠点。見張り塔の足元に、人の火が灯る。回路を行く者は、ここで橇を馬車に替える。</p>
+        <figure class="st-img"><img src="assets/st_primus.jpg" loading="lazy" alt="プリムス開拓団"></figure>
+      </div>
+    </section>
+
+    <section class="station reveal" data-km="37" data-tone="dark">
+      <div class="st-marker"><span class="st-lamp"></span><span class="st-km"> 37 km</span></div>
+      <div class="st-body">
+        <h4><span class="st-en">FROSTGATE</span>フロストゲート</h4>
+        <p>開拓団管轄の検問所・補給倉庫。回路で起きたことは、大小を問わず、最後はすべてここの野営地の机に集まってくる——安全通行責任者レイフ・ストームの城である。</p>
+        <figure class="st-img"><img src="assets/st_frostgate.jpg" loading="lazy" alt="フロストゲート"></figure>
+      </div>
+    </section>
+
+    <section class="station reveal" data-km="93" data-tone="warm">
+      <div class="st-marker"><span class="st-lamp"></span><span class="st-km"> 93 km</span></div>
+      <div class="st-body">
+        <h4><span class="st-en">LANTERN INN</span>ランタン亭</h4>
+        <p>回路のなかほど、闇の中にぽつりと浮かぶ暖色の灯り。女将がひとりで営む、回路随一の居心地の宿。すべての勢力が、ここでだけは同じ食卓につく。</p>
+        <figure class="st-img"><img src="assets/st_lantern_inn.jpg" loading="lazy" alt="ランタン亭"></figure>
+      </div>
+    </section>
+
+    <section class="station reveal" data-km="133" data-tone="alchemy">
+      <div class="st-marker"><span class="st-lamp"></span><span class="st-km">133 km</span></div>
+      <div class="st-body">
+        <h4><span class="st-en">CRUCIBLE ROW</span>坩堝横丁</h4>
+        <p>錬金術の炉が青緑に燃える商業拠点。薬品と鉄の匂い。ここだけは、地の底だということを忘れそうになる。</p>
+        <figure class="st-img"><img src="assets/st_crucible_row.jpg" loading="lazy" alt="坩堝横丁"></figure>
+      </div>
+    </section>
+
+    <section class="station reveal" data-km="171" data-tone="dark">
+      <div class="st-marker"><span class="st-lamp"></span><span class="st-km">171 km</span></div>
+      <div class="st-body">
+        <h4><span class="st-en">RAHF</span>ラーフ大洞窟</h4>
+        <p>南端。エリンディル最北の錬金術都市国家、人口8万。中立の名のもとに、あらゆるものが流れ込み、流れ出ていく。</p>
+        <figure class="st-img"><img src="assets/st_rahf.jpg" loading="lazy" alt="ラーフ大洞窟"></figure>
+      </div>
+    </section>
+    </div>
+    <p class="j-outro reveal">回路は、人の道であって、人だけの道ではない。灯りの届かぬ岩陰には氷に適応した獣や魔獣が棲まい、氷の下には水が流れ、目のない魚が泳ぐ。運が良ければ——あるいは悪ければ——霊獣や精霊のたぐいが、旅人の前にふと姿を見せることもあるという。地の底にもまた、生態系は息づいている。</p>
+    <h3 class="wsec reveal">年表<small>HISTORY</small></h3>
+    <p class="tl-intro reveal">エリンディル西方の近代と、氷原開拓団の歩み。</p>
+    <div class="tl">
+      <div class="tl-row reveal"><div class="tl-year">聖暦1002</div><p class="tl-text">パリス同盟 締結。神聖ヴァンスター帝国への抑止のため、中原の国家が政治・軍事同盟を結ぶ。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1004</div><p class="tl-text">魔将戦争。続く聖暦1006年の薔薇の災厄と合わせ、西方諸国に深い傷が残る。各国に他国へ兵を向ける余力はない。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1009</div><p class="tl-text">パリス同盟、北方より妖魔の大侵攻を受ける。同じ頃、エルガル山の火山付近で気温の急激な低下が記録されている。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1043</div><p class="tl-text">ヴァイス王国の子爵ヴェルトール・ランベント、その立場を退き「開拓団」計画に専念。——かつて轟音の嵐が吹き荒れたはずの沈黙の氷原は、いつしか静かになっていた。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1046</div><p class="tl-text">ラーフ大洞窟以北の制圧作戦が実行され、氷原の北端に第一拠点「プリムス」建設のための物資搬入が始まる。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1047</div><p class="tl-text">プリムス建設完了、初期団員が移住。氷原開拓の暮らしが始まる。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1053</div><p class="tl-text">フロストウッドの森の奥地で、未知の文字が刻まれた石碑を発見。かつてこの地に文明が存在したことが、ほぼ確信される。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1054</div><p class="tl-text">夜鯨事変。体長200mを超える謎の鯨が空に現れる。開拓団は討伐に成功するが、団長ヴェルトールが戦死。姪のアリス・ランベントが後を継ぎ、団長に就任する。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1055</div><p class="tl-text">ヴァイス王国で世継ぎ騒動。エルシア女王が即位する。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">聖暦1056</div><p class="tl-text">入団希望者の殺到を受け、第一回入団試験が実施される。北東部では霜の灯台が発見・制圧された。</p></div>
+      <div class="tl-row reveal"><div class="tl-year">——現在</div><p class="tl-text">凍結の回路をめぐる、新しい記録が始まろうとしている。</p></div>
+    </div>
+    <p class="tl-note reveal">出典：レギュレーション「氷原開拓団」の年表資料ほか。年表は旅の進行とともに増補されます。</p>
+  </div>
+</div>
+
+<!-- ════ MYTH ════ -->
+<div class="page" data-page="myth">
+  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">MYTH</span><h2>神話</h2><p class="sub">MYTH</p></div></div>
+  <div class="wrap">
+    <p class="myth-intro reveal">エリンディルの神話では、時代は大きく五つに分かれている。そしてその節目にはいつも——世界を洗い清める「粛清」があった。</p>
+    <section class="era reveal"><h4>光の時代<span class="een">THE AGE OF LIGHT</span></h4><p>天地開闢のとき。天空神と地母神のあいだに数多の神々が生まれ、精霊には精霊の王が、動物には動物の王が立てられた。世界がもっとも眩かった時代。</p></section>
+    <section class="era reveal"><h4>風の時代<span class="een">THE AGE OF WIND</span></h4><p>“古の民”が栄えた時代。だが疑念はやがて恐れと嫉妬を生み、闇に染まった心から、&quot;禍つ神々&quot;が形をとった。世界で初めての“戦い”の果てに禍神たちは世界の外へと封じられ——風が、世界に満ちた瘴気のすべてを吹き払った。「風の粛清」である。</p></section>
+    <section class="era reveal"><h4>水の時代<span class="een">THE AGE OF WATER</span></h4><p>傷ついた世界を癒すため、新しい民が創られた時代。だが闇は消えず、ついに神々は水に、世界を清めることを命じた。猛る水は大地の七割を呑み——栄えていたものたちの多くは、還らなかった。</p></section>
+    <section class="era reveal"><h4>地の時代<span class="een">THE AGE OF EARTH</span></h4><p>生き残った民が、小さくなった世界を継いだ時代。その地の底に、ただひとり生き残り、ただひとり妖魔に堕ちた者がいたという。諸族が「妖魔王」と恐れたその者は、地の底に巨大な要塞を築き、民を隷属させた。——やがて祈りは神々に届き、大地は裂け、王とその眷属は底知れぬ奈落へと呑まれた。「地の粛清」である。</p></section>
+    <section class="era reveal"><h4>火の時代<span class="een">THE AGE OF FIRE</span></h4><p>恐るべき妖魔の群れが一掃され、世界は光を取り戻した。現在まで続く時代。——実のところ、この時代はまだ、本当の名を持たない。</p></section>
+    <div class="prophecy reveal">「この時代のすべての“神の子”らが手を取り合って挑めども抗し得ない妖魔が到来した時、神々は火をもて魔軍を粛清するだろう」——予言の女神の言葉。その日が訪れていないがゆえに、人々は仮に、今を“火の時代”と呼ぶ。</div>
+    <p class="myth-outro reveal">五つの時代と、みっつの粛清。氷原のはるか北では、最初の粛清を起こした嵐の名残が、今も吹き続けているという。——凍った回廊の旅は、この神話のかたわらを通ってゆく。</p>
+    <h3 class="wsec reveal">神々<small>THE SEVEN</small></h3>
+    <p class="g-intro reveal">エリンディル西方の人々は、世界を創った七柱の神々——七大神を信仰している。回路を歩く者もまた、それぞれの神に祈りを捧げる。</p>
+    <div class="god reveal"><span class="g-name">アーケンラーヴ</span><span class="g-dom">神々の王・太陽の神。裁きと勇武。ヒューリンの創造主</span></div>
+    <div class="god reveal"><span class="g-name">ブリガンティア</span><span class="g-dom">予言の女神・月の女神。魔術と夢見。エルダナーンの創造主</span></div>
+    <div class="god reveal"><span class="g-name">ダグデモア</span><span class="g-dom">天空の神。ヴァーナの創造主</span></div>
+    <div class="god reveal"><span class="g-name">ダナン</span><span class="g-dom">大地の女神。天空神と対をなす地母神</span></div>
+    <div class="god reveal"><span class="g-name">アエマ</span><span class="g-dom">豊穣の女神。フィルボルの創造主</span></div>
+    <div class="god reveal"><span class="g-name">ゴヴァノン</span><span class="g-dom">鍛冶の神・山の神。ネヴァーフの創造主</span></div>
+    <div class="god reveal"><span class="g-name">グランアイン</span><span class="g-dom">戦の神・雷の神。ドゥアンの創造主</span></div>
+    <p class="g-outro reveal">——精霊の王たちの伝承、そして口にすることさえ憚られる神々の話は、旅の中で。</p>
+  </div>
+</div>
+
+<!-- ════ CHARACTER ════ -->
+<div class="page" data-page="character">
+  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">CHARACTER</span><h2>人物と勢力</h2><p class="sub">CHARACTER</p></div></div>
+  <div class="wrap">
+
+    <section class="fgroup">
+      <article class="card reveal"><h4>プリムス開拓団</h4><p>回路の北の主。輸送路の安全と補給の維持がすべて——この道が止まれば、氷原の開拓は終わる。</p><details class="fmore"><summary>詳しく読む</summary><div><p>聖暦1043年、ヴァイス王国の子爵ヴェルトール・ランベントがその立場を退き、開拓団の設立を宣言したことに始まる。現在の代表は、彼の遺志を継いだ姪のアリス・ランベント。統治は団員による合議制。</p><p>パリス同盟各国の共同出資による国際機関だが、事務方の多くはヴァイス王国の出身者で、ランベント騎士団の斥候隊「黄色中隊」もプリムスに常駐している。輸入は食料と生活必需品と薬品。輸出は、氷原で採れる純度の高い宝石。</p><p>団員は食堂での共同の食事に代表される共同生活を営む。氷原育ちの子供たち——低温と豪雪にきわめて高く適応した世代は「アイスメイト」と呼ばれ、12歳ごろから入団試験を経て団の仕事を手伝う。</p></div></details></article>
+      <div class="chgrid">
+      <article class="ch reveal">
+        <div class="ch-face"><img src="assets/ch_0.png" loading="lazy" alt="レイフ・ストーム"></div>
+        <div class="ch-body"><h4>レイフ・ストーム</h4><span class="role">凍結の回路・安全通行責任者</span><p>フロストゲートの野営地に常駐する、几帳面で世話好きな男。回路で起きたことは、最後にはぜんぶ彼の机に集まる。旅の始まりと終わりに、彼の顔がある。</p></div>
+      </article>
+      <article class="ch reveal">
+        <div class="ch-face"><img src="assets/ch_1.png" loading="lazy" alt="フルール・シュリエール"></div>
+        <div class="ch-body"><h4>フルール・シュリエール</h4><span class="role">開拓団の外交実務担当</span><p>シュリエール伯爵家の次男、十九歳。真面目で丁寧、評判は上々。ただし大きな舞台は、まだこれから。</p></div>
+      </article>
+      </div>
+    </section>
+
+    <section class="fgroup">
+      <article class="card reveal"><h4>パリス同盟</h4><p>神聖ヴァンスター帝国への抑止のため、聖暦1002年に中原の国家が結んだ政治・軍事同盟。氷原開拓団の生みの親であり、後ろ盾。</p><details class="fmore"><summary>詳しく読む</summary><div><p>母体はネルス川流域の商業同盟。宗主格は&quot;遺跡の街&quot;ライン（同盟評議会の開催地）。中枢7国家で構成され、その領域は北のヴェンガルド川から南のラッセル川に及ぶ。</p><p>魔将戦争と薔薇の災厄の復旧、そして聖暦1009年に北方から受けた妖魔の大侵攻——同盟はいまも多くの傷を抱えている。それでも人口増加と資源不足の未来に備え、北の氷原の開拓に望みを賭けた。</p></div></details></article>
+    </section>
+
+    <section class="fgroup">
+      <article class="card reveal"><h4>ラーフ大洞窟</h4><p>南端の都市国家、人口8万。ネヴァーフたちが築いた千年の都にして、錬金術の総本山。中立を掲げてどの国とも等しく商いをする。その中立が何を守るためのものかは、誰も問わない。</p><details class="fmore"><summary>詳しく読む</summary><div><p>伝承では&quot;地の粛清&quot;の時に生まれた大空洞に、むき出しになった鉱石資源へ目をつけたネヴァーフたちが都市を築いたのが始まり。錬金術で明かりを灯し、空気を循環させて完成した都は、古い建物になると千年を越える。</p><p>統治は長老による合議制。主産業は錬金術師たちの発明品で、ポーションに代表される薬品は、パリス同盟や神聖ヴァンスター帝国といった大国も買いつけに来る。他国が支配を試みたこともあるが、特殊な立地と技術力の高さではねのけてきた。</p><p>回路から入ってすぐの場所には市場が、街の中心には長老議会が所有する大工房が、東には発明品の倉庫街がある。……なお、廃棄された発明品が互いに干渉し、魔法生物や機械が闊歩する迷宮と化した「第十三番倉庫」には近づかないこと。「十三番送りにするぞ」は、ラーフで最大級の脅し文句である。</p></div></details></article>
+    </section>
+
+    <section class="fgroup">
+      <article class="card reveal"><h4>神聖ヴァンスター帝国</h4><p>協定により、回路南部での学術調査と遺跡研究の権利を持つ。学者の顔と、それ以外の顔。</p><details class="fmore"><summary>詳しく読む</summary><div><p>大陸南西のフィンジアス島を本拠とする帝政国家。聖暦999年、若き皇帝ゼダンの即位を機に国号を「神聖ヴァンスター帝国」と改め、エリンディル統一を掲げて侵略路線を強めた。</p><p>皇帝ゼダンは&quot;風の時代&quot;の神聖王アルトリウスの末裔を自称し、その象徴として魔剣クラウ・ソラスを手にする。錬金術の軍事利用と、高山に住まう天翼族との盟約が、圧倒的な軍事力を支える。帝都は八芒星の城壁に守られた&quot;天空の街&quot;ヴァンスター。</p><p>薔薇の災厄で国力が傷つき、現在は他国への侵攻を停止している。——だが国力が回復すれば再び動き出すと、誰もが予測している。聖都ディアスロンドには、ゼダンを「神聖王の末裔を僭称する者」と非難する声が強い。</p></div></details></article>
+    </section>
+
+    <section class="fgroup">
+      <article class="card reveal"><h4>聖都ディアスロンド</h4><p>七大神信仰の総本山にして、どの国にも属さない中立の聖地。三者協定の仲介者。「争っている場合ではない」——調停者たちは今日も回路を歩く。</p><details class="fmore"><summary>詳しく読む</summary><div><p>エリンディルに存在する神殿を統括する都市。宗教的な均衡と平等性を保つため、どの国家にも属さず、独立した国家機能を持つ。冒険者への依頼を統括する神殿機能の本部でもあり、各地の異変や事件の情報がこの都市に集まる。</p><p>白く輝く6つの塔に囲まれた六角形の都市。巡礼者は城壁沿いに6つの神殿——鍛冶、月、戦い、天空、大地、豊穣——を巡り、最後に中心部の大聖堂を礼拝するのが通例だ。大聖堂の奥には&quot;風の時代&quot;の遺物と伝えられる7つの塔が立ち、その足もとの「光の門」の中で、教皇は即位から退位までを過ごす。</p><p>聖典『白の書』によれば、都市は&quot;古の民&quot;エルダが神々の声を聞くために築き、のちの初代教皇ルキアノスが7つの塔の下で神々の声を聞いて再興した。以来800年——神の武具、神の道具を探し求めることが、神殿組織の使命のひとつであり続けている。</p></div></details></article>
+    </section>
+    <h3 class="wsec reveal">回路の人々<small>PEOPLE OF THE CIRCUIT</small></h3>
+    <div class="chgrid">
+      <article class="ch reveal">
+        <div class="ch-face"><img src="assets/ch_2.png" loading="lazy" alt="ルーヴェ・レイン"></div>
+        <div class="ch-body"><h4>ルーヴェ・レイン</h4><span class="role">ランタン亭の女将</span><p>回路のなかほど、灯りの宿をひとりで営む。物静かで、行き届いていて——いつからそこにいるのか、誰も知らない。</p></div>
+      </article>
+    </div>
+<p class="ch-more reveal">旅の中で出会う人々は、これから増えていく。</p>
+  </div>
+</div>
+
+<!-- ════ GALLERY ════ -->
+<div class="page" data-page="gallery">
+  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">GALLERY</span><h2>ギャラリー</h2><p class="sub">GALLERY</p></div></div>
+  <div class="wrap">
+    <h3 class="wsec reveal" style="margin-top:0;">今回予告<small>TRAILERS</small></h3>
+    <p class="g-tba reveal">各話の「今回予告」は、開幕前にここで公開予定。</p>
+    <h3 class="wsec reveal">回路の情景<small>ARTWORKS</small></h3>
+    <div class="ggrid">
+    <figure class="gitem reveal"><button class="gbtn" data-cap="凍結の回路 —— 隊商の灯り"><img src="assets/kv.jpg" loading="lazy" alt="凍結の回路 —— 隊商の灯り"></button><figcaption>凍結の回路 —— 隊商の灯り</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="御者台から —— 手綱と灯りと、その先の闇"><img src="assets/g_pov_driver.jpg" loading="lazy" alt="御者台から —— 手綱と灯りと、その先の闇"></button><figcaption>御者台から —— 手綱と灯りと、その先の闇</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="隊商の後尾より"><img src="assets/g_pov_follow.jpg" loading="lazy" alt="隊商の後尾より"></button><figcaption>隊商の後尾より</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="闇の奥から、灯りがひとつ"><img src="assets/g_pov_front.jpg" loading="lazy" alt="闇の奥から、灯りがひとつ"></button><figcaption>闇の奥から、灯りがひとつ</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="光の輪 —— 遥か上空より"><img src="assets/g_pov_bird.jpg" loading="lazy" alt="光の輪 —— 遥か上空より"></button><figcaption>光の輪 —— 遥か上空より</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="氷壁の高さ、人の小ささ"><img src="assets/g_pov_side.jpg" loading="lazy" alt="氷壁の高さ、人の小ささ"></button><figcaption>氷壁の高さ、人の小ささ</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="凍った床すれすれ —— 車輪とランタン"><img src="assets/g_pov_low.jpg" loading="lazy" alt="凍った床すれすれ —— 車輪とランタン"></button><figcaption>凍った床すれすれ —— 車輪とランタン</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="野営 —— 光の半径の内側"><img src="assets/g_pov_camp.jpg" loading="lazy" alt="野営 —— 光の半径の内側"></button><figcaption>野営 —— 光の半径の内側</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="大峡谷 —— 針の先ほどの灯りの列"><img src="assets/g_pov_vista.jpg" loading="lazy" alt="大峡谷 —— 針の先ほどの灯りの列"></button><figcaption>大峡谷 —— 針の先ほどの灯りの列</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="フロストゲート —— 崖際の幕営"><img src="assets/st_frostgate.jpg" loading="lazy" alt="フロストゲート —— 崖際の幕営"></button><figcaption>フロストゲート —— 崖際の幕営</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="ランタン亭 —— 闇の中の一点の温もり"><img src="assets/st_lantern_inn.jpg" loading="lazy" alt="ランタン亭 —— 闇の中の一点の温もり"></button><figcaption>ランタン亭 —— 闇の中の一点の温もり</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="ランタン亭の内 —— 灯りの天蓋の下で"><img src="assets/g_inn.jpg" loading="lazy" alt="ランタン亭の内 —— 灯りの天蓋の下で"></button><figcaption>ランタン亭の内 —— 灯りの天蓋の下で</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="坩堝横丁 —— 湯気と地下水脈"><img src="assets/st_crucible_row.jpg" loading="lazy" alt="坩堝横丁 —— 湯気と地下水脈"></button><figcaption>坩堝横丁 —— 湯気と地下水脈</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="コナカタ山脈 —— 六千の白い壁"><img src="assets/g_konakata.jpg" loading="lazy" alt="コナカタ山脈 —— 六千の白い壁"></button><figcaption>コナカタ山脈 —— 六千の白い壁</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="西方より望む —— 地平線の果ての白い壁"><img src="assets/g_konakata_far.jpg" loading="lazy" alt="西方より望む —— 地平線の果ての白い壁"></button><figcaption>西方より望む —— 地平線の果ての白い壁</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="氷に呑まれた門 —— 誰が、いつ、何のために"><img src="assets/g_gate.jpg" loading="lazy" alt="氷に呑まれた門 —— 誰が、いつ、何のために"></button><figcaption>氷に呑まれた門 —— 誰が、いつ、何のために</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="プリムス開拓団 —— 氷原の夜"><img src="assets/st_primus.jpg" loading="lazy" alt="プリムス開拓団 —— 氷原の夜"></button><figcaption>プリムス開拓団 —— 氷原の夜</figcaption></figure>
+    </div>
+  </div>
+</div>
+
+<!-- ════ RECORD ════ -->
+<div class="page" data-page="record">
+  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">ARCHIVE</span><h2>記録保管庫</h2><p class="sub">ARCHIVE</p></div></div>
+  <div class="wrap">
+    <p class="arc-note reveal">回路で起きたことは、最後にはすべてこの棚に集まる。——整理・保管：フロストゲート 安全通行責任者 レイフ・ストーム</p>
+
+    <article class="ep ep-done reveal">
+      <div class="ep-head"><span class="ep-no">第0話</span><h4>月は誰の夢を見る</h4><span class="ep-date">2026-05-25 実施</span></div>
+      <p class="ep-sum">ある時、開拓団の団員たちが同じ夢を見た。夢に導かれるように新人の開拓者が姿を消し、捜索に出た仲間たちは、誰も知らない古い遺跡——月光観測所へたどり着く。そこで彼らが見たものは偽りの月、まやかしの女神であった。開拓者たちは幻惑を斬り伏せ、行方不明者を連れ帰った。……だが、あの観測所は「なぜあんな場所に」あったのだろう。</p>
+      <p class="ep-log"><a class="ep-loglink" href="assets/log_ep0.html" target="_blank" rel="noopener">📜 セッションログ</a> <a class="ep-loglink" href="assets/handout_ep0_salma.pdf" target="_blank" rel="noopener">📎 報告書 月光観測所について（報告者：サルマ）</a></p>
+    </article>
+
+    <article class="ep ep-next reveal">
+      <div class="ep-head"><span class="ep-no">第1話</span><h4>深く、長い闇</h4><span class="ep-date">2026年8月 予定</span></div>
+      <p class="ep-sum ep-tba">まもなく、扉が開く。</p>
+    </article>
+<p class="ep-locked reveal">この先も、夜はまだ長く続く——記録は、旅とともに増えていく。</p>
+  </div>
+</div>
+
+<!-- ════ JOIN ════ -->
+<div class="page" data-page="join">
+  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">JOIN</span><h2>参加案内</h2><p class="sub">JOIN</p></div></div>
+  <div class="wrap join-body">
+    <p class="reveal">本キャンペーンは、Discordサーバー〈辺境TRPG村〉の氷原開拓団レギュレーション内で開催されます。レギュレーション「氷原開拓団」のPCなら、いつでも・誰でも・どの話からでも参加できます。毎話の冒頭に「前回のあらすじ」があり、途中参加でも迷いません。募集要項は確定し次第このページに掲載します。</p>
+    <p class="reveal" style="color:var(--dim); font-size:12.5px;">本サイトは個人のTRPGキャンペーン運用のための非公式ファンページです。株式会社FEARの公式ガイドラインに基づく、セッション目的・非営利の個人運用です。</p>
+  </div>
+</div>
+
+</main>
+
+<div id="lb" role="dialog" aria-modal="true" aria-label="拡大表示">
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+</div>
+
+<footer>
+  <p>本サイトは個人のTRPGキャンペーン運用のための非公式ファンページです。株式会社FEARの公式ガイドラインに基づく、セッション目的・非営利の個人運用です。</p>
+</footer>
+
+<script>
+(function() {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── ルーター（ページ切替＝公式サイト風） ──
+  var pages = document.querySelectorAll('.page');
+  var links = document.querySelectorAll('nav.menu a[data-page]');
+  var menu = document.querySelector('nav.menu'), burger = document.getElementById('burger');
+  function route() {
+    var h = (location.hash || '#/').replace('#/', '') || 'top';
+    var hit = false;
+    pages.forEach(function(p) {
+      var on = p.dataset.page === h;
+      p.classList.toggle('act', on);
+      if (on) hit = true;
+    });
+    if (!hit) { document.querySelector('.page[data-page="top"]').classList.add('act'); h = 'top'; }
+    document.body.dataset.page = h;
+    links.forEach(function(a) {
+      var on = a.dataset.page === h;
+      a.classList.toggle('act', on);
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    var grp = document.getElementById('navgrp');
+    if (grp) {
+      grp.classList.toggle('hasact', ['story','world','myth','character'].indexOf(h) >= 0);
+      grp.classList.remove('open');
+    }
+    menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false');
+    scrollTo(0, 0);
+    requestAnimationFrame(function() { measure(); frame(); });
+  }
+  addEventListener('hashchange', route);
+  burger.addEventListener('click', function() {
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  var grpBtn = document.getElementById('grpBtn');
+  if (grpBtn) {
+    grpBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var g = document.getElementById('navgrp');
+      var open = g.classList.toggle('open');
+      grpBtn.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', function() {
+      var g = document.getElementById('navgrp');
+      g.classList.remove('open'); grpBtn.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  // ── KVスライドショー（12秒ごとにクロスフェード・reduced-motionでは固定） ──
+  var slides = document.querySelectorAll('.kv-slide');
+  if (slides.length > 1 && !reduce) {
+    var si = 0;
+    setInterval(function() {
+      slides[si].classList.remove('show');
+      si = (si + 1) % slides.length;
+      slides[si].classList.add('show');
+    }, 12000);
+  }
+
+  // ── ページ送りスクロール（底まで来てさらに回すと次ページへ・上端で回すと前ページへ） ──
+  var ORDER = ['top','news','story','world','myth','character','gallery','record','join'];
+  var LABELS = { top:'TOP', news:'NEWS ─ お知らせ', story:'STORY ─ 物語', world:'WORLD ─ 世界',
+    myth:'MYTH ─ 神話', character:'CHARACTER ─ 人物と勢力', gallery:'GALLERY ─ ギャラリー',
+    record:'ARCHIVE ─ 記録保管庫', join:'JOIN ─ 参加案内' };
+  function navTo(p) { location.hash = '#/' + (p === 'top' ? '' : p); }
+  pages.forEach(function(pg) {
+    var i = ORDER.indexOf(pg.dataset.page);
+    if (i >= 0 && i < ORDER.length - 1) {
+      var next = ORDER[i + 1];
+      var b = document.createElement('button');
+      b.className = 'nextcue';
+      b.innerHTML = '<span>NEXT ' + LABELS[next] + '</span><span class="arr">▼</span>';
+      b.addEventListener('click', function() { navTo(next); });
+      pg.appendChild(b);
+    }
+  });
+  var lastNav = 0, acc = 0;
+  addEventListener('wheel', function(e) {
+    if (document.getElementById('lb').classList.contains('on')) return;
+    var now = Date.now();
+    if (now - lastNav < 900) { acc = 0; return; }
+    var doc = document.documentElement;
+    var atBottom = innerHeight + scrollY >= doc.scrollHeight - 6;
+    var i = ORDER.indexOf(document.body.dataset.page);
+    if (e.deltaY > 0 && atBottom && i < ORDER.length - 1) {
+      acc += e.deltaY;
+      if (acc > 140) { lastNav = now; acc = 0; navTo(ORDER[i + 1]); }
+    } else if (e.deltaY < 0 && scrollY <= 0 && i > 0) {
+      acc -= e.deltaY;
+      if (acc > 140) { lastNav = now; acc = 0; navTo(ORDER[i - 1]); }
+    } else { acc = 0; }
+  }, { passive: true });
+
+  // ── 地図タブ（コナカタ詳細⇄西方広域） ──
+  var mtabs = document.querySelectorAll('.mtab');
+  mtabs.forEach(function(b) {
+    b.addEventListener('click', function() {
+      mtabs.forEach(function(x) { x.classList.toggle('act', x === b); });
+      var det = document.getElementById('mapDetail'), wid = document.getElementById('mapWide');
+      if (det) det.classList.toggle('act', b.dataset.map === 'detail');
+      if (wid) wid.classList.toggle('act', b.dataset.map === 'wide');
+      requestAnimationFrame(function() { measure(); frame(); });
+    });
+  });
+
+  // ── ギャラリー ライトボックス ──
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'),
+      lbCap = document.getElementById('lbCap');
+  document.querySelectorAll('.gbtn').forEach(function(b) {
+    b.addEventListener('click', function() {
+      lbImg.src = b.querySelector('img').src;
+      lbCap.textContent = b.dataset.cap || '';
+      lb.classList.add('on');
+    });
+  });
+  if (lb) {
+    lb.addEventListener('click', function() { lb.classList.remove('on'); lbImg.removeAttribute('src'); });
+    addEventListener('keydown', function(e) { if (e.key === 'Escape') { lb.classList.remove('on'); lbImg.removeAttribute('src'); } });
+  }
+
+  // ── リビール＋駅ランプ ──
+  var io = new IntersectionObserver(function(es) {
+    es.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('on');
+      if (e.target.classList.contains('station')) e.target.classList.add('lit');
+      io.unobserve(e.target); } });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.reveal, .icedvd').forEach(function(el) { io.observe(el); });
+
+  // ── 距離カウンター＋岩壁パララックス（rAF間引き） ──
+  var odoEl = document.querySelector('#odo b');
+  var sts = Array.prototype.slice.call(document.querySelectorAll('.station'));
+  var jn = document.querySelector('.journey');
+  var wl = document.querySelector('.wall-l'), wr = document.querySelector('.wall-r');
+  var pts = [];
+  function measure() {
+    pts = [];
+    if (document.body.dataset.page !== 'world') return;
+    sts.forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.height > 0) pts.push({ y: r.top + scrollY, km: +el.dataset.km });
+    });
+  }
+  function frame() {
+    if (pts.length) {
+      var y = scrollY + innerHeight * 0.5, km = 0;
+      if (y <= pts[0].y) km = 0;
+      else if (y >= pts[pts.length-1].y) km = pts[pts.length-1].km;
+      else for (var i=0; i<pts.length-1; i++) {
+        var a = pts[i], b = pts[i+1];
+        if (y >= a.y && y < b.y) { km = a.km + (b.km - a.km) * (y - a.y) / (b.y - a.y); break; }
+      }
+      odoEl.textContent = (km < 100 ? ('00' + km.toFixed(1)).slice(-5) : km.toFixed(1));
+    }
+    if (jn && document.body.dataset.page === 'world') {
+      var jr = jn.getBoundingClientRect();
+      document.body.classList.toggle('onj', jr.top < innerHeight * 0.8 && jr.bottom > innerHeight * 0.2);
+    } else {
+      document.body.classList.remove('onj');
+    }
+    if (!reduce) {
+      var sy = scrollY;
+      if (wl) wl.style.transform = 'translateY(' + (sy * -0.03) + 'px)';
+      if (wr) wr.style.transform = 'translateY(' + (sy * -0.05) + 'px)';
+    }
+  }
+  var tick = false;
+  addEventListener('scroll', function() {
+    if (tick) return; tick = true;
+    requestAnimationFrame(function() { frame(); tick = false; });
+  }, { passive: true });
+  var ro = new ResizeObserver(function() { measure(); frame(); });
+  ro.observe(document.body);
+
+  // ── BGM ──
+  var bgm = document.getElementById('bgm'), btn = document.getElementById('bgmBtn'),
+      vol = document.getElementById('bgmVol'), box = document.getElementById('bgmBox');
+  try { vol.value = localStorage.getItem('cp_bgm_vol') || 35; } catch(e) {}
+  bgm.volume = vol.value / 100;
+  var wantBgm = true;
+  try { wantBgm = localStorage.getItem('cp_bgm_off') !== '1'; } catch(e) {}
+  bgm.addEventListener('error', function() { btn.textContent = '♪ BGM準備中'; btn.disabled = true; });
+  btn.addEventListener('click', function() {
+    if (bgm.paused) {
+      wantBgm = true;
+      try { localStorage.setItem('cp_bgm_off', '0'); } catch(e) {}
+      bgm.play().then(function() { btn.textContent = '♪ ' + btn.dataset.track + ' 演奏中'; btn.classList.add('on'); box.classList.add('playing'); })
+      .catch(function() { btn.textContent = '♪ BGM準備中'; });
+    } else {
+      wantBgm = false;
+      try { localStorage.setItem('cp_bgm_off', '1'); } catch(e) {}
+      bgm.pause(); btn.textContent = '♪ ' + btn.dataset.track; btn.classList.remove('on'); box.classList.remove('playing');
+    }
+  });
+  vol.addEventListener('input', function() {
+    bgm.volume = vol.value / 100;
+    try { localStorage.setItem('cp_bgm_vol', vol.value); } catch(e) {}
+  });
+  // デフォルトON（後輩くん希望 2026-07-12）＝即時再生を試み、
+  // ブラウザの自動再生制限で弾かれたら最初のクリック/タップ/キー入力で開始する。
+  // 訪問者が一度OFFにしたら尊重して自動再生しない（localStorage）。
+  function bgmOn() {
+    bgm.play().then(function() {
+      btn.textContent = '♪ ' + btn.dataset.track + ' 演奏中';
+      btn.classList.add('on'); box.classList.add('playing');
+    }).catch(function() {});
+  }
+  if (wantBgm) {
+    bgmOn();
+    var kick = function() {
+      if (!wantBgm || !bgm.paused) {
+        removeEventListener('pointerdown', kick); removeEventListener('keydown', kick); return;
+      }
+      bgm.play().then(function() {
+        btn.textContent = '♪ ' + btn.dataset.track + ' 演奏中';
+        btn.classList.add('on'); box.classList.add('playing');
+        removeEventListener('pointerdown', kick); removeEventListener('keydown', kick);
+      }).catch(function() {});  // 失敗時はリスナーを残し次の操作で再試行（Codex監査 2026-07-12）
+    };
+    addEventListener('pointerdown', kick); addEventListener('keydown', kick);
+  }
+
+  // ── 粉雪 ──
+  if (!reduce) {
+    var cv = document.getElementById('snow'), cx = cv.getContext('2d'), fl = [];
+    function size() { cv.width = innerWidth; cv.height = innerHeight; }
+    size(); addEventListener('resize', size, { passive: true });
+    var N = innerWidth < 700 ? 26 : 48;
+    for (var i=0; i<N; i++) fl.push({ x: Math.random()*innerWidth, y: Math.random()*innerHeight,
+      r: .6 + Math.random()*1.4, v: .18 + Math.random()*.5, w: Math.random()*6.28 });
+    (function loop() {
+      cx.clearRect(0,0,cv.width,cv.height);
+      cx.fillStyle = 'rgba(210,230,240,.55)';
+      for (var i=0; i<fl.length; i++) { var f = fl[i];
+        f.y += f.v; f.w += .01; f.x += Math.sin(f.w)*.18;
+        if (f.y > cv.height + 4) { f.y = -4; f.x = Math.random()*cv.width; }
+        cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 6.28); cx.fill(); }
+      requestAnimationFrame(loop);
+    })();
+  }
+
+  route();
+})();
+</script>
+</body>
+</html>
