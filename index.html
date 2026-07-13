@@ -22,7 +22,7 @@
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-body { background:var(--ink); color:var(--fog); font-family:var(--serif); line-height:1.9; overflow-x:hidden; }
+body { background:var(--ink); color:var(--fog); font-family:var(--serif); line-height:1.9; overflow-x:hidden; overflow-anchor:none; }
 ::selection { background:var(--ice2); color:var(--ink); }
 img { max-width:100%; }
 
@@ -784,10 +784,13 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     }
     menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false');
     // ページ遷移＝即最上部へ。html{scroll-behavior:smooth}＋display切替により、モバイルで
-    // window.scrollTo(0,0) が最下部に張り付く不具合対策＝scrollingElement.scrollTop を直接0に（smooth非適用のinstant）。
+    // window.scrollTo(0,0) は html{scroll-behavior:smooth} 下でモバイルで暴れ最下部に張り付くため使わない。
+    // smooth非適用の scrollTop 直接代入のみで即リセットし、描画・画像読み込みによる後発ズレを複数フレームで念押し。
     var _se = document.scrollingElement || document.documentElement;
-    window.scrollTo(0, 0); _se.scrollTop = 0; document.body.scrollTop = 0;
-    requestAnimationFrame(function() { _se.scrollTop = 0; measure(); frame(); });
+    function _toTop() { _se.scrollTop = 0; document.body.scrollTop = 0; }
+    _toTop();
+    requestAnimationFrame(function() { _toTop(); measure(); frame(); });
+    setTimeout(_toTop, 60);
   }
   addEventListener('hashchange', route);
   burger.addEventListener('click', function() {
