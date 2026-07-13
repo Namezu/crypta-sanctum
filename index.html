@@ -44,7 +44,10 @@ body::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:no
 
 /* ══ ヘッダー（公式サイトの顔）══ */
 header.gnav { position:fixed; top:0; left:0; right:0; z-index:30; display:flex; align-items:stretch;
-  background:rgba(3,5,10,.9); border-bottom:1px solid var(--line); backdrop-filter:blur(6px); }
+  border-bottom:1px solid var(--line); }
+/* すりガラスは疑似要素に逃がす（headerにbackdrop-filterを付けると中のposition:fixed=モバイルメニューがheader基準に化けて開けなくなるため） */
+header.gnav::before { content:""; position:absolute; inset:0; z-index:-1; background:rgba(3,5,10,.9);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); pointer-events:none; }
 .brand { display:flex; flex-direction:column; justify-content:center; padding:9px 18px 9px clamp(14px,4vw,30px);
   text-decoration:none; line-height:1.3; margin-right:auto; }
 .brand .bj { color:#e9f3f7; font-size:15px; letter-spacing:.3em; white-space:nowrap; }
@@ -167,12 +170,25 @@ main { position:relative; z-index:3; }
 .story-body p:last-child { color:var(--ice); }
 .storyfig { margin:4vh 0 10vh; border:1px solid var(--line); }
 .storyfig img { display:block; width:100%; }
+.storyfig figcaption { font-size:11.5px; color:var(--dim); letter-spacing:.14em; padding:10px 12px 2px; text-align:right; }
 
 /* ══ WORLD ══ */
 .mapfig { margin:2vh 0 8vh; border:1px solid var(--line2); background:rgba(6,10,17,.7); padding:10px; }
 .mapfig img { display:block; width:100%; }
 .mapfig figcaption { font-size:11.5px; color:var(--dim); letter-spacing:.14em; padding:10px 4px 2px; text-align:right; }
 .mapwrap { position:relative; }
+/* 後輩くん謹製の3枚重ね広域図＝地図/版図(明滅)/名前 */
+.wmlayers { position:relative; }
+.wmlayers img { display:block; width:100%; }
+.wmlayers .wm-terr, .wmlayers .wm-names { position:absolute; inset:0; pointer-events:none; }
+.wmlayers .wm-terr { animation:terrpulse 5.5s ease-in-out infinite; }
+@keyframes terrpulse { 0%,100% { opacity:.4; } 50% { opacity:.92; } }
+.region { position:absolute; transform:translate(-50%,-50%); pointer-events:none; border-radius:50%; z-index:0; }
+.region em { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-style:normal;
+  font-size:10px; letter-spacing:.28em; white-space:nowrap; color:rgba(233,242,248,.5); text-shadow:0 1px 4px rgba(0,0,0,.7); }
+.geolabel { position:absolute; transform:translate(-50%,-50%); pointer-events:none; font-style:italic; z-index:1;
+  font-size:10px; letter-spacing:.16em; white-space:nowrap; color:rgba(206,221,231,.62); text-shadow:0 1px 4px rgba(0,0,0,.82); }
+@media (max-width:680px){ .region em { font-size:8px; letter-spacing:.12em; } .geolabel { font-size:7.5px; letter-spacing:.04em; } }
 .maproute { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
 .maproute polyline { stroke:rgba(255,183,94,.6); stroke-width:.55; stroke-dasharray:1.6 1.4;
   vector-effect:non-scaling-stroke; stroke-width:2px; }
@@ -393,6 +409,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   .icedvd i { opacity:1; transition:none; }
   .page.act { animation:none; }
   html { scroll-behavior:auto; }
+  .wmlayers .wm-terr { animation:none; opacity:.68; }
 }
 </style>
 </head>
@@ -461,7 +478,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <p class="reveal">明かりを持たない者にとって、回路は端から端までひたすら続く長大な闇である。松明の火が届くところまでが人の世界で、その先には環境に適応した原生生物が息を潜めている。</p>
       <p class="reveal">伝承は語る——かつてこの氷原には、&quot;古の民&quot;エルダの都市が広がっていた。だが彼らは禁忌に触れ、神々の&quot;風の粛清&quot;によって滅びたのだと。南の果てのラーフ大洞窟もまた、&quot;地の粛清&quot;の時に生まれた大空洞だという。世界が洗い清められた時代の傷跡が、この地にはいまも静かに残っている。</p>
       <p class="reveal">……いや。長く回路を歩く者は、時折こう感じる事がある。あれはただ暗いのではない。何かが「ある」闇なのだと。</p>
-    <figure class="storyfig reveal"><img src="assets/story.jpg" loading="lazy" alt="凍結の回路の情景"></figure>
+    <figure class="storyfig reveal"><img src="assets/g_gate.jpg" loading="lazy" alt="氷に呑まれた門 —— 誰が、いつ、何のために"><figcaption>氷に呑まれた門 —— 誰が、いつ、何のために</figcaption></figure>
     <div class="icedvd" aria-hidden="true"><i></i></div>
     <p class="reveal" style="padding-bottom:10vh; color:var(--dim); font-size:13px; letter-spacing:.16em;">
       ——この回路を舞台に、開拓団の記録者たちの旅が始まる。</p>
@@ -480,7 +497,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <figure class="mapfig reveal"><div class="mapwrap"><img src="assets/map.jpg" loading="lazy" alt="コナカタ山脈と凍結の回路の地図"><svg class="maproute" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="52,8 47,31 43,52 53,70 62,86" fill="none"/></svg><span class="pin warm" style="left:52%;top:8%"><i></i><em>プリムス開拓団</em></span><span class="pin ice" style="left:47%;top:31%"><i></i><em>フロストゲート</em></span><span class="pin warm" style="left:43%;top:52%"><i></i><em>ランタン亭</em></span><span class="pin ice" style="left:53%;top:70%"><i></i><em>坩堝横丁</em></span><span class="pin ice" style="left:62%;top:86%"><i></i><em>ラーフ大洞窟</em></span><span class="pin dim" style="left:71%;top:19%"><i></i><em>群青の湖</em></span><span class="pin dim" style="left:13%;top:62%"><i></i><em>氷の遺跡</em></span></div><figcaption>コナカタ山脈と凍結の回路 — 開拓団資料室蔵</figcaption></figure>
     </div>
     <div class="mappane" id="mapWide">
-    <figure class="mapfig reveal"><div class="mapwrap"><img src="assets/widemap.jpg" loading="lazy" alt="エリンディル西方の広域地図"><i class="snowglow" style="left:46%;top:8%" aria-hidden="true"></i><span class="pin snow" style="left:46%;top:6.5%"><i></i><em>沈黙の氷原</em></span><span class="pin warm" style="left:42%;top:16.3%"><i></i><em>コナカタ山脈</em></span><span class="pin warm" style="left:29%;top:21.7%"><i></i><em>ラーフ大洞窟</em></span><span class="pin dim" style="left:78%;top:13.0%"><i></i><em>魔都ベルヴェ</em></span><span class="pin ice" style="left:55%;top:32.6%"><i></i><em>霧の森</em></span><span class="pin dim" style="left:44%;top:42.4%"><i></i><em>グランフェルデン</em></span><span class="pin dim" style="left:39%;top:56.5%"><i></i><em>パリス同盟の中原</em></span><span class="pin dim" style="left:85%;top:45.7%"><i></i><em>無限の砂漠</em></span><span class="pin ice" style="left:72%;top:66.3%"><i></i><em>聖都ディアスロンド</em></span><span class="pin dim" style="left:13%;top:77.2%"><i></i><em>神聖ヴァンスター帝国</em></span><span class="pin dim" style="left:68%;top:91.3%"><i></i><em>エルーラン王国</em></span></div><figcaption>エリンディル西方 —— 舞台は大陸の最北、沈黙の氷原とコナカタ山脈の地下</figcaption></figure>
+    <figure class="mapfig reveal"><div class="mapwrap wmlayers"><img src="assets/wm_base.jpg" loading="lazy" alt="エリンディル西方の広域地図"><img class="wm-terr" src="assets/wm_terr.png" alt="" aria-hidden="true"><img class="wm-names" src="assets/wm_names.png" alt="" aria-hidden="true"></div><figcaption>エリンディル西方 —— 地図：辺境TRPG村 制作</figcaption></figure>
     </div>
     <h3 class="wsec reveal">凍結の回路<small>THE FROZEN CIRCUIT — 171km</small></h3>
     <div class="journey">
@@ -649,8 +666,6 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <figure class="gitem reveal"><button class="gbtn" data-cap="坩堝横丁 —— 湯気と地下水脈"><img src="assets/st_crucible_row.jpg" loading="lazy" alt="坩堝横丁 —— 湯気と地下水脈"></button><figcaption>坩堝横丁 —— 湯気と地下水脈</figcaption></figure>
     <figure class="gitem reveal"><button class="gbtn" data-cap="コナカタ山脈 —— 六千の白い壁"><img src="assets/g_konakata.jpg" loading="lazy" alt="コナカタ山脈 —— 六千の白い壁"></button><figcaption>コナカタ山脈 —— 六千の白い壁</figcaption></figure>
     <figure class="gitem reveal"><button class="gbtn" data-cap="西方より望む —— 地平線の果ての白い壁"><img src="assets/g_konakata_far.jpg" loading="lazy" alt="西方より望む —— 地平線の果ての白い壁"></button><figcaption>西方より望む —— 地平線の果ての白い壁</figcaption></figure>
-    <figure class="gitem reveal"><button class="gbtn" data-cap="氷に呑まれた門 —— 誰が、いつ、何のために"><img src="assets/g_gate.jpg" loading="lazy" alt="氷に呑まれた門 —— 誰が、いつ、何のために"></button><figcaption>氷に呑まれた門 —— 誰が、いつ、何のために</figcaption></figure>
-    <figure class="gitem reveal"><button class="gbtn" data-cap="プリムス開拓団 —— 氷原の夜"><img src="assets/st_primus.jpg" loading="lazy" alt="プリムス開拓団 —— 氷原の夜"></button><figcaption>プリムス開拓団 —— 氷原の夜</figcaption></figure>
     </div>
   </div>
 </div>
