@@ -271,11 +271,29 @@ h3.wsec small { display:block; font-size:10px; letter-spacing:.5em; color:var(--
 .tl-note { font-size:11.5px; color:var(--dim); letter-spacing:.14em; text-align:right; padding-bottom:6vh; }
 .tl-intro { font-size:14px; color:#b7c7d0; margin-bottom:36px; }
 
-.god { display:flex; gap:18px; align-items:baseline; border-bottom:1px solid var(--line); padding:13px 4px; }
-.g-name { min-width:9.5em; font-size:15px; letter-spacing:.18em; color:#e2eef3; }
+/* 七大神・精霊の王・七大邪神＝クリックで設定が開く（後輩くん案 2026-07-13） */
+.deity { border-bottom:1px solid var(--line); }
+.deity > summary { display:flex; gap:18px; align-items:baseline; padding:13px 4px; cursor:pointer;
+  list-style:none; transition:background .25s; }
+.deity > summary::-webkit-details-marker { display:none; }
+.deity > summary::after { content:"＋"; margin-left:auto; color:var(--ice2); font-size:12px; opacity:.5;
+  transition:opacity .25s; align-self:center; }
+.deity[open] > summary::after { content:"−"; opacity:.85; }
+.deity > summary:hover { background:rgba(120,190,215,.05); }
+.deity > summary:hover .g-name { color:#fff; }
+.g-name { min-width:9.5em; font-size:15px; letter-spacing:.18em; color:#e2eef3; transition:color .25s; }
 .g-dom { font-size:13px; color:#9fb2bd; }
-.g-outro { margin:26px 0 12vh; font-size:13.5px; color:var(--ice); letter-spacing:.1em; }
-.g-intro { margin-bottom:26px; font-size:14px; color:#b7c7d0; }
+.g-detail { font-size:12.5px; line-height:2.05; color:#a8bac4; margin:0; padding:2px 4px 15px 6px;
+  border-left:1px solid var(--line2); }
+.spirit > summary .g-name { color:#cfe0e8; }
+.deity.dark > summary .g-name { color:#e6d3c4; }
+.deity.dark[open] { background:rgba(28,12,10,.30); }
+.deity.dark > summary::after { color:var(--warm); }
+.deity.dark .g-dom { color:#c9a58c; }
+h3.wsec.darkhead { color:#e6d3c4; }
+h3.wsec.darkhead small { color:rgba(255,183,94,.5); }
+.g-outro { margin:20px 0 9vh; font-size:13.5px; color:var(--ice); letter-spacing:.05em; line-height:1.95; }
+.g-intro { margin:0 0 22px; font-size:14px; color:#b7c7d0; line-height:1.95; }
 
 /* ══ MYTH（神話＝五つの時代と粛清） ══ */
 .myth-intro { margin:2vh 0 46px; font-size:14px; color:#b7c7d0; line-height:2.15; }
@@ -500,7 +518,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <button class="mtab" data-map="wide">エリンディル西方 全図</button>
     </div>
     <div class="mappane act" id="mapDetail">
-    <figure class="mapfig reveal"><div class="mapwrap"><img src="assets/map.jpg" loading="lazy" alt="コナカタ山脈と凍結の回路の地図"><svg class="maproute" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="52,8 47,31 43,52 53,70 62,86" fill="none"/></svg><span class="pin warm" style="left:52%;top:8%"><i></i><em>プリムス開拓団</em></span><span class="pin ice" style="left:47%;top:31%"><i></i><em>フロストゲート</em></span><span class="pin warm" style="left:43%;top:52%"><i></i><em>ランタン亭</em></span><span class="pin ice" style="left:53%;top:70%"><i></i><em>坩堝横丁</em></span><span class="pin ice" style="left:62%;top:86%"><i></i><em>ラーフ大洞窟</em></span><span class="pin dim" style="left:71%;top:19%"><i></i><em>群青の湖</em></span><span class="pin dim" style="left:13%;top:62%"><i></i><em>氷の遺跡</em></span></div><figcaption>コナカタ山脈と凍結の回路 — 開拓団資料室蔵</figcaption></figure>
+    <figure class="mapfig reveal"><div class="mapwrap"><img src="assets/map.jpg" loading="lazy" alt="コナカタ山脈と凍結の回路の地図"><svg class="maproute" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="52,8 47,31 43,52 53,70 62,86" fill="none"/></svg><span class="pin warm" style="left:52%;top:8%"><i></i><em>プリムス</em></span><span class="pin ice" style="left:47%;top:31%"><i></i><em>フロストゲート</em></span><span class="pin warm" style="left:43%;top:52%"><i></i><em>ランタン亭</em></span><span class="pin ice" style="left:53%;top:70%"><i></i><em>坩堝横丁</em></span><span class="pin ice" style="left:62%;top:86%"><i></i><em>ラーフ大洞窟</em></span><span class="pin dim" style="left:71%;top:19%"><i></i><em>群青の湖</em></span><span class="pin dim" style="left:13%;top:62%"><i></i><em>氷の遺跡</em></span></div><figcaption>コナカタ山脈と凍結の回路 — 開拓団資料室蔵</figcaption></figure>
     </div>
     <div class="mappane" id="mapWide">
     <figure class="mapfig reveal"><div class="mapwrap wmlayers"><img src="assets/wm_base.jpg" loading="lazy" alt="エリンディル西方の広域地図"><img class="wm-terr" src="assets/wm_terr.png" alt="" aria-hidden="true"><img class="wm-names" src="assets/wm_names.png" alt="" aria-hidden="true"></div><figcaption>エリンディル西方 —— 地図：辺境TRPG村 制作</figcaption></figure>
@@ -512,9 +530,9 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <section class="station reveal" data-km="0" data-tone="surface">
       <div class="st-marker"><span class="st-lamp"></span><span class="st-km">  0 km</span></div>
       <div class="st-body">
-        <h4><span class="st-en">PRIMUS</span>プリムス開拓団</h4>
-        <p>北端。沈黙の氷原に築かれた人口500人の開拓拠点。見張り塔の足元に、人の火が灯る。回路を行く者は、ここで橇を馬車に替える。</p>
-        <figure class="st-img"><img src="assets/st_primus.jpg" loading="lazy" alt="プリムス開拓団"></figure>
+        <h4><span class="st-en">PRIMUS</span>プリムス</h4>
+        <p>回路の北端であり、終着点。沈黙の氷原にただひとつ根を張った開拓団の拠点だ。ひと棟の長屋から始まり、いまは見張り塔の足元に人の暮らしが灯る。回路をたどってきた者が、ようやくたどり着く場所——旅の終わりであり、開拓のはじまり。</p>
+        <figure class="st-img"><img src="assets/st_primus.jpg" loading="lazy" alt="プリムス"></figure>
       </div>
     </section>
 
@@ -581,8 +599,8 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <p class="myth-intro reveal">エリンディルの神話では、時代は大きく五つに分かれている。そしてその歴史のなかで世界は三度——「粛清」と呼ばれる大いなる洗礼に、洗われてきた。</p>
     <section class="era reveal"><h4>光の時代<span class="een">THE AGE OF LIGHT</span></h4><p>天地開闢のとき。天空神と地母神のあいだに数多の神々が生まれ、精霊には精霊の王が、動物には動物の王が立てられた。世界がもっとも眩かった時代。</p></section>
     <section class="era reveal"><h4>風の時代<span class="een">THE AGE OF WIND</span></h4><p>“古の民”が栄えた時代。だが疑念はやがて恐れと嫉妬を生み、闇に染まった心から、&quot;禍つ神々&quot;が形をとった。世界で初めての“戦い”の果てに禍神たちは世界の外へと封じられ——風が、世界に満ちた瘴気のすべてを吹き払った。「風の粛清」である。</p></section>
-    <section class="era reveal"><h4>水の時代<span class="een">THE AGE OF WATER</span></h4><p>傷ついた世界を癒すため、新しい民が創られた時代。だが闇は消えず、ついに神々は水に、世界を清めることを命じた。猛る水は大地の七割を呑み——栄えていたものたちの多くは、還らなかった。</p></section>
-    <section class="era reveal"><h4>地の時代<span class="een">THE AGE OF EARTH</span></h4><p>生き残った民が、小さくなった世界を継いだ時代。その地の底に、ただひとり生き残り、ただひとり妖魔に堕ちた者がいたという。諸族が「妖魔王」と恐れたその者は、地の底に巨大な要塞を築き、民を隷属させた。——やがて祈りは神々に届き、大地は裂け、王とその眷属は底知れぬ奈落へと呑まれた。「地の粛清」である。</p></section>
+    <section class="era reveal"><h4>水の時代<span class="een">THE AGE OF WATER</span></h4><p>傷ついた世界を癒すため、新しい民が創られた時代。だが闇は消えず、ついに神々は水流の王に、世界を清めることを命じた。猛る水は大地の七割を呑み——「水の粛清」である。栄えていたものたちの多くは、還らなかった。</p></section>
+    <section class="era reveal"><h4>地の時代<span class="een">THE AGE OF EARTH</span></h4><p>生き残った民が、小さくなった世界を継いだ時代。その地の底に、ただひとり生き残り、ただひとり妖魔に堕ちた者がいたという——七柱の邪神すべての加護を受け、老いも死も失った&quot;妖魔王&quot;。諸族がその名を恐れたその者は、地の底に巨大な要塞を築いて民を隷属させ、ついには神々の座さえ望んだ。——やがて祈りは神々に届き、大地は裂け、王とその眷属は底知れぬ奈落へと呑まれた。「地の粛清」である。だが、不老不死とうたわれた王を、はたして&quot;滅ぼす&quot;ことができたのかどうか——それを見届けた者は、もういない。</p></section>
     <section class="era reveal"><h4>火の時代<span class="een">THE AGE OF FIRE</span></h4><p>恐るべき妖魔の群れが一掃され、世界は光を取り戻した。現在まで続く時代。——実のところ、この時代はまだ、本当の名を持たない。</p></section>
     <div class="prophecy reveal">「この時代のすべての“神の子”らが手を取り合って挑めども抗し得ない妖魔が到来した時、神々は火をもて魔軍を粛清するだろう」——予言の女神の言葉。その日が訪れていないがゆえに、人々は仮に、今を“火の時代”と呼ぶ。</div>
     <p class="myth-outro reveal">五つの時代と、みっつの粛清。氷原のはるか北では、最初の粛清を起こした嵐の名残が、今も吹き続けているという。——凍った回廊の旅は、この神話のかたわらを通ってゆく。</p>
@@ -591,16 +609,36 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <p>——ただし、氷原には異説がある。沈黙の氷原とその周辺では、五つの時代のいずれにも属さない文明の痕跡が見つかっているのだ。光の時代よりも、さらに前。世界は一度——いや、幾度も、同じように巡っていたのではないか。開拓団の学者たちは半ば冗談のように、半ば本気で、そう囁き合っている。</p>
       <p>そして開拓団の記録には、はっきりとこう残っている。『我々は、過去から来た侵略者と刃を交えた』。その戦いの傷は、いま癒えつつある。だが、すべてが終わったのかどうかは——まだ、誰にも分からない。</p>
     </div>
-    <h3 class="wsec reveal">神々<small>THE SEVEN</small></h3>
+    <h3 class="wsec reveal">七大神<small>THE SEVEN GODS</small></h3>
     <p class="g-intro reveal">エリンディル西方の人々は、世界を創った七柱の神々——七大神を信仰している。回路を歩く者もまた、それぞれの神に祈りを捧げる。</p>
-    <div class="god reveal"><span class="g-name">アーケンラーヴ</span><span class="g-dom">神々の王・太陽の神。裁きと勇武。ヒューリンの創造主</span></div>
-    <div class="god reveal"><span class="g-name">ブリガンティア</span><span class="g-dom">予言の女神・月の女神。魔術と夢見。エルダナーンの創造主</span></div>
-    <div class="god reveal"><span class="g-name">ダグデモア</span><span class="g-dom">天空の神。ヴァーナの創造主</span></div>
-    <div class="god reveal"><span class="g-name">ダナン</span><span class="g-dom">大地の女神。天空神と対をなす地母神</span></div>
-    <div class="god reveal"><span class="g-name">アエマ</span><span class="g-dom">豊穣の女神。フィルボルの創造主</span></div>
-    <div class="god reveal"><span class="g-name">ゴヴァノン</span><span class="g-dom">鍛冶の神・山の神。ネヴァーフの創造主</span></div>
-    <div class="god reveal"><span class="g-name">グランアイン</span><span class="g-dom">戦の神・雷の神。ドゥアンの創造主</span></div>
-    <p class="g-outro reveal">——精霊の王たちの伝承、そして口にすることさえ憚られる神々の話は、旅の中で。</p>
+    <details class="deity god reveal"><summary><span class="g-name">アーケンラーヴ</span><span class="g-dom">神々の王・太陽の神。裁きと勇武。ヒューリンの創造主</span></summary><p class="g-detail">妖魔がふたたび目覚める日のため、世界を護り戦う民としてヒューリンを創り、地上へ使わした神々の王。黄金の髪の若き戦士の姿で描かれ、その手には——山の神が打ち、雷の神が加護を授けたという銀色に輝く長剣がある。勇武と権威を求める国々で篤く信仰され、グランフェルデンでは主神として崇められている。</p></details>
+    <details class="deity god reveal"><summary><span class="g-name">ブリガンティア</span><span class="g-dom">予言の女神・月の女神。魔術と夢見。エルダナーンの創造主</span></summary><p class="g-detail">月光のごとき銀の髪に薄衣をまとい、盃を手にした若い女神。未来を視る権能を持ち、人の眠りにそっと働きかけて啓示を授ける——人が「夢」を見るようになったのは、この女神が神々の通信手段として与えたものの名残だという。魔術の女神として、いくたびも邪神の企みを見破ってきた。</p></details>
+    <details class="deity god reveal"><summary><span class="g-name">ダグデモア</span><span class="g-dom">天空の神。ヴァーナの創造主</span></summary><p class="g-detail">天地開闢のとき、地母神ダナンと対をなして数多の神々を生んだ天空の父。竪琴を携えた恰幅のよい初老の姿で語られる。水の時代、獣の耳と尾を持つ&quot;野なる民&quot;ヴァーナを創り出した。</p></details>
+    <details class="deity god reveal"><summary><span class="g-name">ダナン</span><span class="g-dom">大地の女神。天空神と対をなす地母神</span></summary><p class="g-detail">天空神ダグデモアと対をなす大地の母。薄緑の衣をまとい、植物のような緑の髪と瞳を持つ。山の神に命じて大地に起伏を与え、世界の骨格を形づくったと伝わる。</p></details>
+    <details class="deity god reveal"><summary><span class="g-name">アエマ</span><span class="g-dom">豊穣の女神。フィルボルの創造主</span></summary><p class="g-detail">青い髪に花のティアラを飾り、腕に穀物を抱いた豊穣の女神。地の時代、陽の光と風と草木を愛する小さき民フィルボルを生み、地上に暮らすよう定めた。</p></details>
+    <details class="deity god reveal"><summary><span class="g-name">ゴヴァノン</span><span class="g-dom">鍛冶の神・山の神。ネヴァーフの創造主</span></summary><p class="g-detail">赤い髭と髪の、寡黙な鍛冶の神。ハンマーで地を叩いて山を隆起させ、地下に住まう民ネヴァーフを生んだ。彼が与えた&quot;決して消えぬ炉の種火&quot;は、地の底で燃え続けていつしか希少な鉱石を生むという——鍛冶師にとって最上の栄誉である。</p></details>
+    <details class="deity god reveal"><summary><span class="g-name">グランアイン</span><span class="g-dom">戦の神・雷の神。ドゥアンの創造主</span></summary><p class="g-detail">雷の槍を握る若き戦神。角・翼・牙爪——のちにドゥアン三部族それぞれが受け継ぐ特徴を、その身に備える。水の時代、邪神の勢力に抗する堅忍不抜の民として、剛なる人ドゥアンを鍛え上げた。空を飛ぶ翼を持つ&quot;天翼族&quot;も、この神の子である。</p></details>
+    <p class="g-outro reveal">神々の名は、回路を歩く者の祈りとともにある。——だが、世界を支えるのは神々だけではない。</p>
+    <h3 class="wsec reveal">精霊の王<small>THE ELEMENTAL KINGS</small></h3>
+    <p class="g-intro reveal">世界には、地・水・火・風・光・闇——六つの&quot;理&quot;がある。光の時代、神々はそれぞれの理を司る精霊を創り、ひときわ強く輝くものを&quot;精霊の王&quot;と定めた。王には自我と意思があるが、神々には決して逆らえない。ただ淡々と、世界の理を司り続けている。</p>
+    <details class="deity spirit reveal"><summary><span class="g-name">ディジニ</span><span class="g-dom">大気の王〈風〉</span></summary><p class="g-detail">風と大気を司る精霊の王。目には見えず、しかしどこにでも吹き通う。船乗りや旅人が、順風を願って名を呼ぶ。</p></details>
+    <details class="deity spirit reveal"><summary><span class="g-name">マリッド</span><span class="g-dom">水流の王〈水〉</span></summary><p class="g-detail">水でできた身体をまとう、美しい乙女の姿の王。泉や沼など水辺は異界への入り口とされ、その門を管理するのがこの王だという。旅人が泉に祈る習慣は、ここに由来する。慈愛深い王だが、かつて神々の命により「水の粛清」を起こし、大地の七割を水底へ沈めたのもこの王であった。</p></details>
+    <details class="deity spirit reveal"><summary><span class="g-name">イフリート</span><span class="g-dom">火焔の王〈火〉</span></summary><p class="g-detail">炎をまとった全身鎧の戦士、あるいは赤い肌の巨人として顕現する火の王。性質は剛直で、虚偽と優柔不断を嫌う。激しい気性だが、みずからが敬意を払う者にはどこまでも従順だという。</p></details>
+    <details class="deity spirit reveal"><summary><span class="g-name">ダオ</span><span class="g-dom">大地の王〈地〉</span></summary><p class="g-detail">大地と岩盤を司る精霊の王。山の重み、地の底の静けさ、揺るがぬものの象徴。大地が裂けるとき、この王の意思が働いているとも。</p></details>
+    <details class="deity spirit reveal"><summary><span class="g-name">マライカ</span><span class="g-dom">光輝の王〈光〉</span></summary><p class="g-detail">光の時代からただひたすらに世界を清め続けてきた、光輝の王。その輝きの届く場所には、穢れも闇もとどまることができないという。</p></details>
+    <details class="deity spirit reveal"><summary><span class="g-name">ディアボロス</span><span class="g-dom">暗黒の王〈闇〉</span></summary><p class="g-detail">闇の王。物質界では暗がりにしか姿を現さない。盗賊や暗殺者など、夜陰に生きる者に加護を与える。眠りのあいだに見る夢を司るとも言われる。「&quot;何か&quot;であることは確かだが、それがなんなのかは、けして捉えることができない」——そう語り継がれる、掴みどころのない存在。</p></details>
+    <details class="deity spirit reveal"><summary><span class="g-name">アリアンロッド</span><span class="g-dom">銀の輪の女王〈運命〉</span></summary><p class="g-detail">六つの理のほかに、運命の精霊を司る第七の王が存在するという伝説がある。その名は&quot;銀の輪の女王&quot;アリアンロッド。運命の糸を紡ぎ、断ち、結び直す——語られることは少なく、しかしすべての物語のかたわらに、静かに在るという。</p></details>
+    <p class="g-outro reveal">——精霊の王たちは、争いにも祈りにも与しない。ただ世界がその理を大きく踏み外したとき、&quot;粛清&quot;という形で、彼らは動く。</p>
+    <h3 class="wsec reveal darkhead">七大邪神<small>THE SEVEN SINS</small></h3>
+    <p class="g-intro reveal">光あるところに、影がある。伝承に曰く、邪神とは古の戦いに敗れ、世界の外——魔界へと封じられた神々。人の心に巣くう負の感情、その一つひとつを体現するという。封印の底からなお、弱った心へそっと囁きかけ、力と引き換えに魂を奪ってゆく。とりわけ名高いのが、七つの感情を司る邪神たちである。</p>
+    <details class="deity dark reveal"><summary><span class="g-name">トリアラク</span><span class="g-dom">恐怖</span></summary><p class="g-detail">顔を隠す漆黒のフードの下を、誰も見た者がない。&quot;闇の公子&quot;と囁かれる邪神。その瘴気は、恐怖に怯える者を、やがて恐怖を与える者へと変えてしまうという。</p></details>
+    <details class="deity dark reveal"><summary><span class="g-name">クロムクルー</span><span class="g-dom">憎悪</span></summary><p class="g-detail">毒の湾曲した短剣を二振り携えた、やせた老人の姿。古き竜の姿と力を奪ったといい、毒と、眷属を強くする力と、憎悪を煽る——三つの吐息を吐く。</p></details>
+    <details class="deity dark reveal"><summary><span class="g-name">インディマ</span><span class="g-dom">傲慢</span></summary><p class="g-detail">漆黒の馬にまたがり、大剣を背負う&quot;剛力王&quot;。邪神たちの王とも、その力は最強とも伝わる。主を失った黒馬が、今も主を探して彷徨っているという。</p></details>
+    <details class="deity dark reveal"><summary><span class="g-name">モリーアン</span><span class="g-dom">嫉妬</span></summary><p class="g-detail">灰色の髪と瞳を持つ、二槍を操る女戦士。&quot;カラスの女王&quot;。微笑みを絶やさぬまま、嫉妬の対象を打ち砕く力を人に与える。</p></details>
+    <details class="deity dark reveal"><summary><span class="g-name">ミーヴァル</span><span class="g-dom">猜疑</span></summary><p class="g-detail">清楚な少女の姿をした、猜疑の女神。かつて月の女神との魔法合戦に敗れて封じられ——その呪いゆえに、夜空の月は満ち欠けするようになったと伝わる。</p></details>
+    <details class="deity dark reveal"><summary><span class="g-name">ブレーグ</span><span class="g-dom">虚栄</span></summary><p class="g-detail">美しく着飾り、化粧をほどこした妖女。偽りの言葉で人の心を操り、「いかなる方法でも傷つけられぬ」と囁かれる。ひとつの姿に留まらず、いくつもの&quot;現し身&quot;を世に放つという。</p></details>
+    <details class="deity dark reveal"><summary><span class="g-name">マハディルグ</span><span class="g-dom">欲望</span></summary><p class="g-detail">尽きることを知らぬ欲望を司る邪神。求める者に力を与えるが、満たされぬ渇きは、いつしかその身を内側から滅ぼしてゆく。</p></details>
+    <p class="g-outro reveal">——だが、七柱ですべてではない。感情の数だけ邪神は生まれうるといい、名を伏せられた者、伝承にすら残らぬ者も、どこかで、誰かの心の隙をうかがっている。旅の途上で耳にする甘い囁きには、気をつけたほうがいい。</p>
   </div>
 </div>
 
@@ -610,7 +648,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   <div class="wrap">
 
     <section class="fgroup">
-      <article class="card reveal"><h4>プリムス開拓団</h4><p>回路の北の主。輸送路の安全と補給の維持がすべて——この道が止まれば、氷原の開拓は終わる。</p><details class="fmore"><summary>詳しく読む</summary><div><p>聖暦1043年、ヴァイス王国の子爵ヴェルトール・ランベントがその立場を退き、開拓団の設立を宣言したことに始まる。現在の代表は、彼の遺志を継いだ姪のアリス・ランベント。統治は団員による合議制。</p><p>パリス同盟各国の共同出資による国際機関だが、事務方の多くはヴァイス王国の出身者で、ランベント騎士団の斥候隊「黄色中隊」もプリムスに常駐している。輸入は食料と生活必需品と薬品。輸出は、氷原で採れる純度の高い宝石。</p><p>団員は食堂での共同の食事に代表される共同生活を営む。氷原育ちの子供たち——低温と豪雪にきわめて高く適応した世代は「アイスメイト」と呼ばれ、12歳ごろから入団試験を経て団の仕事を手伝う。</p></div></details></article>
+      <article class="card reveal"><h4>プリムス</h4><p>沈黙の氷原にただひとつ根を張った、人の暮らす拠点。掲げる使命は入植——この氷の大地を、人が生き続けられる土地に変えること。西方とつなぐ唯一の道・凍結の回路が止まれば、その営みは立ち行かなくなる。</p><details class="fmore"><summary>詳しく読む</summary><div><p>聖暦1043年、ヴァイス王国の子爵ヴェルトール・ランベントがその立場を退き、開拓団の設立を宣言したことに始まる。現在の代表は、彼の遺志を継いだ姪のアリス・ランベント。統治は団員による合議制。</p><p>パリス同盟各国の共同出資による国際機関だが、事務方の多くはヴァイス王国の出身者で、ランベント騎士団の斥候隊「黄色中隊」もプリムスに常駐している。輸入は食料と生活必需品と薬品。輸出は、氷原で採れる純度の高い宝石。</p><p>団員は食堂での共同の食事に代表される共同生活を営む。氷原育ちの子供たち——低温と豪雪にきわめて高く適応した世代は「アイスメイト」と呼ばれ、12歳ごろから入団試験を経て団の仕事を手伝う。</p></div></details></article>
       <div class="chgrid">
       <article class="ch reveal">
         <div class="ch-face"><img src="assets/ch_0.png" loading="lazy" alt="レイフ・ストーム"></div>
@@ -745,8 +783,11 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       grp.classList.remove('open');
     }
     menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false');
-    scrollTo(0, 0);
-    requestAnimationFrame(function() { measure(); frame(); });
+    // ページ遷移＝即最上部へ。html{scroll-behavior:smooth}＋display切替により、モバイルで
+    // window.scrollTo(0,0) が最下部に張り付く不具合対策＝scrollingElement.scrollTop を直接0に（smooth非適用のinstant）。
+    var _se = document.scrollingElement || document.documentElement;
+    window.scrollTo(0, 0); _se.scrollTop = 0; document.body.scrollTop = 0;
+    requestAnimationFrame(function() { _se.scrollTop = 0; measure(); frame(); });
   }
   addEventListener('hashchange', route);
   burger.addEventListener('click', function() {
