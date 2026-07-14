@@ -1227,9 +1227,18 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       document.body.classList.remove('onj');
     }
     if (!reduce) {
-      var sy = scrollY;
-      if (wl) wl.style.transform = 'translateY(' + (sy * -0.03) + 'px)';
-      if (wr) wr.style.transform = 'translateY(' + (sy * -0.05) + 'px)';
+      // 🔴ずらし量に上限を置く（後輩くん報告 2026-07-14＝長いページで壁の下端が途切れる）。
+      //   壁は height:126vh / top:-12vh ＝画面下に14vhしか余白がない。上へずらし続けると余白を食い尽くし、
+      //   下端が画面内へ浮き上がって切れ目になる。→ 余白より内側（12vh）で頭打ちにする。
+      // 🔴壁のパララックス＝「スクロール量×係数」ではなく「進捗×余白」で動かす（後輩くん指摘 2026-07-14）。
+      //   係数方式だと長いページで余白を使い切り、途中で止まる／下端が途切れる。進捗方式なら
+      //   ページ先頭で0・ページ末尾でちょうど余白いっぱいに達する＝最後まで動き続け、決して途切れない。
+      //   左右は同速（速度差をつけると、対称に並んだ壁がちぐはぐに見える）。
+      var maxScroll = document.documentElement.scrollHeight - innerHeight;
+      var prog = maxScroll > 0 ? Math.min(Math.max(scrollY / maxScroll, 0), 1) : 0;
+      var oy = prog * innerHeight * 0.12;      // 余白14vhの内側（12vh）まで
+      if (wl) wl.style.transform = 'translateY(' + (-oy) + 'px)';
+      if (wr) wr.style.transform = 'translateY(' + (-oy) + 'px)';
     }
     dusk();
   }
