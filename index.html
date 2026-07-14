@@ -42,6 +42,18 @@ body::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:no
 @media (max-width:680px) { .wall { width:34px; opacity:.8; } }
 #snow { position:fixed; inset:0; z-index:2; pointer-events:none; opacity:.5; }
 
+/* ══ 手元の灯り（カーソル＝あなたが持つランタン・2026-07-14 後輩くん発案）══
+   カーソルの周りだけが暖色で照らされる。mix-blend-mode:screen なので、暗い地の文の上では
+   文字がほのかに温まり、明るい絵の上では効きが弱まる＝「灯りの届く分だけが見える」の翻訳。
+   タッチ端末（灯りを持てない）と reduced-motion では出さない。 */
+#lantern { position:fixed; top:0; left:0; width:460px; height:460px; margin:-230px 0 0 -230px;
+  z-index:20; pointer-events:none; opacity:0; transition:opacity .8s ease;
+  mix-blend-mode:screen; will-change:transform;
+  background:radial-gradient(circle closest-side,
+    rgba(255,201,132,.20) 0%, rgba(255,178,96,.12) 38%, rgba(255,164,74,.04) 62%, rgba(255,160,70,0) 78%); }
+body.lantern-on #lantern { opacity:1; }
+@media (hover:none), (prefers-reduced-motion: reduce) { #lantern { display:none; } }
+
 /* ══ ヘッダー（公式サイトの顔）══ */
 header.gnav { position:fixed; top:0; left:0; right:0; z-index:30; display:flex; align-items:stretch;
   border-bottom:1px solid var(--line); }
@@ -560,6 +572,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="wall wall-r" style="background-image:url(assets/wall_r.jpg)" aria-hidden="true"></div>
 <canvas id="snow" aria-hidden="true"></canvas>
 <div id="kvbg" aria-hidden="true"><div class="kv-bg kv-slide show" style="background-image:url(assets/kv.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_follow.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_front.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_bird.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_side.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_camp.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_vista.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_frostgate.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_lantern_inn.jpg)"></div><div id="kvveil"></div></div>
+<div id="lantern" aria-hidden="true"></div>
 
 <header class="gnav">
   <a class="brand" href="#/">
@@ -1001,6 +1014,23 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     });
   }
 
+  // ── 手元の灯り（カーソルに追従する暖色の輪・rAF間引き・transformのみ） ──
+  var lan = document.getElementById('lantern');
+  if (lan && matchMedia('(hover:hover)').matches && !reduce) {
+    var lx = 0, ly = 0, lq = false;
+    addEventListener('pointermove', function(e) {
+      lx = e.clientX; ly = e.clientY;
+      document.body.classList.add('lantern-on');
+      if (lq) return;
+      lq = true;
+      requestAnimationFrame(function() {
+        lan.style.transform = 'translate3d(' + lx + 'px,' + ly + 'px,0)';
+        lq = false;
+      });
+    }, { passive: true });
+    document.addEventListener('mouseleave', function() { document.body.classList.remove('lantern-on'); });
+  }
+
   // ── KVスライドショー（12秒ごとにクロスフェード・reduced-motionでは固定） ──
   // ＋ゆっくり等速パン（後輩くん希望 2026-07-14）：coverで切れている軸＝動かせる余白がある軸へ、
   //   端が現れる手前まで（余白の88%）linearで寄る。絵の下端（隊商の灯り・人影）が最後に画面へ入り、
@@ -1022,11 +1052,16 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   // 🔴パンの要点：cover は「要素の枠」で絵を切り落とすので、枠ごと動かすと反対側に隙間が出る（＝見切れる）。
   //   だから枠を viewport ではなく "絵の実寸（cover相当のcw×ch）" まで広げて画面中央に置き、
   //   #kvbg(overflow:hidden) の中でその板を滑らせる。移動量は必ずはみ出し幅の内側に収める＝端は決して現れない。
+  // 🔴スマホのアドレスバー対策（後輩くん報告 2026-07-14＝スクロールし始めでKVがカクンと拡大する）：
+  //   モバイルはURLバーが引っ込むと innerHeight が変わり resize が飛ぶ。そのたびに板を測り直すと
+  //   パンが組み直されて位置と大きさが飛ぶ。→ 高さは「最初に測った値の最大値」で固定し、
+  //   幅が変わった時（＝画面回転・ウィンドウリサイズ）だけ測り直す。
+  var kvW = innerWidth, kvH = innerHeight;
   function kvPan(el) {
-    var W = innerWidth, H = innerHeight, r = kvAspect(el);
+    var W = kvW, H = kvH, r = kvAspect(el);
     var cw = W, ch = W / r;                       // 幅に合わせる＝上下がはみ出す
     if (ch < H) { ch = H; cw = H * r; }           // 足りなければ高さに合わせる＝左右がはみ出す
-    var over = 1.06;                              // 画面比と絵がほぼ同じ時でも動けるよう、わずかに大きく取る
+    var over = 1.12;                              // アドレスバーが消えて画面が伸びても足りるよう、余分に大きく取る
     cw *= over; ch *= over;
     var sy = (ch - H) / 2;                        // 中央置きした時の上下それぞれのはみ出し幅
     el.style.right = 'auto'; el.style.bottom = 'auto';
@@ -1048,9 +1083,14 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     });
   }
   var kvRz;
-  addEventListener('resize', function() {         // 画面サイズが変わったら板を測り直す（現在の絵だけ組み直す）
+  addEventListener('resize', function() {
+    if (innerWidth === kvW) {                     // 幅が同じ＝アドレスバーの出入りだけ。板は組み直さない（カクンの正体）
+      if (innerHeight > kvH) kvH = innerHeight;   // 画面が伸びた時だけ、次回の計測用に高さを更新しておく
+      return;
+    }
     clearTimeout(kvRz);
-    kvRz = setTimeout(function() {
+    kvRz = setTimeout(function() {                // 幅が変わった時（回転・ウィンドウリサイズ）だけ測り直す
+      kvW = innerWidth; kvH = innerHeight;
       var cur = document.querySelector('.kv-slide.show');
       if (cur) kvPan(cur);
     }, 250);
