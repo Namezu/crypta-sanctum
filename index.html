@@ -116,15 +116,29 @@ main { position:relative; z-index:3; }
   background:linear-gradient(90deg, var(--ice2), transparent); }
 
 /* ══ TOP／KV ══ */
+/* KV背景＝ページの外に出した固定レイヤー（後輩くん希望 2026-07-14）。
+   背景は動かず、文字とカードだけが上をスクロールする。DOM上は #snow の直後＝壁・雪の上／main(z3)の下。 */
+#kvbg { position:fixed; inset:0; z-index:2; pointer-events:none; overflow:hidden;
+  opacity:0; transition:opacity .9s ease; }
+body[data-page="top"] #kvbg { opacity:1; }
+/* 陰影は固定レイヤー側に置く＝絵がパンしても、暗がりは画面に貼りついたまま動かない */
+#kvbg::after { content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, rgba(2,4,9,.82) 0%, rgba(2,4,9,.28) 34%, rgba(2,4,9,.3) 62%, #04060b 100%); }
 .kv { position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:center;
   align-items:center; text-align:center; padding:16vh 8vw 12vh; overflow:hidden; }
-.kv-bg { position:absolute; inset:0; z-index:-1; background-size:cover; background-position:center 30%;
-  filter:saturate(.92); }
-.kv-bg::after { content:""; position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(2,4,9,.82) 0%, rgba(2,4,9,.28) 34%, rgba(2,4,9,.3) 62%, #04060b 100%); }
-/* KVスライドショー＝12秒ごとにクロスフェード（後輩くん希望 2026-07-12） */
+.kv-bg { position:absolute; inset:0; background-size:cover; background-position:center center;
+  filter:saturate(.92); will-change:transform, opacity; }
+/* KVスライドショー＝12秒ごとにクロスフェード（後輩くん希望 2026-07-12）
+   ＋ゆっくり等速パン（2026-07-14）＝見切れている軸（＝動かせる余白がある軸）へだけ寄っていき、
+   端が現れる手前で次の絵へ渡す。移動量・向きはJSが画面比から算出して inline transform で与える。 */
 .kv-slide { opacity:0; transition:opacity 2.8s ease; }
 .kv-slide.show { opacity:1; }
+/* 物語をTOPに統合した下半分（後輩くん指摘 2026-07-14＝半透過の"黒帯"は廃止。
+   代わりに #kvveil をスクロール量に連動して濃くする＝背景全体が少しずつ暮れ、最下部で完全な闇になる） */
+#kvveil { position:absolute; inset:0; background:#04060b; opacity:0; pointer-events:none; }
+.topbelow { position:relative; }
+.topstory { padding-top:6vh; }
+.topguide { padding-bottom:4vh; }
 .kv .logo { max-width:min(440px, 78vw); height:auto; filter:drop-shadow(0 0 36px rgba(120,190,215,.3)); }
 .sr { position:absolute; width:1px; height:1px; clip-path:inset(50%); overflow:hidden; }
 .kv h1.tx { font-size:clamp(32px,7vw,56px); font-weight:600; letter-spacing:.22em; color:#e9f3f7;
@@ -159,7 +173,7 @@ main { position:relative; z-index:3; }
 .ep-open h5 { color:#c4a265; }
 .ep-open li::before { color:#c4a265; }
 
-/* ── ARCHIVE：回路の現在（トラッカー） ── */
+/* ── ARCHIVE：回廊の現在（トラッカー） ── */
 .cs-note { font-size:12px; color:var(--dim); letter-spacing:.06em; margin-bottom:14px; }
 .cs-grid { display:grid; gap:1px; background:rgba(159,216,232,.14); border:1px solid rgba(159,216,232,.14); }
 .cs-row { display:grid; grid-template-columns:minmax(120px,1fr) 2fr; gap:1px; background:rgba(159,216,232,.14); }
@@ -545,6 +559,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="wall wall-l" style="background-image:url(assets/wall_l.jpg)" aria-hidden="true"></div>
 <div class="wall wall-r" style="background-image:url(assets/wall_r.jpg)" aria-hidden="true"></div>
 <canvas id="snow" aria-hidden="true"></canvas>
+<div id="kvbg" aria-hidden="true"><div class="kv-bg kv-slide show" style="background-image:url(assets/kv.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_follow.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_front.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_bird.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_side.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_camp.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_vista.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_frostgate.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_lantern_inn.jpg)"></div><div id="kvveil"></div></div>
 
 <header class="gnav">
   <a class="brand" href="#/">
@@ -558,7 +573,6 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <span class="navgrp" id="navgrp">
       <button id="grpBtn" aria-haspopup="true" aria-expanded="false"><span class="en">SETTING ▾</span><span class="jp">設定</span></button>
       <span class="grpdd">
-        <a href="#/story" data-page="story"><span class="en">STORY</span><span class="jp">物語</span></a>
         <a href="#/world" data-page="world"><span class="en">WORLD</span><span class="jp">世界</span></a>
         <a href="#/myth" data-page="myth"><span class="en">MYTH</span><span class="jp">神話</span></a>
         <a href="#/character" data-page="character"><span class="en">CHARACTER</span><span class="jp">人物・勢力</span></a>
@@ -577,18 +591,31 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 
 <main>
 
-<!-- ════ TOP ════ -->
+<!-- ════ TOP（物語を統合＝固定KVの上を、導入文とカードだけがスクロールする） ════ -->
 <div class="page act" data-page="top">
   <section class="kv">
-    <div class="kv-bg kv-slide show" style="background-image:url(assets/kv.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_follow.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_front.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_bird.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_side.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_camp.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_vista.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_frostgate.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_lantern_inn.jpg)"></div>
     <div class="breath" style="top:38%;"></div>
     <h1 class="sr">凍廊のサンクトゥム（Crypta Sanctum）</h1><img class="logo" src="assets/logo.png" alt="アリアンロッドRPG2E改訂版　レギュレーション：氷原開拓団『凍廊のサンクトゥム』ロゴ">
-    <p class="tagline">「凍り付いた心を、誰にも打ち明けぬまま」</p>
+    
     <p class="meta">Discordサーバー〈辺境TRPG村〉<br>アリアンロッドRPG2E改訂版　レギュレーション：氷原開拓団<br>DLC型サブキャンペーン（長期連作・毎回参加メンバー入替OK）<br>レギュレーション主催：Mizshiro<br>GM：カテナドルグ</p>
     <p class="start">2026年8月 開始予定</p>
-    <div class="guide"><h2 class="g-hd">あなたは氷原開拓団の一員です。</h2><div class="g-tx"><p>西方世界とプリムスを結ぶ全長171kmの地下回廊——凍結の回路。その安全を確かめること。人と荷を守ること。それがあなたたちの仕事です。</p><p>各話ごとに参加者を募ります。過去の話に出ていなくても大丈夫。毎話の冒頭に「前回のあらすじ」があります。</p><p>レギュレーション「氷原開拓団」のPCなら誰でも参加できます。どの話からでも。</p></div><div class="g-ents"><a class="g-ent" href="#/rules"><span class="g-lb">はじめての方へ</span><span class="g-sb">この土地の決まりごと</span></a><a class="g-ent" href="#/join"><span class="g-lb">参加のしかた</span><span class="g-sb">卓への入り方</span></a><a class="g-ent" href="#/record"><span class="g-lb">これまでの記録</span><span class="g-sb">旅の軌跡</span></a></div></div>
     <span class="cue" aria-hidden="true"></span>
   </section>
+  <div class="topbelow">
+    <div class="wrap story-body topstory">
+      <p class="reveal">沈黙の氷原とエリンディル西方を繋ぐたったひとつの道。コナカタ山脈の腹の底を全長171kmにわたって貫く地下回廊——人はそれを、凍結の回路と呼ぶ。</p>
+      <p class="reveal">ランタンの光が届くところまでが人の世界で、その先には環境に適応した原生生物達が息を潜めている。</p>
+      <p class="reveal">伝承は語る——かつてこの氷原には、&quot;古の民&quot;エルダの都市が広がっていた。だが彼らは禁忌に触れ、神々の&quot;風の粛清&quot;によって滅びたのだと。南の果てのラーフ大洞窟もまた、&quot;地の粛清&quot;の時に生まれた大空洞だという。世界が洗い清められた時代の傷跡が、この地にはいまも静かに残っている。</p>
+      <p class="reveal">……いや。長く回廊を歩く者は、時折こう感じる事がある。あれはただ暗いのではない。何かが「ある」闇なのだと。</p>
+    <figure class="storyfig reveal"><img src="assets/g_gate.jpg" loading="lazy" alt="氷に呑まれた門 —— 誰が、いつ、何のために"><figcaption>氷に呑まれた門 —— 誰が、いつ、何のために</figcaption></figure>
+      <div class="icedvd" aria-hidden="true"><i></i></div>
+      <p class="reveal" style="color:var(--dim); font-size:13px; letter-spacing:.16em;">
+        ——この回廊を舞台に、開拓団の記録者たちの旅が始まる。</p>
+    </div>
+    <div class="wrap topguide">
+<div class="guide"><h2 class="g-hd">あなたは氷原開拓団の一員です。</h2><div class="g-tx"><p>西方世界とプリムスを結ぶ全長171kmの地下回廊——凍結の回路。その安全を確かめること。人と荷を守ること。それがあなたたちの仕事です。</p><p>各話ごとに参加者を募ります。過去の話に出ていなくても大丈夫。毎話の冒頭に「前回のあらすじ」があります。</p><p>レギュレーション「氷原開拓団」のPCなら誰でも参加できます。どの話からでも。</p></div><div class="g-ents"><a class="g-ent" href="#/rules"><span class="g-lb">はじめての方へ</span><span class="g-sb">特殊ルールの説明</span></a><a class="g-ent" href="#/world"><span class="g-lb">CP設定</span><span class="g-sb">世界と神話と人々</span></a><a class="g-ent" href="#/record"><span class="g-lb">これまでの記録</span><span class="g-sb">旅の軌跡</span></a></div></div>
+    </div>
+  </div>
 </div>
 
 <!-- ════ NEWS ════ -->
@@ -600,27 +627,12 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   </div>
 </div>
 
-<!-- ════ STORY ════ -->
-<div class="page" data-page="story">
-  <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">STORY</span><h2>物語</h2><p class="sub">STORY</p></div></div>
-  <div class="wrap story-body">
-      <p class="reveal">沈黙の氷原とエリンディル西方を繋ぐたったひとつの道。コナカタ山脈の腹の底を全長171kmにわたって貫く地下回廊——人はそれを、凍結の回路と呼ぶ。</p>
-      <p class="reveal">明かりを持たない者にとって、回路は端から端までひたすら続く長大な闇である。松明の火が届くところまでが人の世界で、その先には環境に適応した原生生物が息を潜めている。</p>
-      <p class="reveal">伝承は語る——かつてこの氷原には、&quot;古の民&quot;エルダの都市が広がっていた。だが彼らは禁忌に触れ、神々の&quot;風の粛清&quot;によって滅びたのだと。南の果てのラーフ大洞窟もまた、&quot;地の粛清&quot;の時に生まれた大空洞だという。世界が洗い清められた時代の傷跡が、この地にはいまも静かに残っている。</p>
-      <p class="reveal">……いや。長く回路を歩く者は、時折こう感じる事がある。あれはただ暗いのではない。何かが「ある」闇なのだと。</p>
-    <figure class="storyfig reveal"><img src="assets/g_gate.jpg" loading="lazy" alt="氷に呑まれた門 —— 誰が、いつ、何のために"><figcaption>氷に呑まれた門 —— 誰が、いつ、何のために</figcaption></figure>
-    <div class="icedvd" aria-hidden="true"><i></i></div>
-    <p class="reveal" style="padding-bottom:10vh; color:var(--dim); font-size:13px; letter-spacing:.16em;">
-      ——この回路を舞台に、開拓団の記録者たちの旅が始まる。</p>
-  </div>
-</div>
-
 <!-- ════ WORLD ════ -->
 <div class="page" data-page="world">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">WORLD</span><h2>世界</h2><p class="sub">WORLD</p></div></div>
   <div class="wrap">
     <div class="maptabs reveal">
-      <button class="mtab act" data-map="detail">コナカタ山脈と回路</button>
+      <button class="mtab act" data-map="detail">コナカタ山脈と回廊</button>
       <button class="mtab" data-map="wide">エリンディル西方 全図</button>
     </div>
     <div class="mappane act" id="mapDetail">
@@ -637,7 +649,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <div class="st-marker"><span class="st-lamp"></span><span class="st-km">  0 km</span></div>
       <div class="st-body">
         <h4><span class="st-en">PRIMUS</span>プリムス</h4>
-        <p>回路の北端であり、終着点。沈黙の氷原にただひとつ根を張った開拓団の拠点だ。ひと棟の長屋から始まり、いまは見張り塔の足元に人の暮らしが灯る。回路をたどってきた者が、ようやくたどり着く場所——旅の終わりであり、開拓のはじまり。</p>
+        <p>回廊の北端であり、終着点。沈黙の氷原にただひとつ根を張った開拓団の拠点だ。ひと棟の長屋から始まり、いまは見張り塔の足元に人の暮らしが灯る。回廊をたどってきた者が、ようやくたどり着く場所——旅の終わりであり、開拓のはじまり。</p>
         <figure class="st-img"><img src="assets/st_primus.jpg" loading="lazy" alt="プリムス"></figure>
       </div>
     </section>
@@ -646,7 +658,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <div class="st-marker"><span class="st-lamp"></span><span class="st-km"> 37 km</span></div>
       <div class="st-body">
         <h4><span class="st-en">FROSTGATE</span>フロストゲート</h4>
-        <p>開拓団管轄の検問所・補給倉庫。回路で起きたことは、大小を問わず、最後はすべてここの野営地の机に集まってくる——安全通行責任者レイフ・ストームの城である。</p>
+        <p>開拓団管轄の検問所・補給倉庫。回廊で起きたことは、大小を問わず、最後はすべてここの野営地の机に集まってくる——安全通行責任者レイフ・ストームの城である。</p>
         <figure class="st-img"><img src="assets/st_frostgate.jpg" loading="lazy" alt="フロストゲート"></figure>
       </div>
     </section>
@@ -655,7 +667,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <div class="st-marker"><span class="st-lamp"></span><span class="st-km"> 87 km</span></div>
       <div class="st-body">
         <h4><span class="st-en">LANTERN INN</span>ランタン亭</h4>
-        <p>回路のなかほど、闇の中にぽつりと浮かぶ暖色の灯り。女将がひとりで営む、回路随一の居心地の宿。すべての勢力が、ここでだけは同じ食卓につく。</p>
+        <p>回廊のなかほど、闇の中にぽつりと浮かぶ暖色の灯り。女将がひとりで営む、回廊随一の居心地の宿。すべての勢力が、ここでだけは同じ食卓につく。</p>
         <figure class="st-img"><img src="assets/st_lantern_inn.jpg" loading="lazy" alt="ランタン亭"></figure>
       </div>
     </section>
@@ -678,7 +690,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       </div>
     </section>
     </div>
-    <p class="j-outro reveal">回路は、人の道であって、人だけの道ではない。灯りの届かぬ岩陰には氷に適応した獣や魔獣が棲まい、氷の下には水が流れ、目のない魚が泳ぐ。運が良ければ——あるいは悪ければ——霊獣や精霊のたぐいが、旅人の前にふと姿を見せることもあるという。地の底にもまた、生態系は息づいている。</p>
+    <p class="j-outro reveal">回廊は、人の道であって、人だけの道ではない。灯りの届かぬ岩陰には氷に適応した獣や魔獣が棲まい、氷の下には水が流れ、目のない魚が泳ぐ。運が良ければ——あるいは悪ければ——霊獣や精霊のたぐいが、旅人の前にふと姿を見せることもあるという。地の底にもまた、生態系は息づいている。</p>
     <h3 class="wsec reveal">年表<small>HISTORY</small></h3>
     <p class="tl-intro reveal">エリンディル西方の近代と、氷原開拓団の歩み。</p>
     <div class="tl">
@@ -702,13 +714,13 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="page" data-page="myth">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">MYTH</span><h2>神話</h2><p class="sub">MYTH</p></div></div>
   <div class="wrap">
-    <p class="myth-intro reveal">エリンディルに伝わる神話では、時代は大きく五つに分かれている。そしてその歴史のなかで世界は三度——「粛清」と呼ばれる大いなる洗礼に、洗われてきた。</p>
+    <p class="myth-intro reveal">エリンディルに伝わる神話では、時代は大きく五つに分かれている。そしてその歴史のなかで世界は三度——「粛清」と呼ばれる大いなる洗礼によって、滅ぼされてきた。</p>
     <p class="reveal" style="margin:-24px 0 40px; font-size:12.5px; color:var(--dim); letter-spacing:.08em;">——このページは「読み物」です。参加前にすべて覚える必要はありません。氷原の物語を、旅の途中で少しずつ思い出してもらえたら。</p>
-    <section class="era reveal"><h4>光の時代<span class="een">THE AGE OF LIGHT</span></h4><p>天地開闢のとき。天空神と地母神のあいだに数多の神々が生まれ、精霊には精霊の王が、動物には動物の王が立てられた。世界がもっとも眩かった時代。</p></section>
-    <section class="era reveal"><h4>風の時代<span class="een">THE AGE OF WIND</span></h4><p>“古の民”が栄えた時代。だが疑念はやがて恐れと嫉妬を生み、闇に染まった心から、&quot;禍つ神々&quot;が形をとった。世界で初めての“戦い”の果てに禍神たちは世界の外へと封じられ——風が、世界に満ちた瘴気のすべてを吹き払った。「風の粛清」である。</p></section>
-    <section class="era reveal"><h4>水の時代<span class="een">THE AGE OF WATER</span></h4><p>傷ついた世界を癒すため、新しい民が創られた時代。だが闇は消えず、ついに神々は水流の王に、世界を清めることを命じた。猛る水は大地の七割を呑み——「水の粛清」である。栄えていたものたちの多くは、還らなかった。</p></section>
-    <section class="era reveal"><h4>地の時代<span class="een">THE AGE OF EARTH</span></h4><p>生き残った民が、小さくなった世界を継いだ時代。その地の底に、ただひとり生き残り、ただひとり妖魔に堕ちた者がいたという——七柱の邪神すべての加護を受け、老いも死も失った&quot;妖魔王&quot;。諸族がその名を恐れたその者は、地の底に巨大な要塞を築いて民を隷属させ、ついには神々の座さえ望んだ。——やがて祈りは神々に届き、大地は裂け、王とその眷属は底知れぬ奈落へと呑まれた。「地の粛清」である。だが、不老不死とうたわれた王を、はたして&quot;滅ぼす&quot;ことができたのかどうか——それを見届けた者は、もういない。</p></section>
-    <section class="era reveal"><h4>火の時代<span class="een">THE AGE OF FIRE</span></h4><p>恐るべき妖魔の群れが一掃され、世界は光を取り戻した。現在まで続く時代。——実のところ、この時代はまだ、本当の名を持たない。</p></section>
+    <section class="era reveal"><h4>光の時代<span class="een">THE AGE OF LIGHT</span></h4><p>天地開闢のとき。天空神と地母神のあいだに数多の神々が生まれ、神々はまだ地上を歩いていた。精霊には精霊の王が、動物には動物の王が立てられ、世界はすみずみまで光に満ちていたという。——のちのどの時代も、この眩さには届かない。</p></section>
+    <section class="era reveal"><h4>風の時代<span class="een">THE AGE OF WIND</span></h4><p>“古の民”が栄えた時代。だが疑念はやがて恐れと嫉妬を生み、闇に染まった心から&quot;禍つ神々&quot;が形をとった。世界で初めての“戦い”の果てに禍神たちは世界の外へと封じられ——風が、世界に満ちた瘴気のすべてを吹き払った。「風の粛清」である。</p></section>
+    <section class="era reveal"><h4>水の時代<span class="een">THE AGE OF WATER</span></h4><p>傷ついた世界を癒すため、新しい民が創られた時代。だが闇は消えず、ついに神々は水流の王に、世界を清めることを命じた。猛る水は大地の七割を呑み——「水の粛清」である。栄えていたものたちの多くは、還らなかった。いま人が暮らす大陸は、その水が引いたあとに残った背骨にすぎない。</p></section>
+    <section class="era reveal"><h4>地の時代<span class="een">THE AGE OF EARTH</span></h4><p>生き残った民が、小さくなった世界を継いだ時代。だがその地の底に、ただひとり妖魔に堕ちた者がいた——七柱の邪神すべての加護を受け、老いも死も失った&quot;妖魔王&quot;。王は地底に巨大な要塞を築いて諸族を隷属させ、ついには神々の座さえ望んだ。やがて祈りは神々に届き、大地は裂け、王とその眷属は底知れぬ奈落へと呑まれた。「地の粛清」である。</p></section>
+    <section class="era reveal"><h4>火の時代<span class="een">THE AGE OF FIRE</span></h4><p>恐るべき妖魔の群れが一掃され、世界は光を取り戻した。現在まで続く時代——始まってから、およそ千年。人が数える「聖暦」は、この時代のはじまりを元年としている（いまは聖暦1056年）。——実のところ、この時代はまだ、本当の名を持たない。</p></section>
     <div class="prophecy reveal">「この時代のすべての“神の子”らが手を取り合って挑めども抗し得ない妖魔が到来した時、神々は火をもて魔軍を粛清するだろう」——予言の女神の言葉。その日が訪れていないがゆえに、人々は仮に、今を“火の時代”と呼ぶ。</div>
     <p class="myth-outro reveal">五つの時代と、みっつの粛清。氷原のはるか北では、最初の粛清を起こした嵐の名残が、今も吹き続けているという。——凍った回廊の旅は、この神話のかたわらを通ってゆく。</p>
     <div class="apocrypha reveal">
@@ -725,7 +737,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <details class="deity god reveal"><summary><span class="g-name">アエマ</span><span class="g-dom">豊穣の女神。フィルボルの創造主</span></summary><p class="g-detail">青い髪に花のティアラを飾り、腕に穀物を抱いた豊穣の女神。地の時代、陽の光と風と草木を愛する小さき民フィルボルを生み、地上に暮らすよう定めた。</p></details>
     <details class="deity god reveal"><summary><span class="g-name">ゴヴァノン</span><span class="g-dom">鍛冶の神・山の神。ネヴァーフの創造主</span></summary><p class="g-detail">赤い髭と髪の、寡黙な鍛冶の神。ハンマーで地を叩いて山を隆起させ、地下に住まう民ネヴァーフを生んだ。彼が与えた&quot;決して消えぬ炉の種火&quot;は、地の底で燃え続けていつしか希少な鉱石を生むという——鍛冶師にとって最上の栄誉である。</p></details>
     <details class="deity god reveal"><summary><span class="g-name">グランアイン</span><span class="g-dom">戦の神・雷の神。ドゥアンの創造主</span></summary><p class="g-detail">雷の槍を握る若き戦神。角・翼・牙爪——のちにドゥアン三部族それぞれが受け継ぐ特徴を、その身に備える。水の時代、邪神の勢力に抗する堅忍不抜の民として、剛なる人ドゥアンを鍛え上げた。空を飛ぶ翼を持つ&quot;天翼族&quot;も、この神の子である。</p></details>
-    <p class="g-outro reveal">神々の名は、回路を歩く者の祈りとともにある。——だが、世界を支えるのは神々だけではない。</p>
+    <p class="g-outro reveal">神々の名は、回廊を歩く者の祈りとともにある。——だが、世界を支えるのは神々だけではない。</p>
     <h3 class="wsec reveal">精霊の王<small>THE ELEMENTAL KINGS</small></h3>
     <p class="g-intro reveal">世界には、地・水・火・風・光・闇——六つの&quot;理&quot;がある。光の時代、神々はそれぞれの理を司る精霊を創り、ひときわ強く輝くものを&quot;精霊の王&quot;と定めた。王には自我と意思があるが、神々には決して逆らえない。ただ淡々と、世界の理を司り続けている。</p>
     <details class="deity spirit reveal"><summary><span class="g-name">ディジニ</span><span class="g-dom">大気の王〈風〉</span></summary><p class="g-detail">風と大気を司る精霊の王。目には見えず、しかしどこにでも吹き通う。船乗りや旅人が、順風を願って名を呼ぶ。</p></details>
@@ -759,7 +771,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <div class="chgrid">
       <article class="ch reveal">
         <div class="ch-face"><img src="assets/ch_0.png" loading="lazy" alt="レイフ・ストーム"></div>
-        <div class="ch-body"><h4>レイフ・ストーム</h4><span class="role">凍結の回路・安全通行責任者</span><p>フロストゲートの野営地に常駐する、几帳面で世話好きな男。回路で起きたことは、最後にはぜんぶ彼の机に集まる。旅の始まりと終わりに、彼の顔がある。</p></div>
+        <div class="ch-body"><h4>レイフ・ストーム</h4><span class="role">凍結の回路・安全通行責任者</span><p>フロストゲートの野営地に常駐する、几帳面で世話好きな男。回廊で起きたことは、最後にはぜんぶ彼の机に集まる。旅の始まりと終わりに、彼の顔がある。</p></div>
       </article>
       <article class="ch reveal">
         <div class="ch-face"><img src="assets/ch_1.png" loading="lazy" alt="フルール・シュリエール"></div>
@@ -773,22 +785,22 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     </section>
 
     <section class="fgroup">
-      <article class="card reveal"><h4>ラーフ大洞窟</h4><p>南端の都市国家、人口8万。ネヴァーフたちが築いた千年の都にして、錬金術の総本山。中立を掲げてどの国とも等しく商いをする。その中立が何を守るためのものかは、誰も問わない。</p><details class="fmore"><summary>詳しく読む</summary><div><p>伝承では&quot;地の粛清&quot;の時に生まれた大空洞に、むき出しになった鉱石資源へ目をつけたネヴァーフたちが都市を築いたのが始まり。錬金術で明かりを灯し、空気を循環させて完成した都は、古い建物になると千年を越える。</p><p>統治は長老による合議制。主産業は錬金術師たちの発明品で、ポーションに代表される薬品は、パリス同盟や神聖ヴァンスター帝国といった大国も買いつけに来る。他国が支配を試みたこともあるが、特殊な立地と技術力の高さではねのけてきた。</p><p>回路から入ってすぐの場所には市場が、街の中心には長老議会が所有する大工房が、東には発明品の倉庫街がある。……なお、廃棄された発明品が互いに干渉し、魔法生物や機械が闊歩する迷宮と化した「第十三番倉庫」には近づかないこと。「十三番送りにするぞ」は、ラーフで最大級の脅し文句である。</p></div></details></article>
+      <article class="card reveal"><h4>ラーフ大洞窟</h4><p>南端の都市国家、人口8万。ネヴァーフたちが築いた千年の都にして、錬金術の総本山。中立を掲げてどの国とも等しく商いをする。その中立が何を守るためのものかは、誰も問わない。</p><details class="fmore"><summary>詳しく読む</summary><div><p>伝承では&quot;地の粛清&quot;の時に生まれた大空洞に、むき出しになった鉱石資源へ目をつけたネヴァーフたちが都市を築いたのが始まり。錬金術で明かりを灯し、空気を循環させて完成した都は、古い建物になると千年を越える。</p><p>統治は長老による合議制。主産業は錬金術師たちの発明品で、ポーションに代表される薬品は、パリス同盟や神聖ヴァンスター帝国といった大国も買いつけに来る。他国が支配を試みたこともあるが、特殊な立地と技術力の高さではねのけてきた。</p><p>回廊から入ってすぐの場所には市場が、街の中心には長老議会が所有する大工房が、東には発明品の倉庫街がある。……なお、廃棄された発明品が互いに干渉し、魔法生物や機械が闊歩する迷宮と化した「第十三番倉庫」には近づかないこと。「十三番送りにするぞ」は、ラーフで最大級の脅し文句である。</p></div></details></article>
     </section>
 
     <section class="fgroup">
-      <article class="card reveal"><h4>神聖ヴァンスター帝国</h4><p>協定により、回路南部での学術調査と遺跡研究の権利を持つ。学者の顔と、それ以外の顔。</p><details class="fmore"><summary>詳しく読む</summary><div><p>大陸南西のフィンジアス島を本拠とする帝政国家。聖暦999年、若き皇帝ゼダンの即位を機に国号を「神聖ヴァンスター帝国」と改め、エリンディル統一を掲げて侵略路線を強めた。</p><p>皇帝ゼダンは&quot;風の時代&quot;の神聖王アルトリウスの末裔を自称し、その象徴として魔剣クラウ・ソラスを手にする。錬金術の軍事利用と、高山に住まう天翼族との盟約が、圧倒的な軍事力を支える。帝都は八芒星の城壁に守られた&quot;天空の街&quot;ヴァンスター。</p><p>薔薇の災厄で国力が傷つき、現在は他国への侵攻を停止している。——だが国力が回復すれば再び動き出すと、誰もが予測している。聖都ディアスロンドには、ゼダンを「神聖王の末裔を僭称する者」と非難する声が強い。</p><p>即位から、五十七年。ゼダンはもう若くない。侵攻が止まってから、ずいぶんになる。それでも誰ひとり、あの帝国が牙を抜いたとは思っていない。——玉座に座り続けるあの老人が、何を待っているのか。知る者はいない。</p><p>ただ、こんな話がある。皇帝は、国の戦力を割いてまで、神々の遺した道具——神具を探させているのだと。クラウ・ソラスのほかにも、いくつかは、すでにあの男の手にあるのだとも。</p></div></details></article>
+      <article class="card reveal"><h4>神聖ヴァンスター帝国</h4><p>協定により、回廊南部での学術調査と遺跡研究の権利を持つ。学者の顔と、それ以外の顔。</p><details class="fmore"><summary>詳しく読む</summary><div><p>大陸南西のフィンジアス島を本拠とする帝政国家。聖暦999年、若き皇帝ゼダンの即位を機に国号を「神聖ヴァンスター帝国」と改め、エリンディル統一を掲げて侵略路線を強めた。</p><p>皇帝ゼダンは&quot;風の時代&quot;の神聖王アルトリウスの末裔を自称し、その象徴として魔剣クラウ・ソラスを手にする。錬金術の軍事利用と、高山に住まう天翼族との盟約が、圧倒的な軍事力を支える。帝都は八芒星の城壁に守られた&quot;天空の街&quot;ヴァンスター。</p><p>薔薇の災厄で国力が傷つき、現在は他国への侵攻を停止している。——だが国力が回復すれば再び動き出すと、誰もが予測している。聖都ディアスロンドには、ゼダンを「神聖王の末裔を僭称する者」と非難する声が強い。</p><p>即位から、五十七年。ゼダンはもう若くない。侵攻が止まってから、ずいぶんになる。それでも誰ひとり、あの帝国が牙を抜いたとは思っていない。——玉座に座り続けるあの老人が、何を待っているのか。知る者はいない。</p><p>ただ、こんな話がある。皇帝は、国の戦力を割いてまで、神々の遺した道具——神具を探させているのだと。クラウ・ソラスのほかにも、いくつかは、すでにあの男の手にあるのだとも。</p></div></details></article>
     </section>
 
     <section class="fgroup">
-      <article class="card reveal"><h4>聖都ディアスロンド</h4><p>七大神信仰の総本山にして、どの国にも属さない中立の聖地。三者協定の仲介者。「争っている場合ではない」——調停者たちは今日も回路を歩く。</p><details class="fmore"><summary>詳しく読む</summary><div><p>エリンディルに存在する神殿を統括する都市。宗教的な均衡と平等性を保つため、どの国家にも属さず、独立した国家機能を持つ。冒険者への依頼を統括する神殿機能の本部でもあり、各地の異変や事件の情報がこの都市に集まる。</p><p>白く輝く6つの塔に囲まれた六角形の都市。巡礼者は城壁沿いに6つの神殿——鍛冶、月、戦い、天空、大地、豊穣——を巡り、最後に中心部の大聖堂を礼拝するのが通例だ。大聖堂の奥には&quot;風の時代&quot;の遺物と伝えられる7つの塔が立ち、その足もとの「光の門」の中で、教皇は即位から退位までを過ごす。</p><p>聖典『白の書』によれば、都市は&quot;古の民&quot;エルダが神々の声を聞くために築き、のちの初代教皇ルキアノスが7つの塔の下で神々の声を聞いて再興した。以来800年——神の武具、神の道具を探し求めることが、神殿組織の使命のひとつであり続けている。</p></div></details></article>
+      <article class="card reveal"><h4>聖都ディアスロンド</h4><p>七大神信仰の総本山にして、どの国にも属さない中立の聖地。三者協定の仲介者。「争っている場合ではない」——調停者たちは今日も回廊を歩く。</p><details class="fmore"><summary>詳しく読む</summary><div><p>エリンディルに存在する神殿を統括する都市。宗教的な均衡と平等性を保つため、どの国家にも属さず、独立した国家機能を持つ。冒険者への依頼を統括する神殿機能の本部でもあり、各地の異変や事件の情報がこの都市に集まる。</p><p>白く輝く6つの塔に囲まれた六角形の都市。巡礼者は城壁沿いに6つの神殿——鍛冶、月、戦い、天空、大地、豊穣——を巡り、最後に中心部の大聖堂を礼拝するのが通例だ。大聖堂の奥には&quot;風の時代&quot;の遺物と伝えられる7つの塔が立ち、その足もとの「光の門」の中で、教皇は即位から退位までを過ごす。</p><p>聖典『白の書』によれば、都市は&quot;古の民&quot;エルダが神々の声を聞くために築き、のちの初代教皇ルキアノスが7つの塔の下で神々の声を聞いて再興した。以来800年——神の武具、神の道具を探し求めることが、神殿組織の使命のひとつであり続けている。</p></div></details></article>
     </section>
-    <div class="treaty reveal"><h4>ドートーベン協定<span>THE DORTOBEN ACCORD</span></h4><p>聖都ディアスロンドの仲介により、北部平原の交易都市ドートーベンで、パリス同盟・神聖ヴァンスター帝国・ラーフ大洞窟の三者が結んだ協定。</p><p>凍結の回路の中では、三者は互いに刃を交えない。帝国の通行はランタン亭の北——石門より手前まで。パリス同盟と帝国は、通行の対価をラーフ大洞窟に納める。そして、回路の安全に関わることは、速やかに分かち合う——名目上は。</p><p>実際には、それぞれの思惑が、灯りの届かぬ回廊を静かに行き交っている。</p></div>
-    <h3 class="wsec reveal">回路の人々<small>PEOPLE OF THE CIRCUIT</small></h3>
+    <div class="treaty reveal"><h4>ドートーベン協定<span>THE DORTOBEN ACCORD</span></h4><p>聖都ディアスロンドの仲介により、北部平原の交易都市ドートーベンで、パリス同盟・神聖ヴァンスター帝国・ラーフ大洞窟の三者が結んだ協定。</p><p>凍結の回路の中では、三者は互いに刃を交えない。帝国の通行はランタン亭の北——石門より手前まで。パリス同盟と帝国は、通行の対価をラーフ大洞窟に納める。そして、回廊の安全に関わることは、速やかに分かち合う——名目上は。</p><p>実際には、それぞれの思惑が、灯りの届かぬ回廊を静かに行き交っている。</p></div>
+    <h3 class="wsec reveal">回廊の人々<small>PEOPLE OF THE CIRCUIT</small></h3>
     <div class="chgrid">
       <article class="ch reveal">
         <div class="ch-face"><img src="assets/ch_2.png" loading="lazy" alt="ルーヴェ・レイン"></div>
-        <div class="ch-body"><h4>ルーヴェ・レイン</h4><span class="role">ランタン亭の女将</span><p>回路のなかほど、灯りの宿をひとりで営む。物静かで、行き届いていて——いつからそこにいるのか、誰も知らない。</p></div>
+        <div class="ch-body"><h4>ルーヴェ・レイン</h4><span class="role">ランタン亭の女将</span><p>回廊のなかほど、灯りの宿をひとりで営む。物静かで、行き届いていて——けれど、彼女自身のことを知る客は、ひとりもいない。</p></div>
       </article>
     </div>
 <p class="ch-more reveal">旅の中で出会う人々は、これから増えていく。</p>
@@ -801,7 +813,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   <div class="wrap">
     <h3 class="wsec reveal" style="margin-top:0;">今回予告<small>TRAILERS</small></h3>
     <p class="g-tba reveal">各話の「今回予告」は、開幕前にここで公開予定。</p>
-    <h3 class="wsec reveal">回路の情景<small>ARTWORKS</small></h3>
+    <h3 class="wsec reveal">回廊の情景<small>ARTWORKS</small></h3>
     <div class="ggrid">
     <figure class="gitem reveal"><button class="gbtn" data-cap="凍結の回路 —— 隊商の灯り"><img src="assets/kv.jpg" loading="lazy" alt="凍結の回路 —— 隊商の灯り"></button><figcaption>凍結の回路 —— 隊商の灯り</figcaption></figure>
     <figure class="gitem reveal"><button class="gbtn" data-cap="御者台から —— 手綱と灯りと、その先の闇"><img src="assets/g_pov_driver.jpg" loading="lazy" alt="御者台から —— 手綱と灯りと、その先の闇"></button><figcaption>御者台から —— 手綱と灯りと、その先の闇</figcaption></figure>
@@ -826,24 +838,24 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="page" data-page="record">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">ARCHIVE</span><h2>記録保管庫</h2><p class="sub">ARCHIVE</p></div></div>
   <div class="wrap">
-    <p class="arc-note reveal">回路で起きたことは、最後にはすべてこの棚に集まる。——整理・保管：フロストゲート 安全通行責任者 レイフ・ストーム</p>
+    <p class="arc-note reveal">凍結の回路で起きたことは、最後にはすべてこの棚に集まる。——整理・保管：フロストゲート 安全通行責任者 レイフ・ストーム</p>
 
     <article class="ep ep-done reveal">
       <div class="ep-head"><span class="ep-no">第0話</span><h4>月は誰の夢を見る</h4><span class="ep-date">2026-05-25 実施</span></div>
       <p class="ep-sum">ある時、開拓団の団員たちが同じ夢を見た。夢に導かれるように新人の開拓者が姿を消し、捜索に出た仲間たちは、誰も知らない古い遺跡——月光観測所へたどり着く。そこで彼らが見たものは偽りの月、まやかしの女神であった。開拓者たちは幻惑を斬り伏せ、行方不明者を連れ帰った。……だが、あの観測所は「なぜあんな場所に」あったのだろう。</p>
-<div class="ep-blk ep-found"><h5>判明したこと</h5><ul><li>沈黙の氷原の雪山に、記録にない古エルダ語の遺跡「月光観測所」が存在する。</li><li>そこに祀られていた月と女神は、いずれも偽りのものであった。</li><li>失踪した新人魔術士サルマは無事に救出された。</li></ul></div><div class="ep-blk ep-open"><h5>未解決の記録</h5><ul><li>なぜ、あの観測所は六千メートル級の山腹にあるのか。あの高さから、あの視界は成立しない。——救出されたサルマ本人が、報告書でそう指摘している。</li><li>遺跡から回収された魔石は開拓団が買い取り、フロストゲートの保管庫に納められた。分析は、いまも進んでいない。</li></ul></div>
+<div class="ep-blk ep-found"><h5>判明したこと</h5><ul><li>沈黙の氷原の雪山に、古エルダ語の遺跡——天体観測施設「月光観測所」が存在する。</li><li>遺跡そのものはブリガンティア信仰のものだった。だが、そこで月の女神として振る舞っていたものは、女神ではなかった。</li><li>失踪した新人魔術士サルマは無事に救出された。</li></ul></div><div class="ep-blk ep-open"><h5>未解決の記録</h5><ul><li>なぜ、あの観測所は六千メートル級の山腹にあるのか。あれほどの知識と技術を持った文明が、天体を観るためにあの場所を選ぶとは考えにくい。——救出されたサルマ本人が、報告書でそう指摘している。</li><li>遺跡から回収された魔石は開拓団が買い取り、フロストゲートの保管庫に納められた。分析は、いまも続けられている。</li></ul></div>
       <p class="ep-log"><a class="ep-loglink" href="assets/log_ep0.html" target="_blank" rel="noopener">📜 セッションログ</a> <a class="ep-loglink" href="assets/handout_ep0_salma.pdf" target="_blank" rel="noopener">📎 報告書 月光観測所について（報告者：サルマ）</a></p>
     </article>
 
     <article class="ep ep-next reveal">
       <div class="ep-head"><span class="ep-no">第1話</span><h4>深く、長い闇</h4><span class="ep-date">2026年8月 予定</span></div>
-      <p class="ep-sum ep-tba">まもなく、扉が開く。</p>
+      <p class="ep-sum ep-tba">この話の記録は、まだ書かれていない。</p>
     </article>
 <p class="ep-locked reveal">この先も、夜はまだ長く続く——記録は、旅とともに増えていく。</p>
 
-    <h3 class="wsec reveal">回路の現在<small>STATE OF THE CIRCUIT</small></h3>
-    <p class="cs-note reveal">旅のたびに、回路は少しずつ変わっていく。——この欄は、各話の終わりに書き換えられる。</p>
-    <div class="cs-grid reveal"><div class="cs-row cs-ok"><span class="cs-k">ランタン亭の灯り</span><span class="cs-v">満ちている</span></div><div class="cs-row cs-ok"><span class="cs-k">フロストゲート 通行状況</span><span class="cs-v">通行可（記録係が照合を続けている）</span></div><div class="cs-row cs-warn"><span class="cs-k">荷の紛失</span><span class="cs-v">半年で複数件。原因不明</span></div><div class="cs-row cs-warn"><span class="cs-k">月光観測所の立地</span><span class="cs-v">未解明</span></div><div class="cs-row cs-warn"><span class="cs-k">保管庫の魔石</span><span class="cs-v">分析中——「ただの魔石ではない」</span></div></div>
+    <h3 class="wsec reveal">回廊の現在<small>STATE OF THE CIRCUIT</small></h3>
+    <p class="cs-note reveal">旅のたびに、回廊は少しずつ変わっていく。——この欄は、各話の終わりに書き換えられる。</p>
+    <div class="cs-grid reveal"><div class="cs-row cs-ok"><span class="cs-k">凍結の回路 通行状況</span><span class="cs-v">通行可（記録係が照合を続けている）</span></div><div class="cs-row cs-warn"><span class="cs-k">荷の紛失</span><span class="cs-v">半年で複数件。原因不明</span></div><div class="cs-row cs-warn"><span class="cs-k">月光観測所の立地</span><span class="cs-v">未解明</span></div><div class="cs-row cs-warn"><span class="cs-k">保管庫の魔石</span><span class="cs-v">分析中——「ただの魔石ではない」</span></div></div>
   </div>
 </div>
 
@@ -851,70 +863,65 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="page" data-page="rules">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">RULES</span><h2>特殊ルール</h2><p class="sub">RULES</p></div></div>
   <div class="wrap rules-body">
-<p class="r-lead reveal">ルールブックを読んだだけでは分からない決まりごとがある。キャラクターを作る前に目を通しておくこと。</p><p class="r-note reveal">⚠ 凍結の回路の内側には、常にこのキャンペーン独自のトラップ［常闇］が設置されている。公式のアイテムやスキルの効き方が、そのぶん変わる。</p><section class="r-sec" id="r-make"><h3 class="wsec reveal">キャラクターを作る<small>CHARACTER CREATION</small></h3>
+<p class="r-lead reveal">本キャンペーンで適用する特殊ルールをまとめる。レギュレーション「氷原開拓団」の規定と、本キャンペーン独自の追加規定を含む。キャラクター作成前に確認すること。</p><p class="r-note reveal">⚠ 凍結の回路の内側には、本キャンペーン独自の常設トラップ［常闇］が設置されている。明度を変更する効果の適用範囲が、そのぶん制限される。</p><section class="r-sec" id="r-make"><h3 class="wsec reveal">キャラクター作成<small>CHARACTER CREATION</small></h3>
 <p class="r-badge reveal">レギュレーション：氷原開拓団</p>
-<p class="reveal">初期作成はCL3以上。新規作成に必要な経験点は制約やコネクションを含めて不要。初期所持金は [CL×CL×400] G。</p>
-<p class="reveal">サードクラスはアイスメイトかパイオニアの二択。氷原で生まれた者か、外から来た者か。違いはそれだけだ。</p>
+<p class="reveal">初期作成はCL3以上。新規作成に必要な経験点は、制約・コネクションを含めて不要。初期所持金は [CL×CL×400] G。</p>
+<p class="reveal">サードクラスはアイスメイトまたはパイオニアのいずれかを選択する。氷原で生まれた者か、外から来た者かによる。</p>
 <div class="r-tw reveal"><table class="r-tbl"><thead><tr><th>サードクラス</th><th>出身</th><th>参照できるデータ</th><th>パッシブ効果</th></tr></thead><tbody><tr><td>アイスメイト</td><td>エリンディル大陸西方［氷原開拓団］——つまり、開拓団で生まれた者</td><td>基本クラスのみ</td><td>【耐寒値】を +1 する</td></tr><tr><td>パイオニア</td><td>それ以外。エリアをひとつ選ぶ</td><td>基本クラス＋選んだエリアの地方クラス</td><td>資材（建材／燃料／食料）を重量0で持てる</td></tr></tbody></table></div>
 <p class="r-pt reveal">使用可能ルールブックは基本①②、PIG、PSG。条件つきで STG、EXB、LDB、MYG。</p>
 <p class="r-pt reveal">種族は一律で地方データとして扱わない。サードクラスに関わらず、すべての種族で作成できる。</p>
-<p class="r-pt reveal">サードクラスのスキルはCL1のスキル枠では取得できない。CL2以降で取ること。</p>
+<p class="r-pt reveal">サードクラスのスキルはCL1のスキル枠では取得できない。CL2以降で取得すること。</p>
 <p class="r-pt reveal">誓約は下級帯1枠、上級帯1枠、称号帯1枠。</p>
-<p class="r-pt reveal">防具の耐寒仕様加工（頭+1／胴+1／全身+3）は、本来なら購入金額が2倍になる。だがプリムスに鍛冶屋が建ったため、いまは追加費用なしで受けられる。</p>
-<p class="r-warn reveal">禁止データがある。マウント（陸マグロ・グライダー・水牛・ラクダ・自転車・自動二輪／四輪）は使えない。……凍るか、滑るか、無免許なので。</p></section>
-<section class="r-sec" id="r-cold"><h3 class="wsec reveal">寒さと戦う ——【寒度】と【耐寒値】<small>THE COLD</small></h3>
+<p class="r-pt reveal">防具の耐寒仕様加工（頭+1／胴+1／全身+3）は購入金額が2倍になる規定だが、プリムスに鍛冶屋が建設されたため、現在は追加費用なしで加工できる。</p>
+<p class="r-warn reveal">禁止データ：マウント（陸マグロ／グライダー／水牛／ラクダ／自転車／自動二輪／四輪）は使用できない。</p></section>
+<section class="r-sec" id="r-cold"><h3 class="wsec reveal">【寒度】と【耐寒値】<small>THE COLD</small></h3>
 <p class="r-badge reveal">レギュレーション：氷原開拓団</p>
-<p class="reveal">【寒度】はシーンのあいだ続く数値だ。0および1〜10で表し、大きいほど寒い。</p>
-<p class="reveal">クリンナッププロセスごとに寒度チェックを行う。[寒度]−[耐寒値] のぶんだけ悪影響を受ける。</p>
+<p class="reveal">【寒度】はシーンのあいだ持続する数値。0および1〜10で表し、数値が大きいほど寒い。</p>
+<p class="reveal">クリンナッププロセスごとに寒度チェックを行う。[寒度] が [耐寒値] を上回っている場合、その差分だけ悪影響を受ける。</p>
 <p class="r-form reveal">悪影響 ＝ 足りない数値 × 10 点の HP／MP ロス</p>
 <div class="r-tw reveal"><table class="r-tbl"><thead><tr><th>天気</th><th>寒度への効果</th></tr></thead><tbody><tr><td>晴れ</td><td>−1</td></tr><tr><td>曇り</td><td>変化なし</td></tr><tr><td>降雪</td><td>+1</td></tr><tr><td>吹雪</td><td>+2（屋内や洞窟内では +1 にしてもよい）</td></tr></tbody></table></div>
-<p class="r-pt reveal">火を扱えば寒度は下がる（魔術〈火〉全般／焚火／《マジックキャンドル》）。ただし同じスキルは、何人が使っても一度きりだ。</p>
-<p class="r-pt reveal">氷を扱う多くのスキルはシーンの寒度を上げる。そして上げること自体が火力になる。</p>
-<p class="r-pt reveal">つまり——寒くするほど強くなる者と、寒さに削られる者が同じ卓に座る。「寒度を上げるぞ」「待て、俺の耐寒値が足りない」。その相談こそが、この回路の旅だ。</p>
-<p class="r-pt reveal">［絶対零度状態］では寒度10・耐寒値0 として換算する。通常の計算では到達しない。</p></section>
-<section class="r-sec" id="r-bs"><h3 class="wsec reveal">凍りついていく ——[凍傷]・[雪症]・[積雪状態]<small>FROSTBITE</small></h3>
+<p class="r-pt reveal">寒度を下げる手段は、「分類：魔術〈火〉」のスキル全般／焚火／《マジックキャンドル》。ただし同一のスキルは、何人が使用しても1シーンにつき1回しか効果がない。</p>
+<p class="r-pt reveal">氷を扱うスキルの多くはシーンの寒度を上昇させる。寒度が高いほど威力の上がるスキルも存在する。</p>
+<p class="r-pt reveal">寒度の上昇はパーティ全体に影響する。上昇させるスキルを使用する前に、各PCの耐寒値を確認すること。</p>
+<p class="r-pt reveal">［絶対零度状態］では寒度10・耐寒値0として換算する。通常の計算では到達しない値である。</p></section>
+<section class="r-sec" id="r-bs"><h3 class="wsec reveal">[凍傷]・[雪症]・[積雪状態]<small>FROSTBITE</small></h3>
 <p class="r-badge reveal">レギュレーション：氷原開拓団</p>
-<p class="reveal">[凍傷] は付与された時点では強度1だ。放っておくと加速する。</p>
+<p class="reveal">レギュレーション「氷原開拓団」では、2つのバッドステータスと1つの特殊状態が追加されている。</p>
+<p class="reveal">[凍傷] は付与された時点では効果強度1。クリンナッププロセスごとに効果強度が上昇する。</p>
 <p class="r-form reveal">クリンナッププロセス：現在の効果強度に +[寒度] し、その後 HP を [効果強度] 点ロスする</p>
 <div class="r-tw reveal"><table class="r-tbl"><thead><tr><th>寒度4のとき</th><th>強度</th><th>HPロス</th><th>累計</th></tr></thead><tbody><tr><td>1ラウンド目</td><td>5</td><td>−5</td><td>5</td></tr><tr><td>2ラウンド目</td><td>9</td><td>−9</td><td>14</td></tr><tr><td>3ラウンド目</td><td>13</td><td>−13</td><td>27</td></tr><tr><td>4ラウンド目</td><td>17</td><td>−17</td><td>44</td></tr><tr><td>5ラウンド目</td><td>21</td><td>−21</td><td>65 ／ 片腕を失う</td></tr></tbody></table></div>
-<p class="r-pt reveal">効果強度が20になったとき、片腕を失う。失う腕はPLが決めてよい。そのシナリオのあいだ、その腕に装備はできない。</p>
-<p class="r-pt reveal">バッドステータス無効で回復した場合も [効果強度×5] 点のHPをロスする。治すこともただではない。</p>
-<p class="r-pt reveal">[雪症(n)]：メジャーアクションの判定直前にMPを [n×5] 点失う。足りなければ、そのアクションは自動失敗となる。</p>
-<p class="r-pt reveal">[積雪状態(n)]：そのエンゲージにいる者は【移動力】が [n×5]m 減少する（最低5m）。飛んでいる者には効かない。</p>
-<p class="r-warn reveal">寒度6での凍傷は、4ラウンドで腕が落ちる。凍傷はじわじわ削るものではない。加速して、突然くる。</p></section>
-<section class="r-sec" id="r-dark"><h3 class="wsec reveal">回路の闇 ——【明度】<small>DARKNESS</small></h3>
-<p class="reveal">凍結の回路の内側は、拠点をのぞいて明度1。完全な暗闇だ。</p>
-<p class="reveal">フロストゲート。ランタン亭。坩堝横丁。灯りのある場所はある。だがその間を繋ぐ何十キロもの道は、灯りを持たぬ者にとって、ただの闇でしかない。</p>
+<p class="r-pt reveal">効果強度が20に達したとき、片腕を失う。失う腕はPLが選択する。そのシナリオのあいだ、その腕に装備はできない。</p>
+<p class="r-pt reveal">バッドステータス無効で回復した場合も、[効果強度×5] 点のHPをロスする。</p>
+<p class="r-pt reveal">[雪症(n)]：メジャーアクションの判定直前にMPを [n×5] 点失う。足りない場合、そのアクションは自動失敗となる。</p>
+<p class="r-pt reveal">[積雪状態(n)]：そのエンゲージにいる者は【移動力】が [n×5]m 減少する（最低5m）。飛行している者は影響を受けない。</p>
+<p class="r-warn reveal">効果強度は加速的に上昇する。寒度6の場合、4ラウンドで効果強度20に達する。早期に解除すること。</p></section>
+<section class="r-sec" id="r-dark"><h3 class="wsec reveal">【明度】<small>DARKNESS</small></h3>
+<p class="reveal">凍結の回路の内側は、拠点をのぞいて明度1。</p>
+<p class="reveal">拠点（プリムス／フロストゲート／ランタン亭／坩堝横丁）は明度3。拠点と拠点を繋ぐ道は、すべて明度1として扱う。</p>
 <div class="r-tw reveal"><table class="r-tbl"><thead><tr><th>明度</th><th>どんな暗さか</th><th>受けるペナルティ</th></tr></thead><tbody><tr><td>1</td><td>完全な暗闇。先はまったく見えない</td><td>自分のいるマスしか射線が通らない／移動は5m／すべての行為判定のダイスが1個減少</td></tr><tr><td>2</td><td>うっすらと見える程度の暗闇</td><td>すべての行為判定のダイスが1個減少</td></tr><tr><td>3</td><td>朝方や夕方程度。自分たちのいるエリア全体は見渡せる</td><td>ペナルティなし（ただし隣のエリアは見えない）</td></tr><tr><td>4</td><td>昼間の明るさ</td><td>ペナルティなし</td></tr></tbody></table></div>
-<p class="r-warn reveal">明度1では、自分のいるマスにしか射線が通らない。射撃も魔法も、隣のマスにすら届かない。灯りを失うとは、そういうことだ。</p></section>
-<section class="r-sec" id="r-trap"><h3 class="wsec reveal">［常闇］——回路に満ちるもの<small>THE ETERNAL DARK</small></h3>
+<p class="r-warn reveal">明度1では、自分のいるスクウェアにしか射線が通らない。射撃・魔術とも、隣のスクウェアを対象にできない。</p></section>
+<section class="r-sec" id="r-trap"><h3 class="wsec reveal">［常闇］<small>THE ETERNAL DARK</small></h3>
 <p class="r-badge reveal">本キャンペーン独自のトラップ</p>
-<p class="reveal">凍結の回路の闇は、ただ暗いのではない。灯りを、遠くまで届かせない。</p>
-<p class="reveal">開拓団はこれを、解除できない常設のトラップとして記録している。</p>
+<p class="reveal">凍結の回路には、解除できない常設のトラップ［常闇］が設置されている。開拓団はこれを記録し、下記のとおりデータ化している。</p>
+<p class="reveal">効果は「明度を変更する効果の適用範囲を制限する」こと。灯りは、手段ごとに定められた距離までしか届かない。</p>
+<div class="trapcard reveal"><h4><ruby>常闇<rt>とこやみ</rt></ruby></h4><div class="tc-body"><div class="tc-r"><span class="tc-c"><b>種別</b>：トラップ</span><span class="tc-c"><b>構造</b>：不明</span></div><div class="tc-r"><span class="tc-c"><b>レベル</b>：20</span><span class="tc-c"><b>カスタマイズ</b>：×</span></div><div class="tc-r one"><span class="tc-c"><b>条件</b>：コンティニュ型</span></div><div class="tc-r"><span class="tc-c"><b>探知値</b>：－</span><span class="tc-c"><b>解除値</b>：－</span></div><div class="tc-r"><span class="tc-c"><b>対象</b>：接触</span><span class="tc-c"><b>射程</b>：シーン</span></div><p class="tc-eff"><b>効果</b>：明度を変更するあらゆる効果は、その効果の発生源から、その手段ごとに定められた距離（このトラップの効果範囲・次表）以内のスクウェアにのみ適用される。範囲外のスクウェアの明度は1として扱う。このトラップはシークレットではない。</p><p class="tc-note">灯りが、遠くまで届かない。——ただ暗いのではない、と回廊を歩く者は言う。</p></div></div>
 <h4 class="r-tt reveal">このトラップの効果範囲 ——灯りの届く距離</h4>
 <div class="r-tw reveal"><table class="r-tbl"><thead><tr><th>灯り</th><th>届く距離</th><th>明度への効果</th><th>代償・条件</th></tr></thead><tbody><tr><td>キャップライト</td><td>15m（3マス）</td><td>+1（最大3）</td><td>頭部・全身の防具が必要。手は空く</td></tr><tr><td>ランタン</td><td>20m（4マス）</td><td>+1（最大3）</td><td>装備部位：片 ——片手が塞がる</td></tr><tr><td>《ワーニングトーチ》</td><td>20m（4マス）</td><td>+2</td><td>シーフ／パイオニアのスキル。フリーアクション</td></tr><tr><td>蛍灯</td><td>15m（3マス）</td><td>+1（最大3）</td><td>投げて使う。消耗品。動かない</td></tr><tr><td>《マジックキャンドル》</td><td>25m（5マス）</td><td>2または3に変更</td><td>メジャーアクション＋MP6</td></tr><tr><td>《イルミネントウェポン》</td><td>30m（6マス）</td><td>常に4</td><td>召喚具装備。隠密状態になれない</td></tr></tbody></table></div>
-<div class="trapcard reveal"><h4><ruby>常闇<rt>とこやみ</rt></ruby></h4><div class="tc-body"><div class="tc-r"><span class="tc-c"><b>種別</b>：トラップ</span><span class="tc-c"><b>構造</b>：不明</span></div><div class="tc-r"><span class="tc-c"><b>レベル</b>：20</span><span class="tc-c"><b>カスタマイズ</b>：×</span></div><div class="tc-r one"><span class="tc-c"><b>条件</b>：コンティニュ型</span></div><div class="tc-r"><span class="tc-c"><b>探知値</b>：－</span><span class="tc-c"><b>解除値</b>：－</span></div><div class="tc-r"><span class="tc-c"><b>対象</b>：接触</span><span class="tc-c"><b>射程</b>：シーン</span></div><p class="tc-eff"><b>効果</b>：明度を変更するあらゆる効果は、その効果の発生源から、その手段ごとに定められた距離（このトラップの効果範囲・次表）以内のスクウェアにのみ適用される。範囲外のスクウェアの明度は1として扱う。このトラップはシークレットではない。</p><p class="tc-note">灯りが、遠くまで届かない。——ただ暗いのではない、と回路を歩く者は言う。</p></div></div>
 <figure class="r-fig reveal"><svg class="lgrid" viewBox="0 0 272 272" role="img" aria-label="灯りの届く範囲。前後左右に4マス、斜めには2マスで途切れる"><rect class="lv1" x="1" y="1" width="30" height="30"/><rect class="lv1" x="31" y="1" width="30" height="30"/><rect class="lv1" x="61" y="1" width="30" height="30"/><rect class="lv1" x="91" y="1" width="30" height="30"/><rect class="lv2" x="121" y="1" width="30" height="30"/><text class="sqn" x="136.0" y="20.0">2</text><rect class="lv1" x="151" y="1" width="30" height="30"/><rect class="lv1" x="181" y="1" width="30" height="30"/><rect class="lv1" x="211" y="1" width="30" height="30"/><rect class="lv1" x="241" y="1" width="30" height="30"/><rect class="lv1" x="1" y="31" width="30" height="30"/><rect class="lv1" x="31" y="31" width="30" height="30"/><rect class="lv1" x="61" y="31" width="30" height="30"/><rect class="lv2" x="91" y="31" width="30" height="30"/><text class="sqn" x="106.0" y="50.0">2</text><rect class="lv3" x="121" y="31" width="30" height="30"/><text class="sqn" x="136.0" y="50.0">3</text><rect class="lv2" x="151" y="31" width="30" height="30"/><text class="sqn" x="166.0" y="50.0">2</text><rect class="lv1" x="181" y="31" width="30" height="30"/><rect class="lv1" x="211" y="31" width="30" height="30"/><rect class="lv1" x="241" y="31" width="30" height="30"/><rect class="lv1" x="1" y="61" width="30" height="30"/><rect class="lv1" x="31" y="61" width="30" height="30"/><rect class="lv2" x="61" y="61" width="30" height="30"/><text class="sqn" x="76.0" y="80.0">2</text><rect class="lv3" x="91" y="61" width="30" height="30"/><text class="sqn" x="106.0" y="80.0">3</text><rect class="lv3" x="121" y="61" width="30" height="30"/><text class="sqn" x="136.0" y="80.0">3</text><rect class="lv3" x="151" y="61" width="30" height="30"/><text class="sqn" x="166.0" y="80.0">3</text><rect class="lv2" x="181" y="61" width="30" height="30"/><text class="sqn" x="196.0" y="80.0">2</text><rect class="lv1" x="211" y="61" width="30" height="30"/><rect class="lv1" x="241" y="61" width="30" height="30"/><rect class="lv1" x="1" y="91" width="30" height="30"/><rect class="lv2" x="31" y="91" width="30" height="30"/><text class="sqn" x="46.0" y="110.0">2</text><rect class="lv3" x="61" y="91" width="30" height="30"/><text class="sqn" x="76.0" y="110.0">3</text><rect class="lv3" x="91" y="91" width="30" height="30"/><text class="sqn" x="106.0" y="110.0">3</text><rect class="lv3" x="121" y="91" width="30" height="30"/><text class="sqn" x="136.0" y="110.0">3</text><rect class="lv3" x="151" y="91" width="30" height="30"/><text class="sqn" x="166.0" y="110.0">3</text><rect class="lv3" x="181" y="91" width="30" height="30"/><text class="sqn" x="196.0" y="110.0">3</text><rect class="lv2" x="211" y="91" width="30" height="30"/><text class="sqn" x="226.0" y="110.0">2</text><rect class="lv1" x="241" y="91" width="30" height="30"/><rect class="lv2" x="1" y="121" width="30" height="30"/><text class="sqn" x="16.0" y="140.0">2</text><rect class="lv3" x="31" y="121" width="30" height="30"/><text class="sqn" x="46.0" y="140.0">3</text><rect class="lv3" x="61" y="121" width="30" height="30"/><text class="sqn" x="76.0" y="140.0">3</text><rect class="lv3" x="91" y="121" width="30" height="30"/><text class="sqn" x="106.0" y="140.0">3</text><rect class="lv3" x="121" y="121" width="30" height="30"/><text class="sqn" x="136.0" y="140.0">3</text><rect class="lv3" x="151" y="121" width="30" height="30"/><text class="sqn" x="166.0" y="140.0">3</text><rect class="lv3" x="181" y="121" width="30" height="30"/><text class="sqn" x="196.0" y="140.0">3</text><rect class="lv3" x="211" y="121" width="30" height="30"/><text class="sqn" x="226.0" y="140.0">3</text><rect class="lv2" x="241" y="121" width="30" height="30"/><text class="sqn" x="256.0" y="140.0">2</text><rect class="lv1" x="1" y="151" width="30" height="30"/><rect class="lv2" x="31" y="151" width="30" height="30"/><text class="sqn" x="46.0" y="170.0">2</text><rect class="lv3" x="61" y="151" width="30" height="30"/><text class="sqn" x="76.0" y="170.0">3</text><rect class="lv3" x="91" y="151" width="30" height="30"/><text class="sqn" x="106.0" y="170.0">3</text><rect class="lv3" x="121" y="151" width="30" height="30"/><text class="sqn" x="136.0" y="170.0">3</text><rect class="lv3" x="151" y="151" width="30" height="30"/><text class="sqn" x="166.0" y="170.0">3</text><rect class="lv3" x="181" y="151" width="30" height="30"/><text class="sqn" x="196.0" y="170.0">3</text><rect class="lv2" x="211" y="151" width="30" height="30"/><text class="sqn" x="226.0" y="170.0">2</text><rect class="lv1" x="241" y="151" width="30" height="30"/><rect class="lv1" x="1" y="181" width="30" height="30"/><rect class="lv1" x="31" y="181" width="30" height="30"/><rect class="lv2" x="61" y="181" width="30" height="30"/><text class="sqn" x="76.0" y="200.0">2</text><rect class="lv3" x="91" y="181" width="30" height="30"/><text class="sqn" x="106.0" y="200.0">3</text><rect class="lv3" x="121" y="181" width="30" height="30"/><text class="sqn" x="136.0" y="200.0">3</text><rect class="lv3" x="151" y="181" width="30" height="30"/><text class="sqn" x="166.0" y="200.0">3</text><rect class="lv2" x="181" y="181" width="30" height="30"/><text class="sqn" x="196.0" y="200.0">2</text><rect class="lv1" x="211" y="181" width="30" height="30"/><rect class="lv1" x="241" y="181" width="30" height="30"/><rect class="lv1" x="1" y="211" width="30" height="30"/><rect class="lv1" x="31" y="211" width="30" height="30"/><rect class="lv1" x="61" y="211" width="30" height="30"/><rect class="lv2" x="91" y="211" width="30" height="30"/><text class="sqn" x="106.0" y="230.0">2</text><rect class="lv3" x="121" y="211" width="30" height="30"/><text class="sqn" x="136.0" y="230.0">3</text><rect class="lv2" x="151" y="211" width="30" height="30"/><text class="sqn" x="166.0" y="230.0">2</text><rect class="lv1" x="181" y="211" width="30" height="30"/><rect class="lv1" x="211" y="211" width="30" height="30"/><rect class="lv1" x="241" y="211" width="30" height="30"/><rect class="lv1" x="1" y="241" width="30" height="30"/><rect class="lv1" x="31" y="241" width="30" height="30"/><rect class="lv1" x="61" y="241" width="30" height="30"/><rect class="lv1" x="91" y="241" width="30" height="30"/><rect class="lv2" x="121" y="241" width="30" height="30"/><text class="sqn" x="136.0" y="260.0">2</text><rect class="lv1" x="151" y="241" width="30" height="30"/><rect class="lv1" x="181" y="241" width="30" height="30"/><rect class="lv1" x="211" y="241" width="30" height="30"/><rect class="lv1" x="241" y="241" width="30" height="30"/><circle class="pc" cx="136.0" cy="136.0" r="9"/><text class="pcn" x="136.0" y="140.0">●</text></svg><figcaption>ランタン（20m）とキャップライト（15m）を持つ団員の足元。前後左右へは4マス届くが、斜めへは2マスで途切れる。</figcaption><p class="r-leg"><span class="k lv3"></span>明度3（ペナルティなし）<span class="k lv2"></span>明度2（全判定 −1D）<span class="k lv1"></span>明度1（何も見えない）</p></figure>
-<p class="r-pt reveal">斜めには半分しか届かない。スクウェアルールでは斜め移動ができず、斜めは「2歩ぶん」として数えるからだ。角が、闇になる。</p>
-<p class="r-pt reveal">明度3（ペナルティなし）になるのは、灯りが二つ重なった場所だけだ。安全に戦える範囲は、思うよりずっと狭い。</p>
-<p class="r-pt reveal">広げる方法はひとつ。もう一人が、もう一本、片手を差し出すこと。</p>
-<p class="r-pt reveal">パーティが離れれば、灯りを持たない側はその場で明度1に落ちる。「分かれるな」は、この回路では比喩ではない。</p>
-<p class="r-warn reveal">回路の獣は、光に対して三通りの反応をする。寄ってくるもの。逃げていくもの。そして、光が見えていないもの。灯りをつけるべきかは相手によって変わる。同じ灯りが、盾にも罠にもなる。</p></section>
-<section class="r-sec" id="r-item"><h3 class="wsec reveal">回路の灯り ——蛍灯<small>THE FIREFLY LAMP</small></h3>
+<p class="r-pt reveal">斜め方向へは半分の距離しか届かない。スクウェアルールでは斜め移動ができず、斜めは2歩ぶんとして数えるため。</p>
+<p class="r-pt reveal">明度1の場所で明度3（ペナルティなし）にするには +2 が必要となる。すなわち、灯りの効果範囲が二つ重なったスクウェアのみが該当する。</p>
+<p class="r-pt reveal">安全圏を広げるには、もう一人が追加の灯りを持つ必要がある（ランタンの場合、片手が塞がる）。</p>
+<p class="r-pt reveal">灯りの効果範囲から離れた場合、その位置の明度は1として扱う。パーティが分かれると、灯りを持たない側は即座に明度1に落ちる。</p>
+<p class="r-warn reveal">凍結の回路の生物が光に示す反応は、一様ではない。近づくもの、退くもの、意に介さないもの、そもそも光を感知できないもの（眼を持たない種）がいる。灯りを消しにかかるものや、自ら光を灯すものも記録されている。灯りが有利に働くかどうかは、相手によって異なる。</p></section>
+<section class="r-sec" id="r-item"><h3 class="wsec reveal">蛍灯<small>THE FIREFLY LAMP</small></h3>
 <p class="r-badge reveal">本キャンペーンで追加されるアイテム</p>
-<p class="reveal">開拓団の発明家オスカル・リューベックが、回路の原生生物との戦闘記録から作り上げた錬金術の灯りだ。</p>
-<p class="reveal">素材は霜螢（しもぼたる）。危機を感じると白く強く光る、小さな生き物である。回路の獣の多くは光を嫌って退く。だから霜螢は、光ることで身を守る。</p>
-<p class="reveal">オスカルは、その悲鳴を再現した。硝子の筒を折れば混ざり、青白く燃え続ける。火を使わない。だから熱を持たない。</p>
-<div class="trapcard itemcard reveal"><h4><ruby>蛍灯<rt>ほたるび</rt></ruby></h4><div class="tc-body"><div class="tc-r"><span class="tc-c"><b>種別</b>：道具</span><span class="tc-c"><b>レベル</b>：1</span></div><div class="tc-r"><span class="tc-c"><b>重量</b>：1</span><span class="tc-c"><b>価格</b>：300</span></div><p class="tc-eff"><b>効果</b>：マイナーアクション。20m以内の任意のスクウェア（自分のいるスクウェアを含む）を指定し、そこへ投げる。指定したスクウェアを中心に、半径15mの明度を+1（最大3）する。この効果はシーン終了まで持続する。消耗品。</p><p class="tc-eff"><b>解説</b>：霜螢の発光を錬金術で再現した、火を使わない投擲式の灯り。折ると青白く燃え続ける。</p></div></div>
-<p class="r-pt reveal">手を塞がない。だが動かない。投げた場所に残り続ける。</p>
-<p class="r-pt reveal">前を照らして敵をあぶり出す。退路に光を残す。届かない場所を照らす。足元に落として、そこを守る。使い方は自分で決めろ。</p>
-<p class="r-pt reveal">高い。一投300G。それだけの価値があるかどうかは、自分で決めること。</p>
-<p class="r-warn reveal">明るいのに、寒い。蛍灯は熱を持たない。寒度チェックは容赦なく来る。</p></section>
-<section class="r-sec" id="r-prep"><h3 class="wsec reveal">卓に来る前に、これだけ<small>BEFORE YOU GO</small></h3>
-<p class="reveal">この回路を歩くにあたって、決めておくことはふたつだ。</p>
-<p class="r-pt reveal">① 灯りを持つか。持つなら、片手を差し出すことになる。持たないなら、誰かの灯りの内側から出られない。</p>
-<p class="r-pt reveal">② 【耐寒値】をいくつにするか。耐寒仕様の防具は、いま追加費用なしで作れる。</p>
-<p class="r-warn reveal">灯りを失って帰ってきたときには、少しだけ話を聞かせてもらう。記録はフロストゲートに残る。</p></section>
+<p class="reveal">開拓団の発明家オスカル・リューベックが製作した、錬金術による投擲式の灯り。本キャンペーンで追加される購入アイテムである。</p>
+<p class="reveal">霜蛍（しもぼたる）は、凍結の回路に棲む原生生物の一種である。危機を感じると強く発光する。小さな虫を好んで捕食するものの多くは光を嫌って退くため、この性質が霜蛍の身を守っている。</p>
+<p class="reveal">この器具は、強い衝撃を与えることで、死んだ霜蛍を再び光らせる。火を使用しないため、熱は持たない。</p>
+<div class="trapcard itemcard reveal"><h4><ruby>蛍灯<rt>ほたるび</rt></ruby></h4><div class="tc-body"><div class="tc-r"><span class="tc-c"><b>種別</b>：道具</span><span class="tc-c"><b>レベル</b>：1</span></div><div class="tc-r"><span class="tc-c"><b>重量</b>：1</span><span class="tc-c"><b>価格</b>：300</span></div><p class="tc-eff"><b>効果</b>：マイナーアクション。20m以内の任意のスクウェア（自分のいるスクウェアを含む）を選択する。選択したスクウェアを中心に、半径15m(3Sq)の明度を+1（最大3）する。この効果はシーン終了まで持続する。消耗品。</p><p class="tc-eff"><b>解説</b>：強い衝撃を与えると、封じられた霜蛍が再び光を発する。火を使わない投擲式の灯り。</p></div></div>
+<p class="r-pt reveal">投擲後は指定したスクウェアに固定される。手は塞がらないが、灯りは移動しない。</p>
+<p class="r-pt reveal">消耗品。価格は1個300G。</p>
+<p class="r-warn reveal">熱を持たないため、蛍灯では寒度は下がらない。明るくなっても、寒度チェックは通常どおり行う。</p></section>
   </div>
 </div>
 
@@ -923,7 +930,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">JOIN</span><h2>参加案内</h2><p class="sub">JOIN</p></div></div>
   <div class="wrap join-body">
     <p class="reveal">本キャンペーンは、Discordサーバー〈辺境TRPG村〉の氷原開拓団レギュレーション内で開催されます。レギュレーション「氷原開拓団」のPCなら、いつでも・誰でも・どの話からでも参加できます。毎話の冒頭に「前回のあらすじ」があり、途中参加でも迷いません。募集要項は確定し次第このページに掲載します。</p>
-<h3 class="wsec reveal">はじめての方へ — 参加のしかた</h3><p class="reveal">〈辺境TRPG村〉では、セッションごとにフォーラムのトピックを立て、その中でGMとPLのやり取りを完結させます。流れはこうです。</p><ol class="jsteps"><li class="jstep reveal"><span class="js-n">1</span><div><h5>卓を探す</h5><p>サーバーのセッション一覧（スプレッドシート）を開きます。色がついているのが募集中の卓、グレーになっているのが締め切られた卓です。</p></div></li><li class="jstep reveal"><span class="js-n">2</span><div><h5>トピックを読む</h5><p>気になる卓のリンクから、その卓のトピックへ。日程・レベル帯・レギュレーション・卓の重さなど、書いてあることをひととおり確かめます。</p></div></li><li class="jstep reveal"><span class="js-n">3</span><div><h5>参加を表明する</h5><p>トピックに参加希望を書き込みます。事前に伝えておいたほうがよいこと（苦手な描写、都合のつかない時間帯など）があれば、このときに。</p></div></li><li class="jstep reveal"><span class="js-n">4</span><div><h5>みんなで相談する</h5><p>卓のスレッドで、GMや他のPLと相談しながら準備します。〈辺境TRPG村〉では合意形成（コンセンサス）を大切にしています。「このキャラを出します！」ではなく「こういうキャラを出したいのですが、みなさんどうでしょう？」——そんな空気です。</p></div></li><li class="jstep reveal"><span class="js-n">5</span><div><h5>卓につく</h5><p>当日、回路へ。……灯りは、忘れずに。</p></div></li></ol><p class="jnote reveal">レギュレーションによっては、レベル帯などの参加条件があります。特殊レギュレーションの卓に参加する前に、サーバーのレギュレーション一覧を確認してください。</p><p class="jnote reveal">本キャンペーンは「氷原開拓団」レギュレーションの卓です。同レギュレーションのPCであれば、どの話からでも参加できます。</p><p class="jnote reveal">⚠ 本キャンペーンの終盤には、AR2E公式シナリオ『帝国の玉座』のごく軽微なネタバレが含まれます（皇帝の過去にまつわる事実がひとつ明かされるのみで、筋書きそのものには触れません）。これから『帝国の玉座』を遊ぶ予定のある方は、GMまでご相談ください。</p>
+<h3 class="wsec reveal">はじめての方へ — 参加のしかた</h3><p class="reveal">〈辺境TRPG村〉では、セッションごとにフォーラムのトピックを立て、その中でGMとPLのやり取りを完結させます。流れはこうです。</p><ol class="jsteps"><li class="jstep reveal"><span class="js-n">1</span><div><h5>卓を探す</h5><p>サーバーのセッション一覧（スプレッドシート）を開きます。色がついているのが募集中の卓、グレーになっているのが締め切られた卓です。</p></div></li><li class="jstep reveal"><span class="js-n">2</span><div><h5>トピックを読む</h5><p>気になる卓のリンクから、その卓のトピックへ。日程・レベル帯・レギュレーション・卓の重さなど、書いてあることをひととおり確かめます。</p></div></li><li class="jstep reveal"><span class="js-n">3</span><div><h5>参加を表明する</h5><p>トピックに参加希望を書き込みます。事前に伝えておいたほうがよいこと（苦手な描写、都合のつかない時間帯など）があれば、このときに。</p></div></li><li class="jstep reveal"><span class="js-n">4</span><div><h5>みんなで相談する</h5><p>卓のスレッドで、GMや他のPLと相談しながら準備します。〈辺境TRPG村〉では合意形成（コンセンサス）を大切にしています。「このキャラを出します！」ではなく「こういうキャラを出したいのですが、みなさんどうでしょう？」——そんな空気です。</p></div></li><li class="jstep reveal"><span class="js-n">5</span><div><h5>卓につく</h5><p>当日、回廊へ。……灯りは、忘れずに。</p></div></li></ol><p class="jnote reveal">レギュレーションによっては、レベル帯などの参加条件があります。特殊レギュレーションの卓に参加する前に、サーバーのレギュレーション一覧を確認してください。</p><p class="jnote reveal">本キャンペーンは「氷原開拓団」レギュレーションの卓です。同レギュレーションのPCであれば、どの話からでも参加できます。</p><p class="jnote reveal">⚠ 本キャンペーンの終盤には、AR2E公式シナリオ『帝国の玉座』のごく軽微なネタバレが含まれます（皇帝の過去にまつわる事実がひとつ明かされるのみで、筋書きそのものには触れません）。これから『帝国の玉座』を遊ぶ予定のある方は、GMまでご相談ください。</p>
   </div>
 </div>
 
@@ -995,19 +1002,75 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   }
 
   // ── KVスライドショー（12秒ごとにクロスフェード・reduced-motionでは固定） ──
+  // ＋ゆっくり等速パン（後輩くん希望 2026-07-14）：coverで切れている軸＝動かせる余白がある軸へ、
+  //   端が現れる手前まで（余白の88%）linearで寄る。絵の下端（隊商の灯り・人影）が最後に画面へ入り、
+  //   そこでクロスフェードして次の絵へ渡る。切れていない軸へは動かさない（黒帯が出るため）。
   var slides = document.querySelectorAll('.kv-slide');
-  if (slides.length > 1 && !reduce) {
-    var si = 0;
-    setInterval(function() {
-      slides[si].classList.remove('show');
-      si = (si + 1) % slides.length;
-      slides[si].classList.add('show');
-    }, 12000);
+  var KV_INT = 12000, KV_PAN = 15000;   // パンはフェード(2.8s)ぶん長めに回して、動きが途切れないようにする
+  var KV_SPEED = 9;                     // パン速度＝約9px/秒（縦横とも同じ・これ以上速いと酔う）
+  var kvRatio = {};                     // 画像の実アスペクト比（読み込めるまでは16:9で走らせる）
+  function kvAspect(el) {
+    var m = /url\(["']?(.*?)["']?\)/.exec(el.style.backgroundImage || '');
+    var src = m ? m[1] : '';
+    if (!src) return 16 / 9;
+    if (kvRatio[src]) return kvRatio[src];
+    var im = new Image();
+    im.onload = function() { if (im.naturalHeight) kvRatio[src] = im.naturalWidth / im.naturalHeight; };
+    im.src = src;
+    return kvRatio[src] || 16 / 9;
+  }
+  // 🔴パンの要点：cover は「要素の枠」で絵を切り落とすので、枠ごと動かすと反対側に隙間が出る（＝見切れる）。
+  //   だから枠を viewport ではなく "絵の実寸（cover相当のcw×ch）" まで広げて画面中央に置き、
+  //   #kvbg(overflow:hidden) の中でその板を滑らせる。移動量は必ずはみ出し幅の内側に収める＝端は決して現れない。
+  function kvPan(el) {
+    var W = innerWidth, H = innerHeight, r = kvAspect(el);
+    var cw = W, ch = W / r;                       // 幅に合わせる＝上下がはみ出す
+    if (ch < H) { ch = H; cw = H * r; }           // 足りなければ高さに合わせる＝左右がはみ出す
+    var over = 1.06;                              // 画面比と絵がほぼ同じ時でも動けるよう、わずかに大きく取る
+    cw *= over; ch *= over;
+    var sy = (ch - H) / 2;                        // 中央置きした時の上下それぞれのはみ出し幅
+    el.style.right = 'auto'; el.style.bottom = 'auto';
+    el.style.left = '50%'; el.style.top = '50%';
+    el.style.width = cw + 'px'; el.style.height = ch + 'px';
+    el.style.marginLeft = (-cw / 2) + 'px'; el.style.marginTop = (-ch / 2) + 'px';
+    if (reduce) { el.style.transform = 'none'; return; }
+    // 🔴パンは縦だけ（後輩くん確定 2026-07-14＝横は"はみ出し幅"が桁違いに大きく、動きが速すぎて酔う）。
+    //   移動量は「KV_SPEED px/秒で流せる距離」で頭打ち＝画面が変わっても速さは一定。
+    var d = Math.min(sy * 0.92, KV_SPEED * (KV_PAN / 1000) / 2);
+    if (d < 4) { el.style.transform = 'none'; return; }   // 動かせる余白が無い時は静止（無理に動かさない）
+    el.style.transition = 'opacity 2.8s ease';
+    el.style.transform = 'translate3d(0,' + d + 'px,0)';  // 上端から始めて…
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        el.style.transition = 'opacity 2.8s ease, transform ' + (KV_PAN / 1000) + 's linear';
+        el.style.transform = 'translate3d(0,' + (-d) + 'px,0)';  // …下端で終わる＝最後に絵の下部（隊商の灯り）が入る
+      });
+    });
+  }
+  var kvRz;
+  addEventListener('resize', function() {         // 画面サイズが変わったら板を測り直す（現在の絵だけ組み直す）
+    clearTimeout(kvRz);
+    kvRz = setTimeout(function() {
+      var cur = document.querySelector('.kv-slide.show');
+      if (cur) kvPan(cur);
+    }, 250);
+  });
+  if (slides.length) {
+    kvPan(slides[0]);
+    if (slides.length > 1 && !reduce) {
+      var si = 0;
+      setInterval(function() {
+        slides[si].classList.remove('show');
+        si = (si + 1) % slides.length;
+        slides[si].classList.add('show');
+        kvPan(slides[si]);
+      }, KV_INT);
+    }
   }
 
   // ── ページ送りスクロール（底まで来てさらに回すと次ページへ・上端で回すと前ページへ） ──
-  var ORDER = ['top','news','story','world','myth','character','gallery','record','rules','join'];
-  var LABELS = { top:'TOP', news:'NEWS ─ お知らせ', story:'STORY ─ 物語', world:'WORLD ─ 世界',
+  var ORDER = ['top','news','world','myth','character','gallery','record','rules','join'];
+  var LABELS = { top:'TOP', news:'NEWS ─ お知らせ', world:'WORLD ─ 世界',
     myth:'MYTH ─ 神話', character:'CHARACTER ─ 人物と勢力', gallery:'GALLERY ─ ギャラリー',
     record:'ARCHIVE ─ 記録保管庫', rules:'RULES ─ 特殊ルール', join:'JOIN ─ 参加案内' };
   function navTo(p) { location.hash = '#/' + (p === 'top' ? '' : p); }
@@ -1110,6 +1173,23 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       if (wl) wl.style.transform = 'translateY(' + (sy * -0.03) + 'px)';
       if (wr) wr.style.transform = 'translateY(' + (sy * -0.05) + 'px)';
     }
+    dusk();
+  }
+  // ── TOP：スクロールで背景が暮れていく（後輩くん希望 2026-07-14＝黒帯を廃し、底で完全な闇に） ──
+  // 導入文が画面に入りはじめた地点から、ページ最下部にかけて veil を 0→1 へ。frame() から毎回更新。
+  var veil = document.getElementById('kvveil');
+  var topStory = document.querySelector('.topstory');
+  function dusk() {
+    if (!veil) return;
+    var v = 0;
+    if (document.body.dataset.page === 'top' && topStory) {
+      var top = topStory.getBoundingClientRect().top + scrollY;
+      var from = top - innerHeight * 0.9;               // 導入文が画面下から現れるころに暮れはじめ…
+      var to = from + innerHeight * 0.8;                // …0.8画面ぶんスクロールしきる頃には完全な闇（後輩くん希望＝速め）
+      if (to > from) v = (scrollY - from) / (to - from);
+      v = v < 0 ? 0 : (v > 1 ? 1 : v);
+    }
+    veil.style.opacity = v.toFixed(3);
   }
   var tick = false;
   addEventListener('scroll', function() {
