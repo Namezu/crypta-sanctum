@@ -135,6 +135,50 @@ main { position:relative; z-index:3; }
 .kv .meta { margin-top:34px; font-size:12.5px; color:#a8bac4; letter-spacing:.1em; line-height:2.2; }
 .kv .start { margin-top:26px; display:inline-block; border:1px solid rgba(159,216,232,.4); padding:9px 26px;
   font-size:14px; letter-spacing:.3em; color:var(--ice); background:rgba(4,7,13,.55); }
+/* ── TOP：初参加者への扉 ── */
+.guide { margin:34px auto 0; max-width:640px; padding:22px 24px; text-align:left;
+  border:1px solid rgba(159,216,232,.22); background:rgba(4,7,13,.62); backdrop-filter:blur(2px); }
+.guide .g-hd { font-size:clamp(15px,2.4vw,18px); letter-spacing:.12em; color:var(--ice);
+  margin-bottom:12px; text-align:center; }
+.guide .g-tx p { font-size:12.5px; line-height:2.05; color:#a8bac4; letter-spacing:.04em; margin-bottom:7px; }
+.guide .g-ents { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+.guide .g-ent { flex:1 1 150px; text-align:center; padding:10px 6px; text-decoration:none;
+  border:1px solid rgba(159,216,232,.3); background:rgba(159,216,232,.05); transition:background .25s,border-color .25s; }
+.guide .g-ent:hover, .guide .g-ent:focus-visible { background:rgba(159,216,232,.14); border-color:var(--ice); }
+.guide .g-lb { display:block; font-size:13px; letter-spacing:.14em; color:var(--ice); }
+.guide .g-sb { display:block; font-size:10px; letter-spacing:.2em; color:var(--dim); margin-top:4px; }
+@media (max-width:560px) { .guide { padding:18px 16px; } .guide .g-ent { flex:1 1 100%; } }
+
+/* ── ARCHIVE：判明したこと／未解決の記録 ── */
+.ep-blk { margin:14px 0 0; padding:12px 16px; border-left:2px solid rgba(159,216,232,.3); background:rgba(159,216,232,.04); }
+.ep-blk h5 { font-size:11px; letter-spacing:.24em; color:var(--ice2); margin-bottom:7px; }
+.ep-blk ul { list-style:none; }
+.ep-blk li { font-size:12.5px; line-height:1.95; color:#a8bac4; padding-left:14px; position:relative; margin-bottom:5px; }
+.ep-blk li::before { content:"—"; position:absolute; left:0; color:var(--ice2); }
+.ep-open { border-left-color:rgba(196,162,101,.45); background:rgba(196,162,101,.04); }
+.ep-open h5 { color:#c4a265; }
+.ep-open li::before { color:#c4a265; }
+
+/* ── ARCHIVE：回路の現在（トラッカー） ── */
+.cs-note { font-size:12px; color:var(--dim); letter-spacing:.06em; margin-bottom:14px; }
+.cs-grid { display:grid; gap:1px; background:rgba(159,216,232,.14); border:1px solid rgba(159,216,232,.14); }
+.cs-row { display:grid; grid-template-columns:minmax(120px,1fr) 2fr; gap:1px; background:rgba(159,216,232,.14); }
+.cs-k, .cs-v { padding:10px 14px; background:var(--ink2); font-size:12.5px; letter-spacing:.05em; }
+.cs-k { color:var(--ice2); }
+.cs-v { color:#a8bac4; }
+.cs-warn .cs-v { color:#c4a265; }
+@media (max-width:560px) { .cs-row { grid-template-columns:1fr; } .cs-k { padding-bottom:2px; } }
+
+/* ── JOIN：参加のしかた ── */
+.jsteps { list-style:none; margin-top:16px; }
+.jstep { display:flex; gap:14px; margin-bottom:18px; }
+.js-n { flex:0 0 30px; height:30px; line-height:30px; text-align:center; font-size:12px;
+  color:var(--ice); border:1px solid rgba(159,216,232,.35); letter-spacing:0; }
+.jstep h5 { font-size:14px; letter-spacing:.1em; color:var(--ice); margin-bottom:5px; }
+.jstep p { font-size:12.5px; line-height:2; color:#a8bac4; }
+.jnote { font-size:11.5px; line-height:1.95; color:var(--dim); margin-top:10px;
+  padding-left:12px; border-left:1px solid rgba(196,162,101,.35); }
+
 .breath { position:absolute; width:120px; height:36px; border-radius:50%; filter:blur(18px);
   background:rgba(200,225,235,.05); animation:breath 6.5s ease-in-out infinite; }
 @keyframes breath { 0%,100% { opacity:0; transform:translateY(0) scale(.7);} 40% { opacity:.8; } 70% { opacity:0; transform:translateY(-26px) scale(1.15);} }
@@ -478,9 +522,10 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <div class="kv-bg kv-slide show" style="background-image:url(assets/kv.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_follow.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_front.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_bird.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_side.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_camp.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/g_pov_vista.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_frostgate.jpg)"></div><div class="kv-bg kv-slide" style="background-image:url(assets/st_lantern_inn.jpg)"></div>
     <div class="breath" style="top:38%;"></div>
     <h1 class="sr">凍廊のサンクトゥム（Crypta Sanctum）</h1><img class="logo" src="assets/logo.png" alt="アリアンロッドRPG2E改訂版　レギュレーション：氷原開拓団『凍廊のサンクトゥム』ロゴ">
-    
+    <p class="tagline">「凍り付いた心を、誰にも打ち明けぬまま」</p>
     <p class="meta">Discordサーバー〈辺境TRPG村〉<br>アリアンロッドRPG2E改訂版　レギュレーション：氷原開拓団<br>DLC型サブキャンペーン（長期連作・毎回参加メンバー入替OK）<br>レギュレーション主催：Mizshiro<br>GM：カテナドルグ</p>
     <p class="start">2026年8月 開始予定</p>
+    <div class="guide"><h2 class="g-hd">あなたは、氷原開拓団の一員です。</h2><div class="g-tx"><p>西方世界とプリムスを結ぶ、全長171kmの地下回廊——凍結の回路。その安全を確かめ、人と荷を守るのが、あなたたちの仕事です。</p><p>各話ごとに参加者を募る形式です。過去の話に出ていなくても大丈夫。毎話の冒頭に「前回のあらすじ」があります。</p><p>レギュレーション「氷原開拓団」のPCなら、いつでも・誰でも・どの話からでも参加できます。</p></div><div class="g-ents"><a class="g-ent" href="#/join"><span class="g-lb">はじめての方へ</span><span class="g-sb">参加のしかた</span></a><a class="g-ent" href="#/record"><span class="g-lb">これまでの記録</span><span class="g-sb">旅の軌跡</span></a><a class="g-ent" href="#/news"><span class="g-lb">お知らせ</span><span class="g-sb">募集の状況</span></a></div></div>
     <span class="cue" aria-hidden="true"></span>
   </section>
 </div>
@@ -489,7 +534,8 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="page" data-page="news">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">NEWS</span><h2>お知らせ</h2><p class="sub">NEWS</p></div></div>
   <div class="wrap newslist">
-      <div class="nw reveal"><span class="d">2026.07.05</span><span class="tag">INFO</span><span>第1話「深く、長い闇」は2026年8月開催予定。募集要項は確定し次第掲載します。</span></div>
+      <div class="nw reveal"><span class="d">2026.07.14</span><span class="tag">GUIDE</span><span>はじめての方へ——参加のしかたを「参加案内」に掲載しました。氷原開拓団のPCなら、どの話からでも参加できます。</span></div>
+      <div class="nw reveal"><span class="d">2026.07.05</span><span class="tag">INFO</span><span>第1話「深く、長い闇」は2026年8月開催予定。募集要項は確定し次第、この欄と「参加案内」に掲載します。（現在：準備中／募集開始前）</span></div>
       <div class="nw reveal"><span class="d">2026.05.25</span><span class="tag">SESSION</span><span>プロローグ「月は誰の夢を見る」を実施しました。記録保管庫に掲載しています。</span></div>
   </div>
 </div>
@@ -725,6 +771,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <article class="ep ep-done reveal">
       <div class="ep-head"><span class="ep-no">第0話</span><h4>月は誰の夢を見る</h4><span class="ep-date">2026-05-25 実施</span></div>
       <p class="ep-sum">ある時、開拓団の団員たちが同じ夢を見た。夢に導かれるように新人の開拓者が姿を消し、捜索に出た仲間たちは、誰も知らない古い遺跡——月光観測所へたどり着く。そこで彼らが見たものは偽りの月、まやかしの女神であった。開拓者たちは幻惑を斬り伏せ、行方不明者を連れ帰った。……だが、あの観測所は「なぜあんな場所に」あったのだろう。</p>
+<div class="ep-blk ep-found"><h5>判明したこと</h5><ul><li>沈黙の氷原の雪山に、記録にない古エルダ語の遺跡「月光観測所」が存在する。</li><li>そこに祀られていた月と女神は、いずれも偽りのものであった。</li><li>失踪した新人魔術士サルマは無事に救出された。</li></ul></div><div class="ep-blk ep-open"><h5>未解決の記録</h5><ul><li>なぜ、あの観測所は六千メートル級の山腹にあるのか。あの高さから、あの視界は成立しない。——救出されたサルマ本人が、報告書でそう指摘している。</li><li>遺跡から回収された魔石は開拓団が買い取り、フロストゲートの保管庫に納められた。分析は、いまも進んでいない。</li></ul></div>
       <p class="ep-log"><a class="ep-loglink" href="assets/log_ep0.html" target="_blank" rel="noopener">📜 セッションログ</a> <a class="ep-loglink" href="assets/handout_ep0_salma.pdf" target="_blank" rel="noopener">📎 報告書 月光観測所について（報告者：サルマ）</a></p>
     </article>
 
@@ -733,6 +780,10 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <p class="ep-sum ep-tba">まもなく、扉が開く。</p>
     </article>
 <p class="ep-locked reveal">この先も、夜はまだ長く続く——記録は、旅とともに増えていく。</p>
+
+    <h3 class="wsec reveal">回路の現在<small>STATE OF THE CIRCUIT</small></h3>
+    <p class="cs-note reveal">旅のたびに、回路は少しずつ変わっていく。——この欄は、各話の終わりに書き換えられる。</p>
+    <div class="cs-grid reveal"><div class="cs-row cs-ok"><span class="cs-k">ランタン亭の灯り</span><span class="cs-v">満ちている</span></div><div class="cs-row cs-ok"><span class="cs-k">フロストゲート 通行状況</span><span class="cs-v">通行可（記録係が照合を続けている）</span></div><div class="cs-row cs-warn"><span class="cs-k">荷の紛失</span><span class="cs-v">半年で複数件。原因不明</span></div><div class="cs-row cs-warn"><span class="cs-k">月光観測所の立地</span><span class="cs-v">未解明</span></div><div class="cs-row cs-warn"><span class="cs-k">保管庫の魔石</span><span class="cs-v">分析中——「ただの魔石ではない」</span></div></div>
   </div>
 </div>
 
@@ -741,6 +792,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">JOIN</span><h2>参加案内</h2><p class="sub">JOIN</p></div></div>
   <div class="wrap join-body">
     <p class="reveal">本キャンペーンは、Discordサーバー〈辺境TRPG村〉の氷原開拓団レギュレーション内で開催されます。レギュレーション「氷原開拓団」のPCなら、いつでも・誰でも・どの話からでも参加できます。毎話の冒頭に「前回のあらすじ」があり、途中参加でも迷いません。募集要項は確定し次第このページに掲載します。</p>
+<h3 class="wsec reveal">はじめての方へ — 参加のしかた</h3><p class="reveal">〈辺境TRPG村〉では、セッションごとにフォーラムのトピックを立て、その中でGMとPLのやり取りを完結させます。流れはこうです。</p><ol class="jsteps"><li class="jstep reveal"><span class="js-n">1</span><div><h5>卓を探す</h5><p>サーバーのセッション一覧（スプレッドシート）を開きます。色がついているのが募集中の卓、グレーになっているのが締め切られた卓です。</p></div></li><li class="jstep reveal"><span class="js-n">2</span><div><h5>トピックを読む</h5><p>気になる卓のリンクから、その卓のトピックへ。日程・レベル帯・レギュレーション・卓の重さなど、書いてあることをひととおり確かめます。</p></div></li><li class="jstep reveal"><span class="js-n">3</span><div><h5>参加を表明する</h5><p>トピックに参加希望を書き込みます。事前に伝えておいたほうがよいこと（苦手な描写、都合のつかない時間帯など）があれば、このときに。</p></div></li><li class="jstep reveal"><span class="js-n">4</span><div><h5>みんなで相談する</h5><p>卓のスレッドで、GMや他のPLと相談しながら準備します。〈辺境TRPG村〉では合意形成（コンセンサス）を大切にしています。「このキャラを出します！」ではなく「こういうキャラを出したいのですが、みなさんどうでしょう？」——そんな空気です。</p></div></li><li class="jstep reveal"><span class="js-n">5</span><div><h5>卓につく</h5><p>当日、回路へ。……灯りは、忘れずに。</p></div></li></ol><p class="jnote reveal">レギュレーションによっては、レベル帯などの参加条件があります。特殊レギュレーションの卓に参加する前に、サーバーのレギュレーション一覧を確認してください。</p><p class="jnote reveal">本キャンペーンは「氷原開拓団」レギュレーションの卓です。同レギュレーションのPCであれば、どの話からでも参加できます。</p><p class="jnote reveal">⚠ 本キャンペーンの終盤には、AR2E公式シナリオ『帝国の玉座』のごく軽微なネタバレが含まれます（皇帝の過去にまつわる事実がひとつ明かされるのみで、筋書きそのものには触れません）。これから『帝国の玉座』を遊ぶ予定のある方は、GMまでご相談ください。</p>
   </div>
 </div>
 
