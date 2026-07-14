@@ -908,17 +908,28 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <p class="r-pt reveal">氷を扱うスキルの多くはシーンの寒度を上昇させる。寒度が高いほど威力の上がるスキルも存在する。</p>
 <p class="r-pt reveal">寒度の上昇はパーティ全体に影響する。上昇させるスキルを使用する前に、各PCの耐寒値を確認すること。</p>
 <p class="r-pt reveal">［絶対零度状態］では寒度10・耐寒値0として換算する。通常の計算では到達しない値である。</p></section>
-<section class="r-sec" id="r-bs"><h3 class="wsec reveal">[凍傷]・[雪症]・[積雪状態]<small>FROSTBITE</small></h3>
+<section class="r-sec" id="r-bs_head"><h3 class="wsec reveal">追加されるバッドステータスと特殊状態<small>ADDED CONDITIONS</small></h3>
 <p class="r-badge reveal">レギュレーション：氷原開拓団</p>
-<p class="reveal">レギュレーション「氷原開拓団」では、2つのバッドステータスと1つの特殊状態が追加されている。</p>
-<p class="reveal">[凍傷] は付与された時点では効果強度1。クリンナッププロセスごとに効果強度が上昇する。</p>
+<p class="reveal">レギュレーション「氷原開拓団」では、2つのバッドステータス（[凍傷]／[雪症]）と、1つの特殊状態（[積雪状態]）が追加されている。バッドステータスはいずれも選択不可として扱う。</p></section>
+<section class="r-sec" id="r-bs"><h3 class="wsec reveal">[凍傷]<small>FROSTBITE</small></h3>
+<p class="r-badge reveal">レギュレーション：氷原開拓団</p>
+<p class="reveal">[凍傷] は選択不可のバッドステータスである。付与された時点では効果強度1。クリンナッププロセスごとに効果強度が上昇する。</p>
 <p class="r-form reveal">クリンナッププロセス：現在の効果強度に +[寒度] し、その後 HP を [効果強度] 点ロスする</p>
-<div class="r-tw reveal"><table class="r-tbl"><thead><tr><th>寒度4のとき</th><th>強度</th><th>HPロス</th><th>累計</th></tr></thead><tbody><tr><td>1ラウンド目</td><td>5</td><td>−5</td><td>5</td></tr><tr><td>2ラウンド目</td><td>9</td><td>−9</td><td>14</td></tr><tr><td>3ラウンド目</td><td>13</td><td>−13</td><td>27</td></tr><tr><td>4ラウンド目</td><td>17</td><td>−17</td><td>44</td></tr><tr><td>5ラウンド目</td><td>21</td><td>−21</td><td>65 ／ 片腕を失う</td></tr></tbody></table></div>
-<p class="r-pt reveal">効果強度が20に達したとき、片腕を失う。失う腕はPLが選択する。そのシナリオのあいだ、その腕に装備はできない。</p>
-<p class="r-pt reveal">バッドステータス無効で回復した場合も、[効果強度×5] 点のHPをロスする。</p>
-<p class="r-pt reveal">[雪症(n)]：メジャーアクションの判定直前にMPを [n×5] 点失う。足りない場合、そのアクションは自動失敗となる。</p>
-<p class="r-pt reveal">[積雪状態(n)]：そのエンゲージにいる者は【移動力】が [n×5]m 減少する（最低5m）。飛行している者は影響を受けない。</p>
+<div class="r-tw reveal"><table class="r-tbl"><thead><tr><th>寒度4のとき</th><th>強度</th><th>HPロス</th></tr></thead><tbody><tr><td>1ラウンド目</td><td>5</td><td>−5</td></tr><tr><td>2ラウンド目</td><td>9</td><td>−9</td></tr><tr><td>3ラウンド目</td><td>13</td><td>−13</td></tr><tr><td>4ラウンド目</td><td>17</td><td>−17</td></tr><tr><td>5ラウンド目</td><td>21</td><td>−21（効果強度20超＝片腕を失う）</td></tr></tbody></table></div>
+<p class="r-pt reveal">効果強度が20に達したとき、片腕を失う。失う腕はPLが選択する。失った腕に装備していたアイテムは携帯品としてもよい。そのシナリオのあいだ、その腕にアイテムを装備することはできない。</p>
 <p class="r-warn reveal">効果強度は加速的に上昇する。寒度6の場合、4ラウンドで効果強度20に達する。早期に解除すること。</p></section>
+<section class="r-sec" id="r-bs_snow"><h3 class="wsec reveal">[雪症]<small>SNOW SICKNESS</small></h3>
+<p class="r-badge reveal">レギュレーション：氷原開拓団</p>
+<p class="reveal">[雪症(n)] は選択不可のバッドステータスである。MPを削る。</p>
+<p class="r-pt reveal">メジャーアクションの判定直前に、MPを [n×5] 点失う。</p>
+<p class="r-pt reveal">この結果、メジャーアクションに使用するスキルのMPが足りなくなった場合、そのアクションは自動失敗となる。</p>
+<p class="r-warn reveal">MPは宣言のあとに持っていかれる。宣言時点で足りていても、判定の直前に足りなくなれば、そのアクションは失敗する。</p></section>
+<section class="r-sec" id="r-bs_deep"><h3 class="wsec reveal">[積雪状態]<small>DEEP SNOW</small></h3>
+<p class="r-badge reveal">レギュレーション：氷原開拓団</p>
+<p class="reveal">[積雪状態(n)] は特殊状態である。キャラクターではなく「エンゲージ」に適用され、そのエンゲージにいる者すべてが影響を受ける。</p>
+<p class="r-pt reveal">そのエンゲージにいるキャラクターの【移動力】を [n×5]m 減少させる（最低5m）。</p>
+<p class="r-pt reveal">騎乗状態の場合、騎乗している「種別：乗物」による【移動力】の上昇量に −[n×10]m（最低0m）。乗物は、より強く雪に沈む。</p>
+<p class="r-pt reveal">飛行状態の場合、この効果は適用されない。</p></section>
 <section class="r-sec" id="r-dark"><h3 class="wsec reveal">【明度】<small>DARKNESS</small></h3>
 <p class="reveal">凍結の回路の内部は、拠点をのぞいて明度1。</p>
 <p class="reveal">拠点（プリムス／フロストゲート／ランタン亭／坩堝横丁）は明度3。拠点と拠点を繋ぐ道は、すべて明度1として扱う。</p>
