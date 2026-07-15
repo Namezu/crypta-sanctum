@@ -106,6 +106,45 @@ nav.menu a.act .en { color:var(--ice); }
   .grpdd a { flex-direction:column; gap:1px; justify-content:center; }
 }
 
+/* ══ ページ内の目次（body直下の固定要素・見出しから自動生成）══
+   広い画面＝右の縦レール（本文の外）／狭い画面＝ヘッダー直下の横バー。 */
+#secnav { display:none; }
+#secnav.on { display:flex; }
+#secnav { position:fixed; z-index:25; }
+
+/* 狭い画面＝ヘッダー直下に横バーで固定 */
+@media (max-width:1179px) {
+  #secnav.on { top:52px; left:0; right:0; flex-direction:row; gap:6px; overflow-x:auto;
+    padding:9px clamp(12px,4vw,22px); border-bottom:1px solid var(--line);
+    background:rgba(3,5,10,.94); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    scrollbar-width:none; }
+  #secnav::-webkit-scrollbar { display:none; }
+  #secnav a { flex:0 0 auto; text-decoration:none; font-size:11px; letter-spacing:.12em; color:var(--dim);
+    padding:5px 10px; border:1px solid var(--line); white-space:nowrap; }
+  #secnav a.on { color:var(--ice); border-color:rgba(159,216,232,.5); }
+  main { padding-top:0; }
+}
+
+/* 広い画面＝右の縦レール（カードにして、ちゃんと目に入るようにする） */
+@media (min-width:1180px) {
+  #secnav.on { top:50%; right:24px; transform:translateY(-50%); flex-direction:column;
+    align-items:stretch; gap:1px; width:196px; max-height:74vh; overflow-y:auto;
+    padding:14px 0 8px; border:1px solid rgba(159,216,232,.22);
+    background:rgba(5,9,16,.82); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    box-shadow:0 10px 40px rgba(0,0,0,.5); }
+  #secnav.on::before { content:"CONTENTS"; display:block; font-size:9px; letter-spacing:.38em;
+    color:var(--ice2); padding:0 16px 10px; border-bottom:1px solid var(--line); margin-bottom:6px; }
+  #secnav a { text-decoration:none; font-size:12.5px; letter-spacing:.1em; color:#a8bac4;
+    padding:9px 14px 9px 18px; position:relative; line-height:1.5;
+    transition:color .2s, background .2s; }
+  #secnav a:hover { color:#e9f3f7; background:rgba(159,216,232,.07); }
+  #secnav a::before { content:""; position:absolute; left:0; top:8px; bottom:8px; width:2px;
+    background:transparent; transition:background .2s; }
+  #secnav a.on { color:var(--ice); background:rgba(159,216,232,.10); }
+  #secnav a.on::before { background:var(--ice); }
+}
+@media (prefers-reduced-motion: reduce) { #secnav a, #secnav a::before { transition:none; } }
+
 /* ══ ページ切替 ══ */
 main { position:relative; z-index:3; }
 .page { display:none; min-height:100vh; padding-top:52px; }
@@ -197,12 +236,70 @@ body[data-page="top"] #kvbg { opacity:1; }
 /* ── ARCHIVE：回廊の現在（トラッカー） ── */
 .cs-note { font-size:12px; color:var(--dim); letter-spacing:.06em; margin-bottom:14px; }
 .cs-grid { display:grid; gap:1px; background:rgba(159,216,232,.14); border:1px solid rgba(159,216,232,.14); }
-.cs-row { display:grid; grid-template-columns:minmax(120px,1fr) 2fr; gap:1px; background:rgba(159,216,232,.14); }
+.cs-row { display:grid; grid-template-columns:minmax(150px,1fr) 1.9fr; gap:1px; background:rgba(159,216,232,.14); }
 .cs-k, .cs-v { padding:10px 14px; background:var(--ink2); font-size:12.5px; letter-spacing:.05em; }
 .cs-k { color:var(--ice2); }
 .cs-v { color:#a8bac4; }
 .cs-warn .cs-v { color:#c4a265; }
 @media (max-width:560px) { .cs-row { grid-template-columns:1fr; } .cs-k { padding-bottom:2px; } }
+
+.t-km { display:block; font-size:10.5px; color:var(--dim); letter-spacing:.1em; margin-top:3px;
+  font-variant-numeric:tabular-nums; }
+/* 表のヘッダー＝距離がプリムス基準であることを明示 */
+.cs-row.t-head .cs-k, .cs-row.t-head .cs-v { background:#0e1622; color:var(--ice); font-size:11px;
+  letter-spacing:.14em; padding:8px 14px; }
+/* 地形＝1枚の絵を行いっぱいに敷く（左＝地名側は鮮明／右＝説明側はぼかして暗く＝文字を守る） */
+.cs-row.t-img { position:relative; background-size:cover; background-position:center;
+  background-repeat:no-repeat; isolation:isolate; }
+.cs-row.t-img::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:linear-gradient(90deg, rgba(7,11,19,.06) 0%, rgba(7,11,19,.16) 16%,
+    rgba(7,11,19,.38) 28%, rgba(7,11,19,.62) 38%, rgba(7,11,19,.80) 48%,
+    rgba(7,11,19,.88) 62%, rgba(7,11,19,.90) 100%); }
+.cs-row.t-img .cs-k, .cs-row.t-img .cs-v { position:relative; z-index:1; background:transparent; }
+.cs-row.t-img .cs-k { min-height:120px; padding:14px 16px;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  border:none; text-align:left; font-family:var(--serif); cursor:zoom-in; width:100%; }
+.cs-row.t-img .cs-k::after { content:"⤢"; position:absolute; top:10px; right:12px; font-size:12px;
+  color:rgba(233,243,247,.55); opacity:0; transition:opacity .25s; }
+.cs-row.t-img:hover .cs-k::after, .cs-row.t-img .cs-k:focus-visible::after { opacity:1; }
+.cs-row.t-img:hover::before { background:linear-gradient(90deg, rgba(7,11,19,.02) 0%, rgba(7,11,19,.10) 16%,
+  rgba(7,11,19,.30) 28%, rgba(7,11,19,.56) 38%, rgba(7,11,19,.76) 48%,
+  rgba(7,11,19,.86) 62%, rgba(7,11,19,.90) 100%); }
+.cs-row.t-img .cs-k b { font-weight:normal; color:#eaf4f8; letter-spacing:.08em;
+  text-shadow:0 1px 6px rgba(0,0,0,.95), 0 0 18px rgba(0,0,0,.8); }
+.cs-row.t-img .cs-k .t-km { color:rgba(190,205,214,.72); text-shadow:0 1px 5px rgba(0,0,0,.95); }
+.cs-row.t-img .cs-v { padding:16px 18px; }
+/* 🔴ぼかしは「層＋マスク」で徐々に効かせる（progressive blur）＝境界が出ない。
+   backdrop-filterはグラデーションできないので、ぼかし層をマスクで薄→濃へ溶かす。
+   デスクトップのみ（スマホはbackdrop-filterが重い＝ボードの教訓）。 */
+@media (min-width:901px) {
+  .cs-row.t-img::after { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+    -webkit-mask-image:linear-gradient(90deg, transparent 14%, rgba(0,0,0,.25) 26%,
+      rgba(0,0,0,.65) 38%, #000 52%);
+    mask-image:linear-gradient(90deg, transparent 14%, rgba(0,0,0,.25) 26%,
+      rgba(0,0,0,.65) 38%, #000 52%); }
+}
+@media (max-width:560px) {
+  .cs-row.t-img .cs-k { min-height:150px; }
+  .cs-row.t-img::before { background:linear-gradient(180deg, rgba(7,11,19,.25) 0%,
+    rgba(7,11,19,.62) 42%, rgba(7,11,19,.93) 100%); }
+}
+
+/* 拠点＝表の中では仕切り線として置く（説明は「凍結の回路」節が担う） */
+.t-div { grid-column:1 / -1; display:flex; align-items:center; gap:12px; padding:14px 14px 12px;
+  background:var(--ink2); }
+.t-div i { flex:1; height:1px; background:linear-gradient(90deg, transparent, rgba(196,162,101,.5)); }
+.t-div i:last-child { background:linear-gradient(90deg, rgba(196,162,101,.5), transparent); }
+.t-div span { color:var(--warm); font-size:13px; letter-spacing:.22em; white-space:nowrap; }
+.t-div em { font-style:normal; color:var(--dim); font-size:10.5px; letter-spacing:.1em; margin-left:10px;
+  font-variant-numeric:tabular-nums; }
+
+/* ── WORLD：回廊の生きもの ── */
+.wl-lead { font-size:14px; line-height:2.1; margin-bottom:10px; }
+.wl-note { font-size:13px; line-height:2.05; color:#a8bac4; margin-top:12px; }
+.wl-caveat { font-size:12.5px; line-height:2; color:#c4a265; margin-top:16px; padding-left:12px;
+  border-left:2px solid rgba(196,162,101,.5); }
 
 /* ── RULES：特殊ルール ── */
 .r-lead { font-size:14px; line-height:2.1; margin-bottom:10px; }
@@ -521,6 +618,13 @@ h3.wsec.darkhead small { color:rgba(255,183,94,.5); }
 #lb figure { max-width:94vw; }
 #lb img { max-width:94vw; max-height:82vh; display:block; border:1px solid var(--line2); }
 #lb figcaption { text-align:center; font-size:12px; color:var(--fog); letter-spacing:.14em; padding-top:12px; }
+/* 地形のライトボックス＝絵の下に地名・距離・説明の全文 */
+#lb figcaption.lb-terrain { text-align:left; max-width:900px; margin:0 auto; padding-top:16px; letter-spacing:0; }
+#lb figcaption.lb-terrain h4 { font-size:17px; letter-spacing:.16em; color:var(--ice); font-weight:600;
+  display:flex; align-items:baseline; gap:14px; margin-bottom:8px; }
+#lb figcaption.lb-terrain h4 span { font-size:11px; letter-spacing:.12em; color:var(--dim);
+  font-variant-numeric:tabular-nums; }
+#lb figcaption.lb-terrain p { font-size:13.5px; line-height:2.05; color:#cfdde5; letter-spacing:.03em; }
 
 /* ══ JOIN ══ */
 .join-body { padding-bottom:12vh; }
@@ -655,6 +759,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="page" data-page="world">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">WORLD</span><h2>世界</h2><p class="sub">WORLD</p></div></div>
   <div class="wrap">
+    <h3 class="wsec reveal">地図<small>MAPS</small></h3>
     <div class="maptabs reveal">
       <button class="mtab act" data-map="detail">コナカタ山脈と回廊</button>
       <button class="mtab" data-map="wide">エリンディル西方 全図</button>
@@ -715,6 +820,21 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     </section>
     </div>
     <p class="j-outro reveal">回廊は、人の道であって、人だけの道ではない。灯りの届かぬ岩陰には氷に適応した獣や魔獣が棲まい、氷の下には水が流れ、目のない魚が泳ぐ。運が良ければ——あるいは悪ければ——霊獣や精霊のたぐいが、旅人の前にふと姿を見せることもあるという。地の底にもまた、生態系は息づいている。</p>
+    <h3 class="wsec reveal">回廊の地形<small>THE TERRAIN</small></h3>
+    <p class="reveal wl-lead">凍結の回路は、一本の坑道ではない。171kmのあいだに、いくつもの顔がある。北端プリムスから南端ラーフ大洞窟まで、旅程順に主な拠点と地形を挙げる。</p>
+    <div class="cs-grid reveal"><div class="cs-row t-head"><div class="cs-k">地名／プリムスからの距離</div><div class="cs-v">説明</div></div><div class="t-div"><i></i><span>プリムス<em>0km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_abyss_edge.jpg)"><button class="cs-k t-open" data-src="assets/t_abyss_edge.jpg" data-cap="奈落の縁" data-km="18–28km" data-desc="床そのものが、ぽっかりと抜け落ちている区間。穴の底は誰も見たことがない。道は穴を大きく迂回して、その大空間の縁をぐるりと回っていく。"><b>奈落の縁</b><span class="t-km">18–28km</span></button><div class="cs-v">床そのものが、ぽっかりと抜け落ちている区間。穴の底は誰も見たことがない。道は穴を大きく迂回して、その大空間の縁をぐるりと回っていく。</div></div><div class="t-div"><i></i><span>フロストゲート<em>37km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_cascade.jpg)"><button class="cs-k t-open" data-src="assets/t_cascade.jpg" data-cap="永遠の滝" data-km="44–50km" data-desc="落下の途中で凍りついた、幾条もの大瀑。青白い氷の柱が垂れ下がり、その内側は空洞になっている。水が落ちるのをやめてから、どれだけ経ったのかは分からない。——時が止まっているように見えることから、そう呼ばれる。触れ続ければ凍傷を負う。"><b>永遠の滝</b><span class="t-km">44–50km</span></button><div class="cs-v">落下の途中で凍りついた、幾条もの大瀑。青白い氷の柱が垂れ下がり、その内側は空洞になっている。水が落ちるのをやめてから、どれだけ経ったのかは分からない。——時が止まっているように見えることから、そう呼ばれる。触れ続ければ凍傷を負う。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_canyon.jpg)"><button class="cs-k t-open" data-src="assets/t_canyon.jpg" data-cap="大峡谷" data-km="55–68km" data-desc="道が突然、途方もない縦の裂け目に開ける。街道はその谷底を、両側の絶壁に挟まれて進んでいく。壁は高い。見上げても、天井は闇に呑まれて見えない。この一帯はあまりにも広く、崖に口を開けた横道の多くが、いまだ調べられていない。——調査に入った隊が、戻ってこないためである。"><b>大峡谷</b><span class="t-km">55–68km</span></button><div class="cs-v">道が突然、途方もない縦の裂け目に開ける。街道はその谷底を、両側の絶壁に挟まれて進んでいく。壁は高い。見上げても、天井は闇に呑まれて見えない。この一帯はあまりにも広く、崖に口を開けた横道の多くが、いまだ調べられていない。——調査に入った隊が、戻ってこないためである。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_bones.jpg)"><button class="cs-k t-open" data-src="assets/t_bones.jpg" data-cap="死の道" data-km="70–78km" data-desc="凍りついた、途方もなく巨大な生きものの遺骸。その体内を、道が通っている。左右には肋骨が天井へ向かって立ち上がり、大きすぎて、闇の中の先は見えない。何者の骨なのかは分かっていない。"><b>死の道</b><span class="t-km">70–78km</span></button><div class="cs-v">凍りついた、途方もなく巨大な生きものの遺骸。その体内を、道が通っている。左右には肋骨が天井へ向かって立ち上がり、大きすぎて、闇の中の先は見えない。何者の骨なのかは分かっていない。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_gate.jpg)"><button class="cs-k t-open" data-src="assets/t_gate.jpg" data-cap="石門の遺跡" data-km="80–86km" data-desc="ランタン亭のすぐ北。凍りつき、崩れた遺跡群が広がっている。年代は特定できていない。網の目のように細い枝道が無数に走っているが、これはかつてここにあった都市の名残だという。——その中心に、石門が立つ。"><b>石門の遺跡</b><span class="t-km">80–86km</span></button><div class="cs-v">ランタン亭のすぐ北。凍りつき、崩れた遺跡群が広がっている。年代は特定できていない。網の目のように細い枝道が無数に走っているが、これはかつてここにあった都市の名残だという。——その中心に、石門が立つ。</div></div><div class="t-div"><i></i><span>ランタン亭<em>87km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_statues.jpg)"><button class="cs-k t-open" data-src="assets/t_statues.jpg" data-cap="氷の群像" data-km="92–98km" data-desc="無数の水の精霊が、動いていた姿のまま凍りついている区間。触れても、応えない。——凍ること自体は、不思議ではない。水でできているのだから。分からないのは、なぜこれほど多くの水の精霊が、ここにいたのかということだ。精霊が群れるほどの流れは、いまこの回廊のどこにもない。開拓団は、ここでは声を出さない。"><b>氷の群像</b><span class="t-km">92–98km</span></button><div class="cs-v">無数の水の精霊が、動いていた姿のまま凍りついている区間。触れても、応えない。——凍ること自体は、不思議ではない。水でできているのだから。分からないのは、なぜこれほど多くの水の精霊が、ここにいたのかということだ。精霊が群れるほどの流れは、いまこの回廊のどこにもない。開拓団は、ここでは声を出さない。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_lake.jpg)"><button class="cs-k t-open" data-src="assets/t_lake.jpg" data-cap="地底湖" data-km="100–115km" data-desc="広大な湖。ただし、その水面は端から端まで凍りついている。氷の上を歩いて渡るのだ。天井の氷から雫が一定の間隔で落ち、その音が、どこまでも響く。——足の下には、水がある。深さは、誰も測っていない。そして開拓団は、街道筋の氷を外れることを固く禁じている。氷の下には、何かがいる。"><b>地底湖</b><span class="t-km">100–115km</span></button><div class="cs-v">広大な湖。ただし、その水面は端から端まで凍りついている。氷の上を歩いて渡るのだ。天井の氷から雫が一定の間隔で落ち、その音が、どこまでも響く。——足の下には、水がある。深さは、誰も測っていない。そして開拓団は、街道筋の氷を外れることを固く禁じている。氷の下には、何かがいる。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_stoneforest.jpg)"><button class="cs-k t-open" data-src="assets/t_stoneforest.jpg" data-cap="石の森" data-km="地底湖から分岐" data-desc="凍った湖の上を、街道から横へ逸れて進んだ先。湖底から天井までを貫いて、無数の石柱が立ち並んでいる。見ようによっては森の中にいるようだ——そう言った誰かの言葉が、そのまま地名になった。街道筋を外れると湖の氷は薄くなる。重い装備では渡れない。そして薄い氷の下には、氷を割って腕を伸ばしてくるものがいる。だから、奥まで調べた者はいない。"><b>石の森</b><span class="t-km">地底湖から分岐</span></button><div class="cs-v">凍った湖の上を、街道から横へ逸れて進んだ先。湖底から天井までを貫いて、無数の石柱が立ち並んでいる。見ようによっては森の中にいるようだ——そう言った誰かの言葉が、そのまま地名になった。街道筋を外れると湖の氷は薄くなる。重い装備では渡れない。そして薄い氷の下には、氷を割って腕を伸ばしてくるものがいる。だから、奥まで調べた者はいない。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_drift.jpg)"><button class="cs-k t-open" data-src="assets/t_drift.jpg" data-cap="吹き溜まり" data-km="128–140km" data-desc="吐息の谷が生んだ風は、北へ流れる。その風が霜を吹き寄せて、膝まで沈む吹き溜まりをつくる。坩堝横丁の近くに多い。氷壁には白い苔がびっしりと生えていて、触れると氷晶のような粉が舞う。吹き溜まりの雪は、半分は霜で、半分はそれだ。足を取られる。地上の雪と、同じように。"><b>吹き溜まり</b><span class="t-km">128–140km</span></button><div class="cs-v">吐息の谷が生んだ風は、北へ流れる。その風が霜を吹き寄せて、膝まで沈む吹き溜まりをつくる。坩堝横丁の近くに多い。氷壁には白い苔がびっしりと生えていて、触れると氷晶のような粉が舞う。吹き溜まりの雪は、半分は霜で、半分はそれだ。足を取られる。地上の雪と、同じように。</div></div><div class="t-div"><i></i><span>坩堝横丁<em>133km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_breath.jpg)"><button class="cs-k t-open" data-src="assets/t_breath.jpg" data-cap="吐息の谷" data-km="145–160km" data-desc="地の底から熱と煙が噴き出している区間。坩堝横丁とラーフ大洞窟のあいだにある。溶岩が流れているわけではないので、明るくはない。ただ、暖かい。——ここでは息が白くならない。噴き出すものには毒が混じっているが、薄い。街道を通り抜けるだけなら、まず害はない。危ないのは、噴出口へ近づいたとき、長く留まったとき、そして——風が止まったときだ。この谷が吐く熱こそが回廊に温度差を生み、温度差が風を生み、その風が171kmの空気を動かしている。岩盤の細い亀裂から、澱んだ空気は抜け、新しい空気が入る。——毒を吐く谷が、同時に、この回廊を生かしている。"><b>吐息の谷</b><span class="t-km">145–160km</span></button><div class="cs-v">地の底から熱と煙が噴き出している区間。坩堝横丁とラーフ大洞窟のあいだにある。溶岩が流れているわけではないので、明るくはない。ただ、暖かい。——ここでは息が白くならない。噴き出すものには毒が混じっているが、薄い。街道を通り抜けるだけなら、まず害はない。危ないのは、噴出口へ近づいたとき、長く留まったとき、そして——風が止まったときだ。この谷が吐く熱こそが回廊に温度差を生み、温度差が風を生み、その風が171kmの空気を動かしている。岩盤の細い亀裂から、澱んだ空気は抜け、新しい空気が入る。——毒を吐く谷が、同時に、この回廊を生かしている。</div></div><div class="t-div"><i></i><span>ラーフ大洞窟<em>171km</em></span><i></i></div></div>
+    <p class="reveal wl-note">石門。はじめてこの凍結の回路に人が訪れたときの記録では、この門は最初から開いていた。いまは研究が進み、開閉機構が復活している。ドートーベン協定において、帝国はこの遺跡の調査までは認められているが、門を抜けて北へ進むことは許されていない。——なお、かつて門の機構が壊れ、しばらく閉ざされたままになっていた時期がある。回廊の風は、そのあいだも止まらなかった。どこかに、別の道があるのだろうか。</p>
+    <h3 class="wsec reveal">回廊の原生生物<small>THE CREATURES OF THE CORRIDOR</small></h3>
+    <p class="reveal wl-lead">凍結の回路には、闇と寒さに適応した原生生物が棲んでいる。獣。魔獣。眼を持たないもの。名の付いていないもの。</p>
+    <p class="reveal wl-lead">だが開拓団が長い年月をかけて確かめた、ひとつの実務がある。——灯りへの反応は、三通りに分かれる。</p>
+    <div class="cs-grid reveal"><div class="cs-row"><div class="cs-k">光を恐れて退くもの</div><div class="cs-v">多くの獣がこれにあたる。灯りは盾になる。</div></div><div class="cs-row"><div class="cs-k">光に寄ってくるもの</div><div class="cs-v">灯りは罠になる。腐肉を漁るものは、光のあとに死骸が残ることを知っている。</div></div><div class="cs-row"><div class="cs-k">光に反応しないもの</div><div class="cs-v">灯りは意味を持たない。眼を持たない種がいる。</div></div></div>
+    <p class="reveal wl-lead">以下は、開拓団がこれまでに姿を確かめ、名を与えた原生生物である。名をクリックすると、大きく見られる。</p>
+    <div class="cs-grid reveal"><div class="cs-row t-img" style="background-image:url(assets/cr_grendel.jpg)"><button class="cs-k t-open" data-src="assets/cr_grendel.jpg" data-cap="グリンデル" data-km="回廊の頂点" data-desc="回廊の頂点に立つ魔獣。灯りをかざしても、退きも寄りもしない——数少ない、灯りの通じない相手である。近づくと、あたりの寒さがふと和らぐ。それが、たったひとつの前触れだ。フロストゲートには、これに備える者たちが常駐している。"><b>グリンデル</b><span class="t-km">回廊の頂点</span></button><div class="cs-v">回廊の頂点に立つ魔獣。灯りをかざしても、退きも寄りもしない——数少ない、灯りの通じない相手である。近づくと、あたりの寒さがふと和らぐ。それが、たったひとつの前触れだ。フロストゲートには、これに備える者たちが常駐している。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_squid.jpg)"><button class="cs-k t-open" data-src="assets/cr_squid.jpg" data-cap="ジャイアントスクイード" data-km="地底湖の底" data-desc="凍った地底湖の底に潜む、黒い巨躯。氷の割れ目から、腕だけが伸びてくる——本体を見た者はいない。斬っても、また生えてくる。音と、震動に反応する。だから地底湖では、誰も静かには進めない。撃退した記録は、ひとつもない。あるのは、逃げ切った記録だけだ。"><b>ジャイアントスクイード</b><span class="t-km">地底湖の底</span></button><div class="cs-v">凍った地底湖の底に潜む、黒い巨躯。氷の割れ目から、腕だけが伸びてくる——本体を見た者はいない。斬っても、また生えてくる。音と、震動に反応する。だから地底湖では、誰も静かには進めない。撃退した記録は、ひとつもない。あるのは、逃げ切った記録だけだ。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_centipede.jpg)"><button class="cs-k t-open" data-src="assets/cr_centipede.jpg" data-cap="エンバーセンティピード" data-km="焼け跡に群がる" data-desc="腕ほどの太さの節足を、無数にうねらせる大型のムカデ。天井と氷壁を伝って這い、焼け跡の温もりに群がる。灯りに覆いかぶさり、その体で炎を埋めて消してしまう——悪意ではない。ただ、熱に集まるだけだ。噛まれれば、毒がまわる。"><b>エンバーセンティピード</b><span class="t-km">焼け跡に群がる</span></button><div class="cs-v">腕ほどの太さの節足を、無数にうねらせる大型のムカデ。天井と氷壁を伝って這い、焼け跡の温もりに群がる。灯りに覆いかぶさり、その体で炎を埋めて消してしまう——悪意ではない。ただ、熱に集まるだけだ。噛まれれば、毒がまわる。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostfly.jpg)"><button class="cs-k t-open" data-src="assets/cr_frostfly.jpg" data-cap="霜蛍" data-km="灯りを生む虫" data-desc="指先ほどの小さな虫。危機を感じると、冷たい青い光を放つ——熱のない、まやかしの灯りだ。回廊の獣の多くは光を恐れるので、光ることで身を守る。この虫を器具にしたものが、蛍灯。明るいのに、少しも暖かくない灯りである。"><b>霜蛍</b><span class="t-km">灯りを生む虫</span></button><div class="cs-v">指先ほどの小さな虫。危機を感じると、冷たい青い光を放つ——熱のない、まやかしの灯りだ。回廊の獣の多くは光を恐れるので、光ることで身を守る。この虫を器具にしたものが、蛍灯。明るいのに、少しも暖かくない灯りである。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostwolf.jpg)"><button class="cs-k t-open" data-src="assets/cr_frostwolf.jpg" data-cap="ノースウルフ" data-km="灯りの輪の外" data-desc="灯りの輪の、すぐ外を歩く。同じ速さで、いつまでも。輪の中にいるかぎり、襲ってはこない——だが、輪から出た者、灯りを落とした者だけを、確実に仕留める。「離れるな」は、この獣が開拓団に教えた掟だ。"><b>ノースウルフ</b><span class="t-km">灯りの輪の外</span></button><div class="cs-v">灯りの輪の、すぐ外を歩く。同じ速さで、いつまでも。輪の中にいるかぎり、襲ってはこない——だが、輪から出た者、灯りを落とした者だけを、確実に仕留める。「離れるな」は、この獣が開拓団に教えた掟だ。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostspider.jpg)"><button class="cs-k t-open" data-src="assets/cr_frostspider.jpg" data-cap="フロストスパイダー" data-km="天井の待ち伏せ" data-desc="天井と氷壁に、氷のように透きとおった脚で張り付いている。そして、上から落ちてくる。灯りは、横へは届いても、真上へは届きにくい——その隙を、この獣は知っている。頭上を、忘れないことだ。"><b>フロストスパイダー</b><span class="t-km">天井の待ち伏せ</span></button><div class="cs-v">天井と氷壁に、氷のように透きとおった脚で張り付いている。そして、上から落ちてくる。灯りは、横へは届いても、真上へは届きにくい——その隙を、この獣は知っている。頭上を、忘れないことだ。</div></div></div>
+    <p class="reveal wl-note">霜蛍（しもぼたる）が危機に瀕して光るのは、この一つ目の性質を利用しているからである。蛍灯は、その仕組みを器具にしたものだ。</p>
+    <p class="reveal wl-note">灯りの輪の外を、同じ速度でついてくるものがいる。開拓団はそれらをまとめて「外のもの」と呼ぶ。姿を見た者は、多くない。——見た者は、たいてい灯りを失った者だからである。</p>
+    <p class="reveal wl-note">ただし、灯りを恐れない個体が現れはじめている。ランタンを掲げたまま襲われた例が、すでに複数記録されている。獣は学習する。回廊が開かれてから、まだ十数年しか経っていない。</p>
+    <p class="reveal wl-note">灯りの効かないものへの備えは、拠点ごとに異なる。フロストゲートには討伐にあたる者たちが常駐し、出没の記録が積み重ねられている。坩堝横丁では獣除けの香が調合され、旅人はそれを買っていく。ラーフ大洞窟では炉の熱と煙がすべてを覆い隠す。ランタン亭が、なぜあれほど静かなのかは——客のあいだで、いろいろに語られている。</p>
+    <p class="reveal wl-caveat">ここに書いたのは、開拓団がこれまでに確かめたことにすぎない。凍結の回路には、まだ誰も見たことのない原生生物が、いくらでも棲んでいる。</p>
     <h3 class="wsec reveal">年表<small>HISTORY</small></h3>
     <p class="tl-intro reveal">エリンディル西方の近代と、氷原開拓団の歩み。</p>
     <div class="tl">
@@ -747,6 +867,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <section class="era reveal"><h4>火の時代<span class="een">THE AGE OF FIRE</span></h4><p>恐るべき妖魔の群れが一掃され、世界は光を取り戻した。現在まで続く時代である。だが、地はときおり揺れる——追放された者たちが、消滅したわけではないからだ。この時代の初め、ブリガンティアの子ら“エルダナーン”と、アーケンラーヴの子ら“ヒューリン”が姿を現し、こう告げた。「いずれ来る、妖魔復活の日のために」。人が数える「聖暦」は、この時代のはじまりを元年としている。——実のところ、この時代はまだ、本当の名を持たない。</p></section>
     <div class="prophecy reveal">「この時代のすべての“神の子”らが手を取り合って挑めども抗し得ない妖魔が到来した時、神々は火をもて魔軍を粛清するだろう」——予言の女神の言葉。その日が訪れていないがゆえに、人々は仮に、今を“火の時代”と呼ぶ。</div>
     <p class="myth-outro reveal">五つの時代と、みっつの粛清。氷原のはるか北では、最初の粛清を起こした嵐の名残が、今も吹き続けているという。——凍った回廊の旅は、この神話のかたわらを通ってゆく。</p>
+    <h3 class="wsec reveal">氷原の異説<small>APOCRYPHA</small></h3>
     <div class="apocrypha reveal">
       <h4>氷原の異説<span>APOCRYPHA OF THE ICE FIELD</span></h4>
       <p>——ただし、氷原には異説がある。沈黙の氷原とその周辺では、五つの時代のいずれにも属さない文明の痕跡が見つかっているのだ。光の時代よりも、さらに前。世界は一度——いや、幾度も、同じように巡っていたのではないか。開拓団の学者たちは半ば冗談のように、半ば本気で、そう囁き合っている。</p>
@@ -773,6 +894,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <details class="deity spirit reveal"><summary><span class="g-name">アリアンロッド</span><span class="g-dom">銀の輪の女王〈運命〉</span></summary><p class="g-detail">六つの理のほかに、運命の精霊を司る第七の王が存在するという伝説がある。その名は&quot;銀の輪の女王&quot;アリアンロッド。運命の糸を紡ぎ、断ち、結び直す——語られることは少なく、しかしすべての物語のかたわらに、静かに在るという。</p></details>
     <p class="g-outro reveal">——精霊の王たちは、世の争いのどちらにも味方しない。だが、彼らを信じ祈る者には、&quot;天恵&quot;と呼ばれる加護を授けることがある。そして世界がその理を大きく踏み外したとき、&quot;粛清&quot;という形で、彼らは動く。</p>
     <h3 class="wsec reveal darkhead">七大邪神<small>THE SEVEN SINS</small></h3>
+    <h3 class="wsec reveal">七大邪神<small>THE DARK GODS</small></h3>
     <p class="g-intro reveal">光あるところに、影がある。伝承に曰く、邪神とは古の戦いに敗れ、魔界へと封じられた神々。人の心に巣くう負の感情、その一つひとつを体現するという。封印の底からなお、弱った心へそっと囁きかけ、力と引き換えに魂を奪ってゆく。とりわけ名高いのが、七つの感情を司る邪神たちである。</p>
     <details class="deity dark reveal"><summary><span class="g-name">トリアラク</span><span class="g-dom">恐怖</span></summary><p class="g-detail">顔を隠す漆黒のフードの下を、誰も見た者がない。&quot;闇の公子&quot;と囁かれる邪神。その瘴気は、恐怖に怯える者を、やがて恐怖を与える者へと変えてしまうという。</p></details>
     <details class="deity dark reveal"><summary><span class="g-name">クロムクルー</span><span class="g-dom">憎悪</span></summary><p class="g-detail">毒の湾曲した短剣を二振り携えた、やせた老人の姿。古き竜の姿と力を奪ったといい、毒と、眷属を強くする力と、憎悪を煽る——三つの吐息を吐く。</p></details>
@@ -854,6 +976,10 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <figure class="gitem reveal"><button class="gbtn" data-cap="坩堝横丁 —— 湯気と地下水脈"><img src="assets/st_crucible_row.jpg" loading="lazy" alt="坩堝横丁 —— 湯気と地下水脈"></button><figcaption>坩堝横丁 —— 湯気と地下水脈</figcaption></figure>
     <figure class="gitem reveal"><button class="gbtn" data-cap="コナカタ山脈 —— 六千の白い壁"><img src="assets/g_konakata.jpg" loading="lazy" alt="コナカタ山脈 —— 六千の白い壁"></button><figcaption>コナカタ山脈 —— 六千の白い壁</figcaption></figure>
     <figure class="gitem reveal"><button class="gbtn" data-cap="西方より望む —— 地平線の果ての白い壁"><img src="assets/g_konakata_far.jpg" loading="lazy" alt="西方より望む —— 地平線の果ての白い壁"></button><figcaption>西方より望む —— 地平線の果ての白い壁</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="氷の群像 —— 動いていた姿のまま"><img src="assets/g_statues.jpg" loading="lazy" alt="氷の群像 —— 動いていた姿のまま"></button><figcaption>氷の群像 —— 動いていた姿のまま</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="大峡谷 —— 横道へ渡すために架けられた橋"><img src="assets/g_canyon.jpg" loading="lazy" alt="大峡谷 —— 横道へ渡すために架けられた橋"></button><figcaption>大峡谷 —— 横道へ渡すために架けられた橋</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="死の道 —— 巨きなものの、内側を"><img src="assets/g_bones.jpg" loading="lazy" alt="死の道 —— 巨きなものの、内側を"></button><figcaption>死の道 —— 巨きなものの、内側を</figcaption></figure>
+    <figure class="gitem reveal"><button class="gbtn" data-cap="永遠の滝 —— 落ちる途中で、時が止まった"><img src="assets/g_cascade.jpg" loading="lazy" alt="永遠の滝 —— 落ちる途中で、時が止まった"></button><figcaption>永遠の滝 —— 落ちる途中で、時が止まった</figcaption></figure>
     </div>
   </div>
 </div>
@@ -863,6 +989,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">ARCHIVE</span><h2>記録保管庫</h2><p class="sub">ARCHIVE</p></div></div>
   <div class="wrap">
     <p class="arc-note reveal">凍結の回路で起きたことは、最後にはすべてこの棚に集まる。——整理・保管：フロストゲート 安全通行責任者 レイフ・ストーム</p>
+    <h3 class="wsec reveal" style="margin-top:0;">話数の記録<small>SESSIONS</small></h3>
 
     <article class="ep ep-done reveal">
       <div class="ep-head"><span class="ep-no">第0話</span><h4>月は誰の夢を見る</h4><span class="ep-date">2026-05-25 実施</span></div>
@@ -1183,13 +1310,80 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     });
   });
 
+  // ── ページ内の目次（body直下の固定要素・ページ切替のたびに作り直す） ──
+  //   ⚠ページの中に置くと body{overflow-x:hidden} で position:sticky が死ぬ／
+  //     .page のアニメーション(transform)が containing block を作って position:fixed も壊れる。
+  //     → 目次はページの外（body直下）に1つだけ置き、中身だけ差し替える。
+  var secnav = document.createElement('nav');
+  secnav.id = 'secnav';
+  secnav.setAttribute('aria-label', 'このページの目次');
+  document.body.appendChild(secnav);
+  var secIO = null;
+
+  function buildSecnav() {
+    if (secIO) { secIO.disconnect(); secIO = null; }
+    secnav.textContent = '';
+    var pg = document.querySelector('.page.act');
+    if (!pg) { secnav.classList.remove('on'); return; }
+    var hs = pg.querySelectorAll('h3.wsec');
+    if (hs.length < 2) { secnav.classList.remove('on'); return; }
+    var links = [];
+    hs.forEach(function(h, i) {
+      var id = pg.dataset.page + '-s' + i;
+      h.id = id;
+      h.style.scrollMarginTop = '96px';
+      var a = document.createElement('a');
+      a.href = '#' + id;
+      a.textContent = (h.childNodes[0] && h.childNodes[0].textContent || '').trim() || ('節' + (i + 1));
+      a.addEventListener('click', function(e) {
+        e.preventDefault();                     // hashルーターと喧嘩させない
+        h.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      });
+      secnav.appendChild(a);
+      links.push({ a: a, h: h });
+    });
+    secnav.classList.add('on');
+    if ('IntersectionObserver' in window) {
+      secIO = new IntersectionObserver(function(es) {
+        es.forEach(function(en) {
+          if (!en.isIntersecting) return;
+          links.forEach(function(l) { l.a.classList.toggle('on', l.h === en.target); });
+        });
+      }, { rootMargin: '-100px 0px -70% 0px' });
+      links.forEach(function(l) { secIO.observe(l.h); });
+    }
+  }
+  buildSecnav();
+  addEventListener('hashchange', function() { setTimeout(buildSecnav, 30); });
+
   // ── ギャラリー ライトボックス ──
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'),
       lbCap = document.getElementById('lbCap');
   document.querySelectorAll('.gbtn').forEach(function(b) {
     b.addEventListener('click', function() {
       lbImg.src = b.querySelector('img').src;
+      lbCap.className = '';
       lbCap.textContent = b.dataset.cap || '';
+      lb.classList.add('on');
+    });
+  });
+  // 地形の地名をクリック＝その地形の絵を大きく表示し、下に説明文を全文出す
+  document.querySelectorAll('.t-open').forEach(function(b) {
+    b.addEventListener('click', function() {
+      lbImg.src = b.dataset.src;
+      lbCap.textContent = '';
+      lbCap.className = 'lb-terrain';
+      var h = document.createElement('h4');
+      h.textContent = b.dataset.cap || '';
+      if (b.dataset.km) {
+        var km = document.createElement('span');
+        km.textContent = b.dataset.km;
+        h.appendChild(km);
+      }
+      var p = document.createElement('p');
+      p.textContent = b.dataset.desc || '';
+      lbCap.appendChild(h);
+      lbCap.appendChild(p);
       lb.classList.add('on');
     });
   });
