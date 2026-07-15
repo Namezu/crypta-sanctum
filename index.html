@@ -895,7 +895,6 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <details class="deity spirit reveal"><summary><span class="g-name">アリアンロッド</span><span class="g-dom">銀の輪の女王〈運命〉</span></summary><p class="g-detail">六つの理のほかに、運命の精霊を司る第七の王が存在するという伝説がある。その名は&quot;銀の輪の女王&quot;アリアンロッド。運命の糸を紡ぎ、断ち、結び直す——語られることは少なく、しかしすべての物語のかたわらに、静かに在るという。</p></details>
     <p class="g-outro reveal">——精霊の王たちは、世の争いのどちらにも味方しない。だが、彼らを信じ祈る者には、&quot;天恵&quot;と呼ばれる加護を授けることがある。そして世界がその理を大きく踏み外したとき、&quot;粛清&quot;という形で、彼らは動く。</p>
     <h3 class="wsec reveal darkhead">七大邪神<small>THE SEVEN SINS</small></h3>
-    <h3 class="wsec reveal">七大邪神<small>THE DARK GODS</small></h3>
     <p class="g-intro reveal">光あるところに、影がある。伝承に曰く、邪神とは古の戦いに敗れ、魔界へと封じられた神々。人の心に巣くう負の感情、その一つひとつを体現するという。封印の底からなお、弱った心へそっと囁きかけ、力と引き換えに魂を奪ってゆく。とりわけ名高いのが、七つの感情を司る邪神たちである。</p>
     <details class="deity dark reveal"><summary><span class="g-name">トリアラク</span><span class="g-dom">恐怖</span></summary><p class="g-detail">顔を隠す漆黒のフードの下を、誰も見た者がない。&quot;闇の公子&quot;と囁かれる邪神。その瘴気は、恐怖に怯える者を、やがて恐怖を与える者へと変えてしまうという。</p></details>
     <details class="deity dark reveal"><summary><span class="g-name">クロムクルー</span><span class="g-dom">憎悪</span></summary><p class="g-detail">毒の湾曲した短剣を二振り携えた、やせた老人の姿。古き竜の姿と力を奪ったといい、毒と、眷属を強くする力と、憎悪を煽る——三つの吐息を吐く。</p></details>
@@ -1144,6 +1143,11 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     _toTop();
     requestAnimationFrame(function() { _toTop(); measure(); frame(); });
     setTimeout(_toTop, 60);
+    // 🔴目次はrouteのたびに作り直す（buildSecnavは冪等）。
+    //   これがないと #/world 等を直リロードした時、初回buildSecnav()が静的HTMLの
+    //   .act=top を見て作ってしまい、routeでページが切り替わっても目次が作り直されず消える。
+    //   （遷移=hashchange経由なら下のリスナが拾うが、直ロード/リロードはhashchangeが出ない。）
+    if (typeof buildSecnav === 'function') buildSecnav();
   }
   addEventListener('hashchange', route);
   burger.addEventListener('click', function() {
