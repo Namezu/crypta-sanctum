@@ -415,6 +415,7 @@
 <div class="root">
     <input id="drawer-open" class="accordion-input" type="checkbox">
     <nav class="side-bar">
+<div style="padding:10px 12px;display:flex;gap:8px;"><button onclick="lpPreset(true)" style="flex:1;padding:6px 4px;background:#5a5a5a;color:#fff;border:1px solid #777;border-radius:4px;cursor:pointer;">物語だけ</button><button onclick="lpPreset(false)" style="flex:1;padding:6px 4px;background:#5a5a5a;color:#fff;border:1px solid #777;border-radius:4px;cursor:pointer;">すべて表示</button></div>
         <div class="menu-header">
             <label for="drawer-open" class="cancel-icon button-elements">
                 <span></span>
@@ -682,7 +683,7 @@
             <label for="drawer-open" class="hamburger-icon button-elements">
                 <span></span>
             </label>
-            <h1>Ccfolia Log</h1>
+            <h1>第0話「月は誰の夢を見る」セッションログ</h1>
         </header>
         <div class="messages-list">
             <div class="tab-info user-ポチョム">
@@ -35309,5 +35310,9 @@
         </div>
     </main>
 </div>
+<script>
+function lpPreset(storyOnly){["tab-main","tab-info","tab-other","tab-ドロップ"].forEach(function(id){var el=document.getElementById(id);if(!el)return;var want=(id==="tab-main")?true:!storyOnly;if(el.checked!==want){el.checked=want;showHide(el);}});}
+window.addEventListener("DOMContentLoaded",function(){lpPreset(true);});
+</script>
 </body>
 </html>
