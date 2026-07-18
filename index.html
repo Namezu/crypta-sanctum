@@ -634,6 +634,7 @@ button.ch { cursor:pointer; }
   font-size:44px; color:rgba(159,216,232,.34); letter-spacing:0; text-shadow:0 0 26px rgba(120,190,215,.3); }
 .ch-body { display:block; padding:12px 14px; }
 .ch-body b { display:block; font-size:13.5px; letter-spacing:.12em; color:#e2eef3; font-weight:600; }
+.ch-body .race { display:block; font-size:9px; letter-spacing:.2em; color:var(--dim); margin-top:3px; }
 .ch-body .role { display:block; font-size:9.5px; letter-spacing:.16em; color:var(--ice2); margin:4px 0 0; }
 .ch-body p { font-size:12.5px; color:#b7c7d0; margin-top:8px; }
 .ch-more { text-align:center; font-size:13px; color:var(--dim); letter-spacing:.18em; padding:20px 0 12vh; }
@@ -991,9 +992,9 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <article class="card reveal"><h4>プリムス</h4><p>沈黙の氷原にただひとつ根を張った、人の暮らす拠点。掲げる使命は入植───この氷の大地を、人が生き続けられる土地に変えること。西方とつなぐ唯一の道・凍結の回路が止まれば、その営みは立ち行かなくなる。運営はパリス同盟諸都市とヴァイス王国の共同───遠い中原の同盟と始まりの王国が、この最果ての灯の後ろ盾である。</p><details class="fmore"><summary>詳しく読む</summary><div><p>聖暦1043年、ヴァイス王国の子爵ヴェルトール・ランベントがその立場を退き、開拓団の設立を宣言したことに始まる。現在の代表は、彼の遺志を継いだ娘のアリス・ランベント。統治は団員による合議制。</p><p>パリス同盟各国の共同出資による国際機関だが、事務方の多くはヴァイス王国の出身者で、ランベント騎士団の斥候隊「黄色中隊」もプリムスに常駐している。輸入は食料と生活必需品と薬品。輸出は、氷原で採れる純度の高い宝石。</p><p>団員は食堂での共同の食事に代表される共同生活を営む。氷原育ちの子供たち───低温と豪雪にきわめて高く適応した世代は「アイスメイト」と呼ばれ、12歳ごろから入団試験を経て団の仕事を手伝う。</p><p>後ろ盾のパリス同盟は、神聖ヴァンスター帝国への抑止のため聖暦1002年に中原の国家が結んだ政治・軍事同盟であり、氷原開拓団の生みの親でもある。母体はネルス川流域の商業同盟。宗主格は&quot;遺跡の街&quot;ライン（同盟評議会の開催地）。中枢7国家で構成され、その領域は北のヴェンガルド川から南のラッセル川に及ぶ。</p><p>魔将戦争と薔薇の災厄の復旧、そして聖暦1009年に北方から受けた妖魔の大侵攻───同盟はいまも多くの傷を抱えている。それでも人口増加と資源不足の未来に備え、北の氷原の開拓に望みを賭けた。</p></div></details></article>
       <div class="chgrid">
       <button class="ch reveal fac-primus t-open" data-src="assets/p_reif.png" data-cap="レイフ・ストーム"
-        data-km="凍結の回路・安全通行責任者" data-desc="フロストゲートの野営地に常駐する几帳面で世話好きな男。回廊で起きたことは最後にはぜんぶ彼の机に集まる。旅の始まりと終わりに彼の顔がある。">
+        data-km="ヒューリン／凍結の回路・安全通行責任者" data-desc="フロストゲートの野営地に常駐する几帳面で世話好きな男。回廊で起きたことは最後にはぜんぶ彼の机に集まる。旅の始まりと終わりに彼の顔がある。">
         <span class="ch-face"><img src="assets/p_reif.png" loading="lazy" alt="レイフ・ストーム"><span class="ch-desc">フロストゲートの野営地に常駐する几帳面で世話好きな男。回廊で起きたことは最後にはぜんぶ彼の机に集まる。旅の始まりと終わりに彼の顔がある。</span></span>
-        <span class="ch-body"><b>レイフ・ストーム</b><span class="role">凍結の回路・安全通行責任者</span></span>
+        <span class="ch-body"><b>レイフ・ストーム</b><span class="race">ヒューリン</span><span class="role">凍結の回路・安全通行責任者</span></span>
       </button>
       <button class="ch reveal fac-primus t-open" data-src="assets/p_fleur.png" data-cap="フルール・シュリエール"
         data-km="開拓団の外交実務担当" data-desc="シュリエール伯爵家の次男。十九歳。真面目で丁寧な人柄で評判は上々───ただし大きな舞台は、まだこれから。">
@@ -1001,24 +1002,24 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
         <span class="ch-body"><b>フルール・シュリエール</b><span class="role">開拓団の外交実務担当</span></span>
       </button>
       <button class="ch reveal fac-primus t-open" data-src="assets/p_garen.png" data-cap="ガレン"
-        data-km="フロストゲート検問・通行記録係" data-desc="レイフの部下。几帳面だが小心で書類と印章の束をいつも抱えている。回廊を行き来する者の顔と名は、まず彼の帳面に記される。">
+        data-km="ヒューリン／フロストゲート検問・通行記録係" data-desc="レイフの部下。几帳面だが小心で書類と印章の束をいつも抱えている。回廊を行き来する者の顔と名は、まず彼の帳面に記される。">
         <span class="ch-face"><img src="assets/p_garen.png" loading="lazy" alt="ガレン"><span class="ch-desc">レイフの部下。几帳面だが小心で書類と印章の束をいつも抱えている。回廊を行き来する者の顔と名は、まず彼の帳面に記される。</span></span>
-        <span class="ch-body"><b>ガレン</b><span class="role">フロストゲート検問・通行記録係</span></span>
+        <span class="ch-body"><b>ガレン</b><span class="race">ヒューリン</span><span class="role">フロストゲート検問・通行記録係</span></span>
       </button>
       <button class="ch reveal fac-primus t-open" data-src="assets/p_dorg.png" data-cap="ドルグ"
-        data-km="南部野営地・開拓団側の世話役" data-desc="南部の野営地に詰める、開拓団側の世話役。口も態度も荒い。けれど任された場の面倒は最後まで見る。">
-        <span class="ch-face"><img src="assets/p_dorg.png" loading="lazy" alt="ドルグ"><span class="ch-desc">南部の野営地に詰める、開拓団側の世話役。口も態度も荒い。けれど任された場の面倒は最後まで見る。</span></span>
-        <span class="ch-body"><b>ドルグ</b><span class="role">南部野営地・開拓団側の世話役</span></span>
+        data-km="ドゥアン／開拓団・南方隊の野営世話役" data-desc="南へ下る開拓団の隊列の、野営を預かる世話役。口も態度も荒い。けれど任された場の面倒は最後まで見る。">
+        <span class="ch-face"><img src="assets/p_dorg.png" loading="lazy" alt="ドルグ"><span class="ch-desc">南へ下る開拓団の隊列の、野営を預かる世話役。口も態度も荒い。けれど任された場の面倒は最後まで見る。</span></span>
+        <span class="ch-body"><b>ドルグ</b><span class="race">ドゥアン</span><span class="role">開拓団・南方隊の野営世話役</span></span>
       </button>
       <button class="ch reveal fac-primus t-open" data-src="assets/p_evald.png" data-cap="エヴァルド・クロス"
-        data-km="プリムス警備隊・古参兵" data-desc="開拓の初期からこの氷原に立ち続ける古参の番人。古い装備を手入れしながら、ずっと使い続けている。">
+        data-km="ドゥアン／プリムス警備隊・古参兵" data-desc="開拓の初期からこの氷原に立ち続ける古参の番人。古い装備を手入れしながら、ずっと使い続けている。">
         <span class="ch-face"><img src="assets/p_evald.png" loading="lazy" alt="エヴァルド・クロス"><span class="ch-desc">開拓の初期からこの氷原に立ち続ける古参の番人。古い装備を手入れしながら、ずっと使い続けている。</span></span>
-        <span class="ch-body"><b>エヴァルド・クロス</b><span class="role">プリムス警備隊・古参兵</span></span>
+        <span class="ch-body"><b>エヴァルド・クロス</b><span class="race">ドゥアン</span><span class="role">プリムス警備隊・古参兵</span></span>
       </button>
       <button class="ch reveal fac-primus t-open" data-src="assets/p_kyle.png" data-cap="カイル・コズワース"
-        data-km="開拓団・元団長直衛" data-desc="かつてヴェルトール団長の直衛を務めた男。長い後方勤務を経て、ふたたび前線に立つ。">
+        data-km="ヒューリン／開拓団・元団長直衛" data-desc="かつてヴェルトール団長の直衛を務めた男。長い後方勤務を経て、ふたたび前線に立つ。">
         <span class="ch-face"><img src="assets/p_kyle.png" loading="lazy" alt="カイル・コズワース"><span class="ch-desc">かつてヴェルトール団長の直衛を務めた男。長い後方勤務を経て、ふたたび前線に立つ。</span></span>
-        <span class="ch-body"><b>カイル・コズワース</b><span class="role">開拓団・元団長直衛</span></span>
+        <span class="ch-body"><b>カイル・コズワース</b><span class="race">ヒューリン</span><span class="role">開拓団・元団長直衛</span></span>
       </button>
       </div>
     </section>
@@ -1027,34 +1028,34 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <article class="card reveal"><h4>ラーフ大洞窟</h4><p>南端の都市国家、人口8万。ネヴァーフたちが築いた千年の都にして、錬金術の総本山。中立を掲げてどの国とも等しく商いをする。その中立が何を守るためのものかは、誰も問わない。</p><details class="fmore"><summary>詳しく読む</summary><div><p>伝承では&quot;地の粛清&quot;の時に生まれた大空洞に、むき出しになった鉱石資源へ目をつけたネヴァーフたちが都市を築いたのが始まり。錬金術で明かりを灯し、空気を循環させて完成した都は、古い建物になると千年を越える。</p><p>統治は長老による合議制。主産業は錬金術師たちの発明品で、ポーションに代表される薬品は、パリス同盟や神聖ヴァンスター帝国といった大国も買いつけに来る。他国が支配を試みたこともあるが、特殊な立地と技術力の高さではねのけてきた。</p><p>回廊から入ってすぐの場所には市場が、街の中心には長老議会が所有する大工房が、東には発明品の倉庫街がある。……なお、廃棄された発明品が互いに干渉し、魔法生物や機械が闊歩する迷宮と化した「第十三番倉庫」には近づかないこと。「十三番送りにするぞ」は、ラーフで最大級の脅し文句である。</p></div></details></article>
       <div class="chgrid">
       <button class="ch reveal fac-rahf t-open" data-src="assets/p_omga.png" data-cap="オムガ・ドゥール"
-        data-km="ラーフ現首長・長老" data-desc="八万の民を束ねる長老。齢は百八十を超えるともいう。小さな体に千年の都の重みを載せている。">
+        data-km="ネヴァーフ／ラーフ現首長・長老" data-desc="八万の民を束ねる長老。齢は百八十を超えるともいう。小さな体に千年の都の重みを載せている。">
         <span class="ch-face"><img src="assets/p_omga.png" loading="lazy" alt="オムガ・ドゥール"><span class="ch-desc">八万の民を束ねる長老。齢は百八十を超えるともいう。小さな体に千年の都の重みを載せている。</span></span>
-        <span class="ch-body"><b>オムガ・ドゥール</b><span class="role">ラーフ現首長・長老</span></span>
+        <span class="ch-body"><b>オムガ・ドゥール</b><span class="race">ネヴァーフ</span><span class="role">ラーフ現首長・長老</span></span>
       </button>
       <button class="ch reveal fac-rahf t-open" data-src="assets/p_velka.png" data-cap="ヴェルカ・ナイン"
-        data-km="筆頭書記官・オムガの右腕" data-desc="几帳面な記録魔。ラーフの帳簿と封蝋はすべて彼女の手を通る。">
+        data-km="ネヴァーフ／筆頭書記官・オムガの右腕" data-desc="几帳面な記録魔。ラーフの帳簿と封蝋はすべて彼女の手を通る。">
         <span class="ch-face"><img src="assets/p_velka.png" loading="lazy" alt="ヴェルカ・ナイン"><span class="ch-desc">几帳面な記録魔。ラーフの帳簿と封蝋はすべて彼女の手を通る。</span></span>
-        <span class="ch-body"><b>ヴェルカ・ナイン</b><span class="role">筆頭書記官・オムガの右腕</span></span>
+        <span class="ch-body"><b>ヴェルカ・ナイン</b><span class="race">ネヴァーフ</span><span class="role">筆頭書記官・オムガの右腕</span></span>
       </button>
       <button class="ch reveal fac-rahf t-open" data-src="assets/p_tesha.png" data-cap="テシャ・スウィン"
-        data-km="ラーフ派遣・錬金術師" data-desc="ラーフから回廊に派遣されている錬金術師。使い込んだ採掘装備が似合う小柄な仕事人。">
+        data-km="フィルボル／ラーフ派遣・錬金術師" data-desc="ラーフから回廊に派遣されている錬金術師。使い込んだ採掘装備が似合う小柄な仕事人。">
         <span class="ch-face"><img src="assets/p_tesha.png" loading="lazy" alt="テシャ・スウィン"><span class="ch-desc">ラーフから回廊に派遣されている錬金術師。使い込んだ採掘装備が似合う小柄な仕事人。</span></span>
-        <span class="ch-body"><b>テシャ・スウィン</b><span class="role">ラーフ派遣・錬金術師</span></span>
+        <span class="ch-body"><b>テシャ・スウィン</b><span class="race">フィルボル</span><span class="role">ラーフ派遣・錬金術師</span></span>
       </button>
       <button class="ch reveal fac-rahf t-open" data-src="assets/p_linne.png" data-cap="リンネ・ソウル"
-        data-km="ラーフ大工房・若手錬金術師" data-desc="ラーフ大工房の若手錬金術師。エルダ文明への学術的興味から、回廊の遺跡に強い関心を持つ。知りたがりで屈託がない。">
+        data-km="エルダナーン／ラーフ大工房・若手錬金術師" data-desc="ラーフ大工房の若手錬金術師。エルダ文明への学術的興味から、回廊の遺跡に強い関心を持つ。知りたがりで屈託がない。">
         <span class="ch-face"><img src="assets/p_linne.png" loading="lazy" alt="リンネ・ソウル"><span class="ch-desc">ラーフ大工房の若手錬金術師。エルダ文明への学術的興味から、回廊の遺跡に強い関心を持つ。知りたがりで屈託がない。</span></span>
-        <span class="ch-body"><b>リンネ・ソウル</b><span class="role">ラーフ大工房・若手錬金術師</span></span>
+        <span class="ch-body"><b>リンネ・ソウル</b><span class="race">エルダナーン</span><span class="role">ラーフ大工房・若手錬金術師</span></span>
       </button>
       <button class="ch reveal fac-rahf t-open" data-src="assets/p_muvak.png" data-cap="ムヴァク"
-        data-km="ラーフ派遣・鉱夫頭" data-desc="坩堝横丁の力自慢。つるはし一本で岩盤と話をつける鉱夫頭。">
+        data-km="ネヴァーフ／ラーフ派遣・鉱夫頭" data-desc="坩堝横丁の力自慢。つるはし一本で岩盤と話をつける鉱夫頭。">
         <span class="ch-face"><img src="assets/p_muvak.png" loading="lazy" alt="ムヴァク"><span class="ch-desc">坩堝横丁の力自慢。つるはし一本で岩盤と話をつける鉱夫頭。</span></span>
-        <span class="ch-body"><b>ムヴァク</b><span class="role">ラーフ派遣・鉱夫頭</span></span>
+        <span class="ch-body"><b>ムヴァク</b><span class="race">ネヴァーフ</span><span class="role">ラーフ派遣・鉱夫頭</span></span>
       </button>
       <button class="ch reveal fac-rahf t-open" data-src="assets/p_marco.png" data-cap="マルコ・ダン"
-        data-km="坩堝横丁の情報屋" data-desc="銭と帳面で生きる純粋な商売人。坩堝横丁で聞けない話は、彼のところで聞ける。">
+        data-km="ヒューリン／坩堝横丁の情報屋" data-desc="銭と帳面で生きる純粋な商売人。坩堝横丁で聞けない話は、彼のところで聞ける。">
         <span class="ch-face"><img src="assets/p_marco.png" loading="lazy" alt="マルコ・ダン"><span class="ch-desc">銭と帳面で生きる純粋な商売人。坩堝横丁で聞けない話は、彼のところで聞ける。</span></span>
-        <span class="ch-body"><b>マルコ・ダン</b><span class="role">坩堝横丁の情報屋</span></span>
+        <span class="ch-body"><b>マルコ・ダン</b><span class="race">ヒューリン</span><span class="role">坩堝横丁の情報屋</span></span>
       </button>
       </div>
     </section>
@@ -1063,24 +1064,24 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <article class="card reveal"><h4>神聖ヴァンスター帝国</h4><p>協定により、回廊南部での学術調査と遺跡研究の権利を持つ。学者の顔と、それ以外の顔。</p><details class="fmore"><summary>詳しく読む</summary><div><p>大陸南西のフィンジアス島を本拠とする帝政国家。聖暦999年、若き皇帝ゼダンの即位を機に国号を「神聖ヴァンスター帝国」と改め、エリンディル統一を掲げて侵略路線を強めた。</p><p>皇帝ゼダンは&quot;風の時代&quot;の神聖王アルトリウスの末裔を自称し、その象徴として魔剣クラウ・ソラスを手にする。錬金術の軍事利用と、高山に住まう天翼族との盟約が、圧倒的な軍事力を支える。帝都は八芒星の城壁に守られた&quot;天空の街&quot;ヴァンスター。</p><p>薔薇の災厄で国力が傷つき、現在は他国への侵攻を停止している。───だが国力が回復すれば再び動き出すと、誰もが予測している。聖都ディアスロンドには、ゼダンを「神聖王の末裔を僭称する者」と非難する声が強い。</p><p>即位から、五十七年。ゼダンはもう若くない。侵攻が止まってから、ずいぶんになる。それでも誰ひとり、あの帝国が牙を抜いたとは思っていない。───玉座に座り続けるあの老人が、何を待っているのか。知る者はいない。</p><p>ただ、こんな話がある。皇帝は、国の戦力を割いてまで、神々の遺した道具───神具を探させているのだと。クラウ・ソラスのほかにも、いくつかは、すでにあの男の手にあるのだとも。</p></div></details></article>
       <div class="chgrid">
       <button class="ch reveal fac-empire t-open" data-src="assets/p_zedan.png" data-cap="ゼダン"
-        data-km="神聖ヴァンスター帝国 皇帝" data-desc="聖暦999年に即位した老皇帝。在位五十七年。帝国の侵攻はもう長いあいだ止まっている───それでも世界は、彼を信じていない。">
+        data-km="ヒューリン／神聖ヴァンスター帝国 皇帝" data-desc="聖暦999年に即位した老皇帝。在位五十七年。帝国の侵攻はもう長いあいだ止まっている───それでも世界は、彼を信じていない。">
         <span class="ch-face"><img src="assets/p_zedan.png" loading="lazy" alt="ゼダン"><span class="ch-desc">聖暦999年に即位した老皇帝。在位五十七年。帝国の侵攻はもう長いあいだ止まっている───それでも世界は、彼を信じていない。</span></span>
-        <span class="ch-body"><b>ゼダン</b><span class="role">神聖ヴァンスター帝国 皇帝</span></span>
+        <span class="ch-body"><b>ゼダン</b><span class="race">ヒューリン</span><span class="role">神聖ヴァンスター帝国 皇帝</span></span>
       </button>
       <button class="ch reveal fac-empire t-open" data-src="assets/p_gaius.png" data-cap="ガイウス・ヴェルム"
-        data-km="帝国商会代表" data-desc="冷静沈着で感情を表に出さない。頼りになる情報通の商人として、回廊に根を張っている。">
+        data-km="ヒューリン／帝国商会代表" data-desc="冷静沈着で感情を表に出さない。頼りになる情報通の商人として、回廊に根を張っている。">
         <span class="ch-face"><img src="assets/p_gaius.png" loading="lazy" alt="ガイウス・ヴェルム"><span class="ch-desc">冷静沈着で感情を表に出さない。頼りになる情報通の商人として、回廊に根を張っている。</span></span>
-        <span class="ch-body"><b>ガイウス・ヴェルム</b><span class="role">帝国商会代表</span></span>
+        <span class="ch-body"><b>ガイウス・ヴェルム</b><span class="race">ヒューリン</span><span class="role">帝国商会代表</span></span>
       </button>
       <button class="ch reveal fac-empire t-open" data-src="assets/p_isolde.png" data-cap="イゾルデ・クラン"
-        data-km="古代文明研究の学者" data-desc="知的で話好き。遺構の調査と研究に情熱を注ぐ学者。">
+        data-km="ヒューリン／古代文明研究の学者" data-desc="知的で話好き。遺構の調査と研究に情熱を注ぐ学者。">
         <span class="ch-face"><img src="assets/p_isolde.png" loading="lazy" alt="イゾルデ・クラン"><span class="ch-desc">知的で話好き。遺構の調査と研究に情熱を注ぐ学者。</span></span>
-        <span class="ch-body"><b>イゾルデ・クラン</b><span class="role">古代文明研究の学者</span></span>
+        <span class="ch-body"><b>イゾルデ・クラン</b><span class="race">ヒューリン</span><span class="role">古代文明研究の学者</span></span>
       </button>
       <button class="ch reveal fac-empire t-open" data-src="assets/p_drek.png" data-cap="ドレク"
-        data-km="帝国調査隊・現場隊長" data-desc="測量と野外調査の叩き上げ。所属は帝国でも、現場の筋は通す男。">
+        data-km="ヒューリン／帝国調査隊・現場隊長" data-desc="測量と野外調査の叩き上げ。所属は帝国でも、現場の筋は通す男。">
         <span class="ch-face"><img src="assets/p_drek.png" loading="lazy" alt="ドレク"><span class="ch-desc">測量と野外調査の叩き上げ。所属は帝国でも、現場の筋は通す男。</span></span>
-        <span class="ch-body"><b>ドレク</b><span class="role">帝国調査隊・現場隊長</span></span>
+        <span class="ch-body"><b>ドレク</b><span class="race">ヒューリン</span><span class="role">帝国調査隊・現場隊長</span></span>
       </button>
       </div>
     </section>
@@ -1089,29 +1090,29 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <article class="card reveal"><h4>聖都ディアスロンド</h4><p>七大神信仰の総本山にして、どの国にも属さない中立の聖地。三者協定の仲介者。「争っている場合ではない」───調停者たちは今日も回廊を歩く。</p><details class="fmore"><summary>詳しく読む</summary><div><p>エリンディルに存在する神殿を統括する都市。宗教的な均衡と平等性を保つため、どの国家にも属さず、独立した国家機能を持つ。冒険者への依頼を統括する神殿機能の本部でもあり、各地の異変や事件の情報がこの都市に集まる。</p><p>白く輝く6つの塔に囲まれた六角形の都市。巡礼者は城壁沿いに6つの神殿───鍛冶、月、戦い、天空、大地、豊穣───を巡り、最後に中心部の大聖堂を礼拝するのが通例だ。大聖堂の奥には&quot;風の時代&quot;の遺物と伝えられる7つの塔が立ち、その足もとの「光の門」の中で、教皇は即位から退位までを過ごす。</p><p>聖典『白の書』によれば、都市は&quot;古の民&quot;エルダが神々の声を聞くために築き、のちの初代教皇ルキアノスが7つの塔の下で神々の声を聞いて再興した。以来800年───神の武具、神の道具を探し求めることが、神殿組織の使命のひとつであり続けている。</p></div></details></article>
       <div class="chgrid">
       <button class="ch reveal fac-holy t-open" data-src="assets/p_alma.png" data-cap="シスター・アルマ"
-        data-km="聖都側の責任者・調停者" data-desc="「争っている場合ではない」───その信念ひとつで氷の回廊に立つ調停者。">
+        data-km="ヒューリン／聖都側の責任者・調停者" data-desc="「争っている場合ではない」───その信念ひとつで氷の回廊に立つ調停者。">
         <span class="ch-face"><img src="assets/p_alma.png" loading="lazy" alt="シスター・アルマ"><span class="ch-desc">「争っている場合ではない」───その信念ひとつで氷の回廊に立つ調停者。</span></span>
-        <span class="ch-body"><b>シスター・アルマ</b><span class="role">聖都側の責任者・調停者</span></span>
+        <span class="ch-body"><b>シスター・アルマ</b><span class="race">ヒューリン</span><span class="role">聖都側の責任者・調停者</span></span>
       </button>
       <button class="ch reveal fac-holy t-open" data-src="assets/p_laila.png" data-cap="ライラ"
-        data-km="戦闘聖職者・アルマの護衛" data-desc="妖魔と魔族を専門に討つ戦闘聖職者───人は「剣の聖女」と呼ぶ。正義感が強く真っ直ぐ。アルマの護衛として回廊に入った。">
+        data-km="ドゥアン（天翼族）／戦闘聖職者・アルマの護衛" data-desc="妖魔と魔族を専門に討つ戦闘聖職者───人は「剣の聖女」と呼ぶ。正義感が強く真っ直ぐ。アルマの護衛として回廊に入った。">
         <span class="ch-face"><img src="assets/p_laila.png" loading="lazy" alt="ライラ"><span class="ch-desc">妖魔と魔族を専門に討つ戦闘聖職者───人は「剣の聖女」と呼ぶ。正義感が強く真っ直ぐ。アルマの護衛として回廊に入った。</span></span>
-        <span class="ch-body"><b>ライラ</b><span class="role">戦闘聖職者・アルマの護衛</span></span>
+        <span class="ch-body"><b>ライラ</b><span class="race">ドゥアン（天翼族）</span><span class="role">戦闘聖職者・アルマの護衛</span></span>
       </button>
       <button class="ch reveal fac-holy t-open" data-src="assets/p_bradan.png" data-cap="ブラダン神父"
-        data-km="副官・布教担当" data-desc="ゴヴァノンとブリガンティアの教えを地の底まで届けようとする布教師。ボルトの飲み仲間。">
+        data-km="ドゥアン／副官・布教担当" data-desc="ゴヴァノンとブリガンティアの教えを地の底まで届けようとする布教師。ボルトの飲み仲間。">
         <span class="ch-face"><img src="assets/p_bradan.png" loading="lazy" alt="ブラダン神父"><span class="ch-desc">ゴヴァノンとブリガンティアの教えを地の底まで届けようとする布教師。ボルトの飲み仲間。</span></span>
-        <span class="ch-body"><b>ブラダン神父</b><span class="role">副官・布教担当</span></span>
+        <span class="ch-body"><b>ブラダン神父</b><span class="race">ドゥアン</span><span class="role">副官・布教担当</span></span>
       </button>
       <button class="ch reveal fac-holy t-open" data-src="assets/p_tobias.png" data-cap="トバイアス"
-        data-km="聖都派遣の記録係" data-desc="温厚で争いごとを嫌う記録係。回廊で起きたことを静かに書き留めている。">
+        data-km="エルダナーン／聖都派遣の記録係" data-desc="温厚で争いごとを嫌う記録係。回廊で起きたことを静かに書き留めている。">
         <span class="ch-face"><img src="assets/p_tobias.png" loading="lazy" alt="トバイアス"><span class="ch-desc">温厚で争いごとを嫌う記録係。回廊で起きたことを静かに書き留めている。</span></span>
-        <span class="ch-body"><b>トバイアス</b><span class="role">聖都派遣の記録係</span></span>
+        <span class="ch-body"><b>トバイアス</b><span class="race">エルダナーン</span><span class="role">聖都派遣の記録係</span></span>
       </button>
       <button class="ch reveal fac-holy t-open" data-src="assets/p_nao.png" data-cap="ナオ"
-        data-km="見習い聖職者" data-desc="アルマを慕って回廊までついてきた見習い。明るく素直で、誰にでもすぐ懐く。">
+        data-km="フィルボル／見習い聖職者" data-desc="アルマを慕って回廊までついてきた見習い。明るく素直で、誰にでもすぐ懐く。">
         <span class="ch-face"><img src="assets/p_nao.png" loading="lazy" alt="ナオ"><span class="ch-desc">アルマを慕って回廊までついてきた見習い。明るく素直で、誰にでもすぐ懐く。</span></span>
-        <span class="ch-body"><b>ナオ</b><span class="role">見習い聖職者</span></span>
+        <span class="ch-body"><b>ナオ</b><span class="race">フィルボル</span><span class="role">見習い聖職者</span></span>
       </button>
       </div>
     </section>
@@ -1119,34 +1120,34 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <h3 class="wsec reveal">回廊の人々<small>PEOPLE OF THE CIRCUIT</small></h3>
     <div class="chgrid">
       <button class="ch reveal fac-people t-open" data-src="assets/p_louve.png" data-cap="ルーヴェ・レイン"
-        data-km="ランタン亭の女将" data-desc="回廊のなかほど、灯りの宿をひとりで営む女将。物静かで、行き届いている。">
+        data-km="エルダナーン／ランタン亭の女将" data-desc="回廊のなかほど、灯りの宿をひとりで営む女将。物静かで、行き届いている。">
         <span class="ch-face"><img src="assets/p_louve.png" loading="lazy" alt="ルーヴェ・レイン"><span class="ch-desc">回廊のなかほど、灯りの宿をひとりで営む女将。物静かで、行き届いている。</span></span>
-        <span class="ch-body"><b>ルーヴェ・レイン</b><span class="role">ランタン亭の女将</span></span>
+        <span class="ch-body"><b>ルーヴェ・レイン</b><span class="race">エルダナーン</span><span class="role">ランタン亭の女将</span></span>
       </button>
       <button class="ch reveal fac-people t-open" data-src="assets/p_erna.png" data-cap="エルナ"
-        data-km="行商人" data-desc="ランタン亭の常連の行商人。ルーヴェの数少ない話し相手。旅装の箱にはいつも何かしら良いものが入っている。">
+        data-km="ヒューリン／行商人" data-desc="ランタン亭の常連の行商人。ルーヴェの数少ない話し相手。旅装の箱にはいつも何かしら良いものが入っている。">
         <span class="ch-face"><img src="assets/p_erna.png" loading="lazy" alt="エルナ"><span class="ch-desc">ランタン亭の常連の行商人。ルーヴェの数少ない話し相手。旅装の箱にはいつも何かしら良いものが入っている。</span></span>
-        <span class="ch-body"><b>エルナ</b><span class="role">行商人</span></span>
+        <span class="ch-body"><b>エルナ</b><span class="race">ヒューリン</span><span class="role">行商人</span></span>
       </button>
       <button class="ch reveal fac-people t-open" data-src="assets/p_bolt.png" data-cap="ボルト"
-        data-km="坩堝横丁・ゴヴァノン小祠の世話人" data-desc="無骨な信徒。坩堝横丁の小さな祠を守り、鍵と聖印を提げて歩く。">
+        data-km="ドゥアン／坩堝横丁・ゴヴァノン小祠の世話人" data-desc="無骨な信徒。坩堝横丁の小さな祠を守り、鍵と聖印を提げて歩く。">
         <span class="ch-face"><img src="assets/p_bolt.png" loading="lazy" alt="ボルト"><span class="ch-desc">無骨な信徒。坩堝横丁の小さな祠を守り、鍵と聖印を提げて歩く。</span></span>
-        <span class="ch-body"><b>ボルト</b><span class="role">坩堝横丁・ゴヴァノン小祠の世話人</span></span>
+        <span class="ch-body"><b>ボルト</b><span class="race">ドゥアン</span><span class="role">坩堝横丁・ゴヴァノン小祠の世話人</span></span>
       </button>
       <button class="ch reveal fac-people t-open" data-src="assets/p_sera.png" data-cap="セラ・ウィン"
-        data-km="旅の少女" data-desc="物見遊山で回廊まで流れてきた若い旅人。愛嬌があり誰とでもすぐ仲良くなる。旅の理由は聞かれても笑ってはぐらかす───旅人とはそういうものだ。">
+        data-km="ヴァーナ（猫族）／旅の少女" data-desc="物見遊山で回廊まで流れてきた若い旅人。愛嬌があり誰とでもすぐ仲良くなる。旅の理由は聞かれても笑ってはぐらかす───旅人とはそういうものだ。">
         <span class="ch-face"><img src="assets/p_sera.png" loading="lazy" alt="セラ・ウィン"><span class="ch-desc">物見遊山で回廊まで流れてきた若い旅人。愛嬌があり誰とでもすぐ仲良くなる。旅の理由は聞かれても笑ってはぐらかす───旅人とはそういうものだ。</span></span>
-        <span class="ch-body"><b>セラ・ウィン</b><span class="role">旅の少女</span></span>
+        <span class="ch-body"><b>セラ・ウィン</b><span class="race">ヴァーナ（猫族）</span><span class="role">旅の少女</span></span>
       </button>
       <button class="ch reveal fac-people t-open" data-src="assets/p_aquarielna.png" data-cap="アクアリエルナ"
-        data-km="放浪の魔術士" data-desc="毛糸のショールに口元をうずめた放浪の魔術士。&quot;火の粛清の始まる場所&quot;を探して九百年あまり旅をしている───と本人は言う。">
+        data-km="エルダナーン／放浪の魔術士" data-desc="毛糸のショールに口元をうずめた放浪の魔術士。&quot;火の粛清の始まる場所&quot;を探して九百年あまり旅をしている───と本人は言う。">
         <span class="ch-face"><img src="assets/p_aquarielna.png" loading="lazy" alt="アクアリエルナ"><span class="ch-desc">毛糸のショールに口元をうずめた放浪の魔術士。&quot;火の粛清の始まる場所&quot;を探して九百年あまり旅をしている───と本人は言う。</span></span>
-        <span class="ch-body"><b>アクアリエルナ</b><span class="role">放浪の魔術士</span></span>
+        <span class="ch-body"><b>アクアリエルナ</b><span class="race">エルダナーン</span><span class="role">放浪の魔術士</span></span>
       </button>
       <button class="ch reveal fac-people t-open" data-src="assets/p_ifrit.png" data-cap="黒い剣士"
-        data-km="ラーフに居付く流れの剣士" data-desc="黒い翼の大男。十年前からラーフ大洞窟に居付き名を訊かれても答えない。かの都で彼に敵う者はいないという。">
+        data-km="ドゥアン（天翼族）／ラーフに居付く流れの剣士" data-desc="黒い翼の大男。十年前からラーフ大洞窟に居付き名を訊かれても答えない。かの都で彼に敵う者はいないという。">
         <span class="ch-face"><img src="assets/p_ifrit.png" loading="lazy" alt="黒い剣士"><span class="ch-desc">黒い翼の大男。十年前からラーフ大洞窟に居付き名を訊かれても答えない。かの都で彼に敵う者はいないという。</span></span>
-        <span class="ch-body"><b>黒い剣士</b><span class="role">ラーフに居付く流れの剣士</span></span>
+        <span class="ch-body"><b>黒い剣士</b><span class="race">ドゥアン（天翼族）</span><span class="role">ラーフに居付く流れの剣士</span></span>
       </button>
     </div>
 <p class="ch-more reveal">誰にでも語らないことのひとつはある。この回廊で出会う人々は、これから増えていく。</p>
