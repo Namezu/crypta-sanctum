@@ -588,6 +588,25 @@ h3.wsec.darkhead small { color:rgba(255,183,94,.5); }
 .ch { border:1px solid var(--line); background:rgba(6,10,17,.72); display:flex; flex-direction:column; }
 .ch-face { aspect-ratio:1/1; position:relative; overflow:hidden; border-bottom:1px solid var(--line);
   background:linear-gradient(160deg, #0a1420, #050910 60%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.18' numOctaves='2' seed='11'/><feColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0 0.74  0 0 0 0.28 0'/></filter><rect width='300' height='300' filter='url(%23i)'/></svg>"); background-blend-mode:screen; }
+/* 勢力別のカード背景（2026-07-17 後輩くん依頼＝所属が見た目で分かるように） */
+.ch.fac-primus .ch-face { background:
+  radial-gradient(120% 90% at 50% -10%, rgba(120,180,230,.30), rgba(120,180,230,0) 55%),
+  linear-gradient(160deg, #0c1a30, #050a14 65%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.18' numOctaves='2' seed='11'/><feColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0 0.74  0 0 0 0.28 0'/></filter><rect width='300' height='300' filter='url(%23i)'/></svg>"); background-blend-mode:normal,normal,screen; }
+.ch.fac-empire .ch-face { background:
+  linear-gradient(120deg, rgba(150,30,45,.26), rgba(150,30,45,0) 45%),
+  linear-gradient(160deg, #1a0d13, #08050a 65%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.18' numOctaves='2' seed='11'/><feColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0 0.74  0 0 0 0.28 0'/></filter><rect width='300' height='300' filter='url(%23i)'/></svg>"); background-blend-mode:normal,normal,screen; }
+.ch.fac-holy .ch-face { background:
+  linear-gradient(180deg, rgba(220,235,255,.22), rgba(220,235,255,0) 42%),
+  linear-gradient(160deg, #16233a, #0a101c 65%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.18' numOctaves='2' seed='11'/><feColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0 0.74  0 0 0 0.28 0'/></filter><rect width='300' height='300' filter='url(%23i)'/></svg>"); background-blend-mode:normal,normal,screen; }
+.ch.fac-rahf .ch-face { background:
+  radial-gradient(110% 70% at 50% 108%, rgba(45,190,170,.28), rgba(45,190,170,0) 60%),
+  linear-gradient(160deg, #0b1f1d, #061110 65%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.18' numOctaves='2' seed='11'/><feColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0 0.74  0 0 0 0.28 0'/></filter><rect width='300' height='300' filter='url(%23i)'/></svg>"); background-blend-mode:normal,normal,screen; }
+.ch.fac-paris .ch-face { background:
+  linear-gradient(120deg, rgba(190,160,70,.18), rgba(190,160,70,0) 45%),
+  linear-gradient(160deg, #12200f, #070d06 65%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.18' numOctaves='2' seed='11'/><feColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0 0.74  0 0 0 0.28 0'/></filter><rect width='300' height='300' filter='url(%23i)'/></svg>"); background-blend-mode:normal,normal,screen; }
+.ch.fac-people .ch-face { background:
+  radial-gradient(90% 70% at 50% 60%, rgba(255,183,94,.22), rgba(255,183,94,0) 62%),
+  linear-gradient(160deg, #201710, #0c0806 65%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='i'><feTurbulence type='fractalNoise' baseFrequency='0.04 0.18' numOctaves='2' seed='11'/><feColorMatrix type='matrix' values='0 0 0 0 0.35  0 0 0 0 0.62  0 0 0 0 0.74  0 0 0 0.28 0'/></filter><rect width='300' height='300' filter='url(%23i)'/></svg>"); background-blend-mode:normal,normal,screen; }
 .ch-face img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; padding:8px 8px 0; }
 .ch-face .mono { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
   font-size:44px; color:rgba(159,216,232,.34); letter-spacing:0; text-shadow:0 0 26px rgba(120,190,215,.3); }
@@ -936,11 +955,11 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <section class="fgroup">
       <article class="card reveal"><h4>プリムス</h4><p>沈黙の氷原にただひとつ根を張った、人の暮らす拠点。掲げる使命は入植───この氷の大地を、人が生き続けられる土地に変えること。西方とつなぐ唯一の道・凍結の回路が止まれば、その営みは立ち行かなくなる。</p><details class="fmore"><summary>詳しく読む</summary><div><p>聖暦1043年、ヴァイス王国の子爵ヴェルトール・ランベントがその立場を退き、開拓団の設立を宣言したことに始まる。現在の代表は、彼の遺志を継いだ娘のアリス・ランベント。統治は団員による合議制。</p><p>パリス同盟各国の共同出資による国際機関だが、事務方の多くはヴァイス王国の出身者で、ランベント騎士団の斥候隊「黄色中隊」もプリムスに常駐している。輸入は食料と生活必需品と薬品。輸出は、氷原で採れる純度の高い宝石。</p><p>団員は食堂での共同の食事に代表される共同生活を営む。氷原育ちの子供たち───低温と豪雪にきわめて高く適応した世代は「アイスメイト」と呼ばれ、12歳ごろから入団試験を経て団の仕事を手伝う。</p></div></details></article>
       <div class="chgrid">
-      <article class="ch reveal">
+      <article class="ch reveal fac-primus">
         <div class="ch-face"><img src="assets/ch_0.png" loading="lazy" alt="レイフ・ストーム"></div>
         <div class="ch-body"><h4>レイフ・ストーム</h4><span class="role">凍結の回路・安全通行責任者</span><p>フロストゲートの野営地に常駐する、几帳面で世話好きな男。回廊で起きたことは、最後にはぜんぶ彼の机に集まる。旅の始まりと終わりに、彼の顔がある。</p></div>
       </article>
-      <article class="ch reveal">
+      <article class="ch reveal fac-primus">
         <div class="ch-face"><img src="assets/ch_1.png" loading="lazy" alt="フルール・シュリエール"></div>
         <div class="ch-body"><h4>フルール・シュリエール</h4><span class="role">開拓団の外交実務担当</span><p>シュリエール伯爵家の次男、十九歳。真面目で丁寧、評判は上々。ただし大きな舞台は、まだこれから。</p></div>
       </article>
@@ -965,7 +984,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <div class="treaty reveal"><h4>ドートーベン協定<span>THE DORTOBEN ACCORD</span></h4><p>聖都ディアスロンドの仲介により、北部平原の交易都市ドートーベンで、パリス同盟・神聖ヴァンスター帝国・ラーフ大洞窟の三者が結んだ協定。</p><p>凍結の回路の中では、三者は互いに刃を交えない。帝国の通行はランタン亭の北───石門より手前まで。パリス同盟と帝国は、通行の対価をラーフ大洞窟に納める。そして、回廊の安全に関わることは、速やかに分かち合う───名目上は。</p><p>実際には、それぞれの思惑が、灯りの届かぬ回廊を静かに行き交っている。</p></div>
     <h3 class="wsec reveal">回廊の人々<small>PEOPLE OF THE CIRCUIT</small></h3>
     <div class="chgrid">
-      <article class="ch reveal">
+      <article class="ch reveal fac-people">
         <div class="ch-face"><img src="assets/ch_2.png" loading="lazy" alt="ルーヴェ・レイン"></div>
         <div class="ch-body"><h4>ルーヴェ・レイン</h4><span class="role">ランタン亭の女将</span><p>回廊のなかほど、灯りの宿をひとりで営む。物静かで、行き届いていて───けれど、彼女自身のことを知る客は、ひとりもいない。</p></div>
       </article>
