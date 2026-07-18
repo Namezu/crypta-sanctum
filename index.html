@@ -676,6 +676,12 @@ button.ch { cursor:pointer; }
   display:flex; align-items:baseline; gap:14px; margin-bottom:8px; }
 #lb figcaption.lb-terrain h4 span { font-size:11px; letter-spacing:.12em; color:var(--dim);
   font-variant-numeric:tabular-nums; }
+/* 人物のライトボックス＝説明を画像の下部に重ねる（スマホで下に見切れる対策 2026-07-18 後輩くん指摘） */
+#lb.lb-person figure { position:relative; }
+#lb.lb-person img { max-height:92vh; }
+#lb.lb-person figcaption.lb-terrain { position:absolute; left:0; right:0; bottom:0; margin:0;
+  padding:34px 18px 14px; background:linear-gradient(180deg, rgba(2,4,9,0), rgba(2,4,9,.92) 42%); }
+#lb.lb-person figcaption.lb-terrain p { text-shadow:0 1px 6px rgba(0,0,0,.8); }
 #lb figcaption.lb-terrain p { font-size:13.5px; line-height:2.05; color:#cfdde5; letter-spacing:.03em;
   white-space:pre-line; }  /* 複数段落の地形本文（
 ）をライトボックスでも段落表示 */
@@ -1583,6 +1589,8 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       lbImg.src = b.dataset.src;
       lbCap.textContent = '';
       lbCap.className = 'lb-terrain';
+      // 人物カード発なら説明を画像下部へ重ねる（スマホ見切れ対策）
+      lb.classList.toggle('lb-person', b.classList.contains('ch'));
       var h = document.createElement('h4');
       h.textContent = b.dataset.cap || '';
       if (b.dataset.km) {
@@ -1598,8 +1606,8 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     });
   });
   if (lb) {
-    lb.addEventListener('click', function() { lb.classList.remove('on'); lbImg.removeAttribute('src'); });
-    addEventListener('keydown', function(e) { if (e.key === 'Escape') { lb.classList.remove('on'); lbImg.removeAttribute('src'); } });
+    lb.addEventListener('click', function() { lb.classList.remove('on'); lb.classList.remove('lb-person'); lbImg.removeAttribute('src'); });
+    addEventListener('keydown', function(e) { if (e.key === 'Escape') { lb.classList.remove('on'); lb.classList.remove('lb-person'); lbImg.removeAttribute('src'); } });
   }
 
   // ── リビール＋駅ランプ ──
