@@ -681,7 +681,8 @@ button.ch { cursor:pointer; }
 #lb.lb-person figure { position:relative; }
 #lb.lb-person img { max-height:92vh; }
 #lb.lb-person figcaption.lb-terrain { position:absolute; left:0; right:0; bottom:0; margin:0;
-  padding:34px 18px 14px; background:linear-gradient(180deg, rgba(2,4,9,0), rgba(2,4,9,.92) 42%); }
+  padding:56px 18px 16px; background:linear-gradient(180deg, rgba(2,4,9,0) 0%, rgba(2,4,9,.6) 26%, rgba(2,4,9,.97) 58%); }
+#lb.lb-person figcaption.lb-terrain .lb-km { font-size:11px; letter-spacing:.14em; color:#9fb3bf; margin:5px 0 3px; }
 #lb.lb-person figcaption.lb-terrain p { text-shadow:0 1px 6px rgba(0,0,0,.8); }
 /* 人物のライトボックス＝1行目:名前（折返し禁止）/2行目:種族・年齢等/3行目〜:説明（2026-07-19 後輩くん指定） */
 #lb.lb-person figcaption.lb-terrain h4 { white-space:nowrap; overflow:hidden; text-overflow:clip; font-size:16px; letter-spacing:.1em; }
@@ -1606,17 +1607,27 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       lbCap.textContent = '';
       lbCap.className = 'lb-terrain';
       // 人物カード発なら説明を画像下部へ重ねる（スマホ見切れ対策）
-      lb.classList.toggle('lb-person', b.classList.contains('ch'));
+      var isPerson = b.classList.contains('ch');
+      lb.classList.toggle('lb-person', isPerson);
       var h = document.createElement('h4');
       h.textContent = b.dataset.cap || '';
+      var km2 = null;
       if (b.dataset.km) {
-        var km = document.createElement('span');
-        km.textContent = b.dataset.km;
-        h.appendChild(km);
+        if (isPerson) {
+          // 人物＝種族・年齢は名前の下の独立行（2026-07-19 後輩くん指定）
+          km2 = document.createElement('div');
+          km2.className = 'lb-km';
+          km2.textContent = b.dataset.km;
+        } else {
+          var km = document.createElement('span');
+          km.textContent = b.dataset.km;
+          h.appendChild(km);
+        }
       }
       var p = document.createElement('p');
       p.textContent = b.dataset.desc || '';
       lbCap.appendChild(h);
+      if (km2) lbCap.appendChild(km2);
       lbCap.appendChild(p);
       lb.classList.add('on');
     });
