@@ -683,8 +683,9 @@ button.ch { cursor:pointer; }
 #lb.lb-person figcaption.lb-terrain { position:absolute; left:0; right:0; bottom:0; margin:0;
   padding:34px 18px 14px; background:linear-gradient(180deg, rgba(2,4,9,0), rgba(2,4,9,.92) 42%); }
 #lb.lb-person figcaption.lb-terrain p { text-shadow:0 1px 6px rgba(0,0,0,.8); }
-/* 人物のライトボックス＝名前と「種族・年齢／役職」を行分け（2026-07-19 後輩くん指摘） */
-#lb.lb-person figcaption.lb-terrain h4 span { display:block; margin-top:5px; }
+/* 人物のライトボックス＝1行目:名前（折返し禁止）/2行目:種族・年齢等/3行目〜:説明（2026-07-19 後輩くん指定） */
+#lb.lb-person figcaption.lb-terrain h4 { white-space:nowrap; overflow:hidden; text-overflow:clip; font-size:16px; letter-spacing:.1em; }
+#lb.lb-person figcaption.lb-terrain h4 span { display:block; white-space:normal; margin-top:6px; font-size:11px; }
 #lb figcaption.lb-terrain p { font-size:14.5px; line-height:2.05; color:#dbe7ee; letter-spacing:.03em;
   white-space:pre-line; }  /* 複数段落の地形本文（
 ）をライトボックスでも段落表示 */
