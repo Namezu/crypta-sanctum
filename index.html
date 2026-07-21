@@ -723,6 +723,14 @@ button.ch { cursor:pointer; }
   text-align:center; cursor:pointer; transition:background .2s, color .2s; }
 #lb .lb-x:hover { background:rgba(2,4,9,.85); color:#fff; }
 @media (max-width:640px) { #lb .lb-arw { font-size:34px; } #lb .lb-nav { min-width:44px; } }
+/* 縦の狭い画面＝人物も「スチルを上に全部見せ→情報は下に別置き」に切替（重ね方式だとスチルが隠れる 2026-07-21 後輩くんスマホ確認）。地形/原生生物と同じ積み重ね */
+@media (max-width:720px) {
+  #lb.lb-person figure { max-width:96vw; }
+  #lb.lb-person img { max-height:64vh; object-fit:contain; }
+  #lb.lb-person figcaption.lb-terrain { position:static; left:auto; right:auto; bottom:auto;
+    max-width:none; margin:0; padding:15px 16px 22px; background:#060a11; }
+  #lb.lb-person figcaption.lb-terrain h4 { white-space:normal; }
+}
 
 /* ══ JOIN ══ */
 .join-body { padding-bottom:12vh; }
