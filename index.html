@@ -691,6 +691,38 @@ button.ch { cursor:pointer; }
 #lb figcaption.lb-terrain p { font-size:14.5px; line-height:2.05; color:#dbe7ee; letter-spacing:.03em;
   white-space:pre-line; }  /* 複数段落の地形本文（
 ）をライトボックスでも段落表示 */
+#lb figure { cursor:default; }
+/* 人物＝スチルを大きく／16:9横長を主役に・情報は下部に重ねる（2026-07-21 スチル対応） */
+#lb.lb-person figure { max-width:min(1180px, 96vw); }
+#lb.lb-person img { width:100%; max-height:88vh; object-fit:contain; }
+#lb.lb-person figcaption.lb-terrain { max-width:none; padding:64px 22px 20px; }
+#lb.lb-person figcaption.lb-terrain h4 { font-size:19px; letter-spacing:.12em; color:#eaf3f8; }
+#lb.lb-person figcaption.lb-terrain .lb-meta { display:flex; flex-wrap:wrap; gap:7px 10px; margin:11px 0 13px;
+  white-space:normal; }
+#lb.lb-person figcaption.lb-terrain .lb-meta span { font-size:12px; color:#e2edf2; letter-spacing:.04em;
+  background:rgba(120,160,180,.14); border:1px solid rgba(150,185,205,.28); border-radius:5px;
+  padding:3px 10px; text-shadow:0 1px 4px rgba(0,0,0,.7); }
+#lb.lb-person figcaption.lb-terrain .lb-meta i { font-style:normal; color:#9cc0d2; margin-right:7px;
+  font-size:10px; letter-spacing:.12em; }
+#lb.lb-person figcaption.lb-terrain p { max-width:900px; }
+/* 前後ナビ＝左右端。カーソルを寄せると黒い半透明＋矢印がフェードイン（2026-07-21 後輩くん指定） */
+#lb .lb-nav { position:fixed; top:0; bottom:0; width:15vw; max-width:130px; min-width:58px; z-index:2;
+  border:0; margin:0; padding:0 12px; cursor:pointer; display:flex; align-items:center;
+  opacity:0; transition:opacity .28s ease; -webkit-tap-highlight-color:transparent; }
+/* 黒でなく「ランタンの灯り」がふわっと差す暖色グロー（2026-07-21 後輩くん・暗背景で黒が目立たない対策） */
+#lb .lb-prev { left:0; justify-content:flex-start;
+  background:radial-gradient(130% 70% at 0% 50%, rgba(246,201,128,.40) 0%, rgba(240,176,96,.14) 34%, rgba(246,201,128,0) 68%); }
+#lb .lb-next { right:0; justify-content:flex-end;
+  background:radial-gradient(130% 70% at 100% 50%, rgba(246,201,128,.40) 0%, rgba(240,176,96,.14) 34%, rgba(246,201,128,0) 68%); }
+#lb .lb-nav:hover, #lb .lb-nav:focus-visible { opacity:1; outline:none; }
+#lb .lb-arw { font-size:46px; line-height:1; color:#ffe9c6; font-weight:300;
+  text-shadow:0 0 16px rgba(255,198,120,.75), 0 0 34px rgba(246,180,100,.4), 0 2px 10px rgba(0,0,0,.7); }
+@media (hover:none) { #lb .lb-nav { opacity:.42; } }   /* タッチ環境は常時うっすら表示（スワイプも可） */
+#lb .lb-x { position:fixed; top:14px; right:16px; z-index:3; width:40px; height:40px; border:0;
+  border-radius:50%; background:rgba(2,4,9,.45); color:#d3e2ea; font-size:24px; line-height:38px;
+  text-align:center; cursor:pointer; transition:background .2s, color .2s; }
+#lb .lb-x:hover { background:rgba(2,4,9,.85); color:#fff; }
+@media (max-width:640px) { #lb .lb-arw { font-size:34px; } #lb .lb-nav { min-width:44px; } }
 
 /* ══ JOIN ══ */
 .join-body { padding-bottom:12vh; }
@@ -895,25 +927,13 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 
     <h3 class="wsec reveal">回廊の地形<small>THE TERRAIN</small></h3>
     <p class="reveal wl-lead">凍結の回路は単なる一本の地下通路ではない。北端のプリムスから南端のラーフ大洞窟まで、全長171km。その道程には、巨大な裂谷や凍結した湖、古い遺跡など、性質の異なる地形が連なっている。ここでは街道に沿って、主な拠点と地形を北から順に紹介する。</p>
-    <div class="cs-grid reveal"><div class="cs-row t-head"><div class="cs-k">地名／プリムスからの距離</div><div class="cs-v">説明</div></div><div class="t-div"><i></i><span>プリムス<em>0km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_abyss_edge.jpg)"><i class="tlight" style="background-image:url(assets/t_abyss_edge.jpg)"></i><button class="cs-k t-open" data-src="assets/t_abyss_edge.jpg" data-cap="奈落の縁" data-km="18–28km" data-desc="回廊の床が幾度も崩れ落ち、巨大な穴がいくつも連なっている区間。いずれも灯りや測量綱が底まで届かず、地下深くでつながっているのかどうかも分かっていない。道は穴と穴のあいだに残された岩盤の縁を縫い、場所によっては両側に奈落を見ながら進むことになる。小石を落としても、底に当たる音が返ってきた記録はない。"><b>奈落の縁</b><span class="t-km">18–28km</span></button><div class="cs-v">回廊の床が幾度も崩れ落ち、巨大な穴がいくつも連なっている区間。いずれも灯りや測量綱が底まで届かず、地下深くでつながっているのかどうかも分かっていない。道は穴と穴のあいだに残された岩盤の縁を縫い、場所によっては両側に奈落を見ながら進むことになる。小石を落としても、底に当たる音が返ってきた記録はない。</div></div><div class="t-div"><i></i><span>フロストゲート<em>37km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_cascade_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_cascade_wild.jpg)"></i><button class="cs-k t-open" data-src="assets/t_cascade_wild.jpg" data-cap="永遠の滝" data-km="44–50km" data-desc="幾筋もの大瀑布が、落下の途中で時を止めたように凍りついている。外殻だけを残して水が失われたためか、青白い氷柱の内部は空洞になっている。その異様な姿が、時の止まった滝を思わせることから、この名がついた。"><b>永遠の滝</b><span class="t-km">44–50km</span></button><div class="cs-v">幾筋もの大瀑布が、落下の途中で時を止めたように凍りついている。外殻だけを残して水が失われたためか、青白い氷柱の内部は空洞になっている。その異様な姿が、時の止まった滝を思わせることから、この名がついた。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_canyon_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_canyon_wild.jpg)"></i><button class="cs-k t-open" data-src="assets/t_canyon_wild.jpg" data-cap="大峡谷" data-km="55–68km" data-desc="狭い回廊が突如として途方もない裂谷へ開け、道はその谷底を南北に延びている。両側には絶壁がそびえ、天井は見上げても闇の中に消えたままだ。崖面には無数の横穴が口を開けているが、その多くは未調査である。峡谷には頂点捕食者たるグリンデイルが多く生息しており、容易には踏み込めないためだ。"><b>大峡谷</b><span class="t-km">55–68km</span></button><div class="cs-v">狭い回廊が突如として途方もない裂谷へ開け、道はその谷底を南北に延びている。両側には絶壁がそびえ、天井は見上げても闇の中に消えたままだ。崖面には無数の横穴が口を開けているが、その多くは未調査である。峡谷には頂点捕食者たるグリンデイルが多く生息しており、容易には踏み込めないためだ。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_bones.jpg)"><i class="tlight" style="background-image:url(assets/t_bones.jpg)"></i><button class="cs-k t-open" data-src="assets/t_bones.jpg" data-cap="死の道" data-km="70–78km" data-desc="氷の中に横たわる、途方もなく巨大な生物の遺骸。その胸郭を貫くように道が延びている。両側の肋骨は柱のように立ち上がり、その先は天井の闇へ消えて見えない。遺骸の全体像も、何の生物であったのかも分かっていない。旅人は、名も知れぬ死者の内側を通るこの区間を「死の道」と呼ぶ。"><b>死の道</b><span class="t-km">70–78km</span></button><div class="cs-v">氷の中に横たわる、途方もなく巨大な生物の遺骸。その胸郭を貫くように道が延びている。両側の肋骨は柱のように立ち上がり、その先は天井の闇へ消えて見えない。遺骸の全体像も、何の生物であったのかも分かっていない。旅人は、名も知れぬ死者の内側を通るこの区間を「死の道」と呼ぶ。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_gate_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_gate_wild.jpg)"></i><button class="cs-k t-open" data-src="assets/t_gate_wild.jpg" data-cap="石門の遺跡" data-km="80–86km" data-desc="ランタン亭の北側一帯に広がる、氷に閉ざされた都市遺跡。崩れた建物のあいだを細い通路が網目状に走り、かつての街路だったと考えられている。築造年代も、ここに暮らしていた者たちの正体も分かっていない。遺跡のひときわ巨大な石門は技師らの尽力によって開閉機構が蘇っている。"><b>石門の遺跡</b><span class="t-km">80–86km</span></button><div class="cs-v">ランタン亭の北側一帯に広がる、氷に閉ざされた都市遺跡。崩れた建物のあいだを細い通路が網目状に走り、かつての街路だったと考えられている。築造年代も、ここに暮らしていた者たちの正体も分かっていない。遺跡のひときわ巨大な石門は技師らの尽力によって開閉機構が蘇っている。</div></div><div class="t-div"><i></i><span>ランタン亭<em>87km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_statues_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_statues_wild.jpg)"></i><button class="cs-k t-open" data-src="assets/t_statues_wild.jpg" data-cap="氷の群像" data-km="92–98km" data-desc="無数の水の精霊が、身じろぎの途中で時を止めたように凍りついている区間。呼びかけても、触れても、応えはない。水の精霊が氷へ変じること自体はありうるが、これほどの数が一か所に集まっていた理由は分かっていない。いまの回廊には、精霊を群れさせるほど豊かな水の流れもない。開拓団の者はここを通るあいだ、自然と声をひそめる。いつ、誰から始まったのかも分からない習わしである。"><b>氷の群像</b><span class="t-km">92–98km</span></button><div class="cs-v">無数の水の精霊が、身じろぎの途中で時を止めたように凍りついている区間。呼びかけても、触れても、応えはない。水の精霊が氷へ変じること自体はありうるが、これほどの数が一か所に集まっていた理由は分かっていない。いまの回廊には、精霊を群れさせるほど豊かな水の流れもない。開拓団の者はここを通るあいだ、自然と声をひそめる。いつ、誰から始まったのかも分からない習わしである。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_lake_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_lake_wild.jpg)"></i><button class="cs-k t-open" data-src="assets/t_lake_wild.jpg" data-cap="地底湖" data-km="100–115km" data-desc="回廊いっぱいに広がる地底湖。水面は端から端まで凍りつき、道はその上をまっすぐ横切っている。測量は何度も試みられたが、湖の正確な深さはいまだ分かっていない。道から大きく外れるのは危険だ。場所によっては氷が薄く、さらには、水底から巨大な影───ジャイアントスクイードが近づいてくるためだ。"><b>地底湖</b><span class="t-km">100–115km</span></button><div class="cs-v">回廊いっぱいに広がる地底湖。水面は端から端まで凍りつき、道はその上をまっすぐ横切っている。測量は何度も試みられたが、湖の正確な深さはいまだ分かっていない。道から大きく外れるのは危険だ。場所によっては氷が薄く、さらには、水底から巨大な影───ジャイアントスクイードが近づいてくるためだ。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_stoneforest_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_stoneforest_wild.jpg)"></i><button class="cs-k t-open" data-src="assets/t_stoneforest_wild.jpg" data-cap="石の森" data-km="地底湖から分岐" data-desc="地底湖から道を外れ、薄氷の上を進んだ先にある。湖底から天井へ届く無数の石柱が立ち並び、その景観が木立に似ることから「石の森」と呼ばれるようになった。足元の氷が薄く、重装備の者や大人数の隊は近づけない。さらに、ジャイアントスクイードの目撃例も多く、故に奥部まで踏査した記録はほとんどない。"><b>石の森</b><span class="t-km">地底湖から分岐</span></button><div class="cs-v">地底湖から道を外れ、薄氷の上を進んだ先にある。湖底から天井へ届く無数の石柱が立ち並び、その景観が木立に似ることから「石の森」と呼ばれるようになった。足元の氷が薄く、重装備の者や大人数の隊は近づけない。さらに、ジャイアントスクイードの目撃例も多く、故に奥部まで踏査した記録はほとんどない。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_drift_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_drift_wild.jpg)"></i><button class="cs-k t-open" data-src="assets/t_drift_wild.jpg" data-cap="吹き溜まり" data-km="128–140km" data-desc="吐息の谷から吹く風は、回廊を北へ抜けていく。その途中で壁面の霜と白い苔の粉を巻き上げ、坩堝横丁の前後に、膝の深さまで達する白い吹き溜まりをつくる。雪のように見えるものの、その正体は壁から剥がれ落ちた霜と、苔が放つ細かな粉が混じり合ったものだ。踏み込めば地上の雪と同じように足を取られ、舞い上がった粉は視界を奪う。"><b>吹き溜まり</b><span class="t-km">128–140km</span></button><div class="cs-v">吐息の谷から吹く風は、回廊を北へ抜けていく。その途中で壁面の霜と白い苔の粉を巻き上げ、坩堝横丁の前後に、膝の深さまで達する白い吹き溜まりをつくる。雪のように見えるものの、その正体は壁から剥がれ落ちた霜と、苔が放つ細かな粉が混じり合ったものだ。踏み込めば地上の雪と同じように足を取られ、舞い上がった粉は視界を奪う。</div></div><div class="t-div"><i></i><span>坩堝横丁<em>133km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_breath_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_breath_wild.jpg)"></i><button class="cs-k t-open" data-src="assets/t_breath_wild.jpg" data-cap="吐息の谷" data-km="145–160km" data-desc="岩盤の裂け目から、熱を帯びた蒸気と有毒なガスが噴き出す区間。溶岩の光はなく、闇の中で空気だけが生温かい。噴気には毒性があるものの、風があるかぎり濃度は低く、通過するだけなら大きな害はない。危険なのは噴出口へ近づくこと、長く留まること、そして風が止まることだ。
-
-この谷が生む温度差によって、回廊には絶えず北向きの風が流れている。既知の出入口が閉ざされていた時代にも風が止まらず、空気が淀むこともなかった。ならばどこかに、回廊の外───あるいは別の大空洞へ通じる、未確認の空気の通り道があるはずだ。研究者たちはそう考えている。
-
-毒を吐く谷が回廊を生かし、その呼吸の先には、まだ誰も知らない場所がある。"><b>吐息の谷</b><span class="t-km">145–160km</span></button><div class="cs-v">岩盤の裂け目から、熱を帯びた蒸気と有毒なガスが噴き出す区間。溶岩の光はなく、闇の中で空気だけが生温かい。噴気には毒性があるものの、風があるかぎり濃度は低く、通過するだけなら大きな害はない。危険なのは噴出口へ近づくこと、長く留まること、そして風が止まることだ。<br><br>この谷が生む温度差によって、回廊には絶えず北向きの風が流れている。既知の出入口が閉ざされていた時代にも風が止まらず、空気が淀むこともなかった。ならばどこかに、回廊の外───あるいは別の大空洞へ通じる、未確認の空気の通り道があるはずだ。研究者たちはそう考えている。<br><br>毒を吐く谷が回廊を生かし、その呼吸の先には、まだ誰も知らない場所がある。</div></div><div class="t-div"><i></i><span>ラーフ大洞窟<em>171km</em></span><i></i></div></div>
+    <div class="cs-grid reveal"><div class="cs-row t-head"><div class="cs-k">地名／プリムスからの距離</div><div class="cs-v">説明</div></div><div class="t-div"><i></i><span>プリムス<em>0km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_abyss_edge.jpg)"><i class="tlight" style="background-image:url(assets/t_abyss_edge.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="0"><b>奈落の縁</b><span class="t-km">18–28km</span></button><div class="cs-v">回廊の床が幾度も崩れ落ち、巨大な穴がいくつも連なっている区間。いずれも灯りや測量綱が底まで届かず、地下深くでつながっているのかどうかも分かっていない。道は穴と穴のあいだに残された岩盤の縁を縫い、場所によっては両側に奈落を見ながら進むことになる。小石を落としても、底に当たる音が返ってきた記録はない。</div></div><div class="t-div"><i></i><span>フロストゲート<em>37km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_cascade_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_cascade_wild.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="1"><b>永遠の滝</b><span class="t-km">44–50km</span></button><div class="cs-v">幾筋もの大瀑布が、落下の途中で時を止めたように凍りついている。外殻だけを残して水が失われたためか、青白い氷柱の内部は空洞になっている。その異様な姿が、時の止まった滝を思わせることから、この名がついた。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_canyon_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_canyon_wild.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="2"><b>大峡谷</b><span class="t-km">55–68km</span></button><div class="cs-v">狭い回廊が突如として途方もない裂谷へ開け、道はその谷底を南北に延びている。両側には絶壁がそびえ、天井は見上げても闇の中に消えたままだ。崖面には無数の横穴が口を開けているが、その多くは未調査である。峡谷には頂点捕食者たるグリンデイルが多く生息しており、容易には踏み込めないためだ。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_bones.jpg)"><i class="tlight" style="background-image:url(assets/t_bones.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="3"><b>死の道</b><span class="t-km">70–78km</span></button><div class="cs-v">氷の中に横たわる、途方もなく巨大な生物の遺骸。その胸郭を貫くように道が延びている。両側の肋骨は柱のように立ち上がり、その先は天井の闇へ消えて見えない。遺骸の全体像も、何の生物であったのかも分かっていない。旅人は、名も知れぬ死者の内側を通るこの区間を「死の道」と呼ぶ。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_gate_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_gate_wild.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="4"><b>石門の遺跡</b><span class="t-km">80–86km</span></button><div class="cs-v">ランタン亭の北側一帯に広がる、氷に閉ざされた都市遺跡。崩れた建物のあいだを細い通路が網目状に走り、かつての街路だったと考えられている。築造年代も、ここに暮らしていた者たちの正体も分かっていない。遺跡のひときわ巨大な石門は技師らの尽力によって開閉機構が蘇っている。</div></div><div class="t-div"><i></i><span>ランタン亭<em>87km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_statues_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_statues_wild.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="5"><b>氷の群像</b><span class="t-km">92–98km</span></button><div class="cs-v">無数の水の精霊が、身じろぎの途中で時を止めたように凍りついている区間。呼びかけても、触れても、応えはない。水の精霊が氷へ変じること自体はありうるが、これほどの数が一か所に集まっていた理由は分かっていない。いまの回廊には、精霊を群れさせるほど豊かな水の流れもない。開拓団の者はここを通るあいだ、自然と声をひそめる。いつ、誰から始まったのかも分からない習わしである。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_lake_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_lake_wild.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="6"><b>地底湖</b><span class="t-km">100–115km</span></button><div class="cs-v">回廊いっぱいに広がる地底湖。水面は端から端まで凍りつき、道はその上をまっすぐ横切っている。測量は何度も試みられたが、湖の正確な深さはいまだ分かっていない。道から大きく外れるのは危険だ。場所によっては氷が薄く、さらには、水底から巨大な影───ジャイアントスクイードが近づいてくるためだ。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_stoneforest_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_stoneforest_wild.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="7"><b>石の森</b><span class="t-km">地底湖から分岐</span></button><div class="cs-v">地底湖から道を外れ、薄氷の上を進んだ先にある。湖底から天井へ届く無数の石柱が立ち並び、その景観が木立に似ることから「石の森」と呼ばれるようになった。足元の氷が薄く、重装備の者や大人数の隊は近づけない。さらに、ジャイアントスクイードの目撃例も多く、故に奥部まで踏査した記録はほとんどない。</div></div><div class="cs-row t-img" style="background-image:url(assets/t_drift_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_drift_wild.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="8"><b>吹き溜まり</b><span class="t-km">128–140km</span></button><div class="cs-v">吐息の谷から吹く風は、回廊を北へ抜けていく。その途中で壁面の霜と白い苔の粉を巻き上げ、坩堝横丁の前後に、膝の深さまで達する白い吹き溜まりをつくる。雪のように見えるものの、その正体は壁から剥がれ落ちた霜と、苔が放つ細かな粉が混じり合ったものだ。踏み込めば地上の雪と同じように足を取られ、舞い上がった粉は視界を奪う。</div></div><div class="t-div"><i></i><span>坩堝横丁<em>133km</em></span><i></i></div><div class="cs-row t-img" style="background-image:url(assets/t_breath_wild.jpg)"><i class="tlight" style="background-image:url(assets/t_breath_wild.jpg)"></i><button class="cs-k t-open" data-cat="terrain" data-idx="9"><b>吐息の谷</b><span class="t-km">145–160km</span></button><div class="cs-v">岩盤の裂け目から、熱を帯びた蒸気と有毒なガスが噴き出す区間。溶岩の光はなく、闇の中で空気だけが生温かい。噴気には毒性があるものの、風があるかぎり濃度は低く、通過するだけなら大きな害はない。危険なのは噴出口へ近づくこと、長く留まること、そして風が止まることだ。<br><br>この谷が生む温度差によって、回廊には絶えず北向きの風が流れている。既知の出入口が閉ざされていた時代にも風が止まらず、空気が淀むこともなかった。ならばどこかに、回廊の外───あるいは別の大空洞へ通じる、未確認の空気の通り道があるはずだ。研究者たちはそう考えている。<br><br>毒を吐く谷が回廊を生かし、その呼吸の先には、まだ誰も知らない場所がある。</div></div><div class="t-div"><i></i><span>ラーフ大洞窟<em>171km</em></span><i></i></div></div>
     <p class="reveal wl-note">凍結の回路はまだ全容が解き明かされていない。闇の中にはまだ見ぬ世界が広がっている。</p>
     <h3 class="wsec reveal">回廊の原生生物<small>THE CREATURES OF THE CORRIDOR</small></h3>
     <p class="reveal wl-lead">凍結の回路には、暗闇と寒さに適応した多様な生物が棲んでいる。獣や魔獣、眼を退化させたもの、まだ名さえ与えられていないもの。その多くは強い光を避けるため、旅人は灯りを絶やさないことで、かろうじて街道を行き来できる。もっとも、光を恐れないものもいる。以下は、開拓団が存在を確認し、仮の名を与えた主な原生生物である。</p>
     <div class="cs-grid reveal"></div>
     <p class="reveal wl-lead">名をクリックすると、大きく見られる。</p>
-    <div class="cs-grid reveal"><div class="cs-row t-img" style="background-image:url(assets/cr_grendel_v2.jpg)"><i class="tlight" style="background-image:url(assets/cr_grendel_v2.jpg)"></i><button class="cs-k t-open" data-src="assets/cr_grendel_v2.jpg" data-cap="グリンデイル" data-km="回廊の頂点" data-desc="回廊の陸上生態系の頂点に立つ大型魔獣。乳白色の巨体は厚い脂肪に覆われ、体表には可燃性の油脂が絶えず分泌されている。鱗も甲殻も持たないが、その皮膚は自身の炎に耐えるほど熱に強い。凍気の中でも身体から湯気を立てており、周囲の冷え込みが不意に緩むことが、接近を知るほぼ唯一の兆しとなる。
-
-成体の眼は退化して閉じているため、灯りには反応しない。匂いと体温を頼りに獲物を追う。狩りに際しては、獲物に浴びせた油に火花を散らす事で燃焼させる姿がよく目撃されている。討伐隊の報告によれば、グリンデイルが追い詰められると全身を炎で包み、手当たりしだいに暴れ回るともいう。フロストゲートには専任のグリンデイルの迎撃部隊が置かれているが、確認された個体は一頭ではない。大峡谷の未踏部に、繁殖地があるとみられている。"><b>グリンデイル</b><span class="t-km">回廊の頂点</span></button><div class="cs-v">回廊の陸上生態系の頂点に立つ大型魔獣。乳白色の巨体は厚い脂肪に覆われ、体表には可燃性の油脂が絶えず分泌されている。鱗も甲殻も持たないが、その皮膚は自身の炎に耐えるほど熱に強い。凍気の中でも身体から湯気を立てており、周囲の冷え込みが不意に緩むことが、接近を知るほぼ唯一の兆しとなる。<br><br>成体の眼は退化して閉じているため、灯りには反応しない。匂いと体温を頼りに獲物を追う。狩りに際しては、獲物に浴びせた油に火花を散らす事で燃焼させる姿がよく目撃されている。討伐隊の報告によれば、グリンデイルが追い詰められると全身を炎で包み、手当たりしだいに暴れ回るともいう。フロストゲートには専任のグリンデイルの迎撃部隊が置かれているが、確認された個体は一頭ではない。大峡谷の未踏部に、繁殖地があるとみられている。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_squid.jpg)"><i class="tlight" style="background-image:url(assets/cr_squid.jpg)"></i><button class="cs-k t-open" data-src="assets/cr_squid.jpg" data-cap="ジャイアントスクイード" data-km="地底湖の底" data-desc="凍った地底湖の底に潜む巨大な軟体生物。骨格を持たない身体を細く変形させ、わずかな割れ目からでも太い腕を差し込んで、氷上の獲物を絡め取る。失った腕は時間をかけて再生する。
-
-地底湖では、氷を踏む振動が水中の遠くまで伝わる。渡る者がその存在に気づかれずに済むことは、ほとんどない。ただし、気づいた獲物を必ず襲うわけでもない。開拓団は最も厚く安定した氷を選んで道を定め、立ち止まらずに渡ることを鉄則としている。討伐記録は少なく、残るのは襲撃から逃げ切った記録ばかりだ。"><b>ジャイアントスクイード</b><span class="t-km">地底湖の底</span></button><div class="cs-v">凍った地底湖の底に潜む巨大な軟体生物。骨格を持たない身体を細く変形させ、わずかな割れ目からでも太い腕を差し込んで、氷上の獲物を絡め取る。失った腕は時間をかけて再生する。<br><br>地底湖では、氷を踏む振動が水中の遠くまで伝わる。渡る者がその存在に気づかれずに済むことは、ほとんどない。ただし、気づいた獲物を必ず襲うわけでもない。開拓団は最も厚く安定した氷を選んで道を定め、立ち止まらずに渡ることを鉄則としている。討伐記録は少なく、残るのは襲撃から逃げ切った記録ばかりだ。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_icedragon.jpg)"><i class="tlight" style="background-image:url(assets/cr_icedragon.jpg)"></i><button class="cs-k t-open" data-src="assets/cr_icedragon.jpg" data-cap="アイスドラゴン" data-km="氷の群像の竜" data-desc="凍結の回路にすむ竜。地上の雪山にすむアイスドラゴンの近縁種が、回廊の闇に適応したものと考えられている。常に極寒の吹雪を身にまとい、近づくものを凍てつかせる。生息数はごく少なく、目撃の記録は氷の群像からその南の区間に集中している。翼を持ちながら、飛ぶことはほとんどない。巨体を低くして、氷の上を這って進む。
-
-回廊の脅威として、グリンデイル、ジャイアントスクイードと並べて語られる。幸いは、遭遇そのものが稀なことだけだ。竜の影を見たという報せがあれば、隊商は日を改める。"><b>アイスドラゴン</b><span class="t-km">氷の群像の竜</span></button><div class="cs-v">凍結の回路にすむ竜。地上の雪山にすむアイスドラゴンの近縁種が、回廊の闇に適応したものと考えられている。常に極寒の吹雪を身にまとい、近づくものを凍てつかせる。生息数はごく少なく、目撃の記録は氷の群像からその南の区間に集中している。翼を持ちながら、飛ぶことはほとんどない。巨体を低くして、氷の上を這って進む。<br><br>回廊の脅威として、グリンデイル、ジャイアントスクイードと並べて語られる。幸いは、遭遇そのものが稀なことだけだ。竜の影を見たという報せがあれば、隊商は日を改める。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostwolf.jpg);background-position:center 80%"><i class="tlight" style="background-image:url(assets/cr_frostwolf.jpg);background-position:center 80%"></i><button class="cs-k t-open" data-src="assets/cr_frostwolf.jpg" data-cap="ノースウルフ" data-km="灯りの輪の外" data-desc="暗闇に棲む狼。コナカタ山脈の地表部にも近縁種が多く生息している。彼らは群れで旅人を追い、隊列から離れた者や、灯りを失った者に一斉に襲いかかる。炎を狩りに用いるグリンデイルと生息域を共にしている故か、回廊内のノースウルフはとくに灯りを恐れる。「灯りから離れるな」という開拓団の掟は、この獣による犠牲から生まれた。"><b>ノースウルフ</b><span class="t-km">灯りの輪の外</span></button><div class="cs-v">暗闇に棲む狼。コナカタ山脈の地表部にも近縁種が多く生息している。彼らは群れで旅人を追い、隊列から離れた者や、灯りを失った者に一斉に襲いかかる。炎を狩りに用いるグリンデイルと生息域を共にしている故か、回廊内のノースウルフはとくに灯りを恐れる。「灯りから離れるな」という開拓団の掟は、この獣による犠牲から生まれた。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostspider.jpg);background-position:center 88%"><i class="tlight" style="background-image:url(assets/cr_frostspider.jpg);background-position:center 88%"></i><button class="cs-k t-open" data-src="assets/cr_frostspider.jpg" data-cap="フロストスパイダー" data-km="天井の待ち伏せ" data-desc="天井や氷壁に張りつき、獲物が真下を通るのを待つ大型の蜘蛛。半透明の脚と白い胴は氷に紛れ、正面からの灯りでは見つけにくい。旅人の灯りが前方と足元に集中することを利用し、頭上から音もなく落下する。フロストスパイダーの生息域では、隊列のうち一人が灯りを真上へ向ける。それが開拓団の定めた警戒法である。"><b>フロストスパイダー</b><span class="t-km">天井の待ち伏せ</span></button><div class="cs-v">天井や氷壁に張りつき、獲物が真下を通るのを待つ大型の蜘蛛。半透明の脚と白い胴は氷に紛れ、正面からの灯りでは見つけにくい。旅人の灯りが前方と足元に集中することを利用し、頭上から音もなく落下する。フロストスパイダーの生息域では、隊列のうち一人が灯りを真上へ向ける。それが開拓団の定めた警戒法である。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_centipede.jpg)"><i class="tlight" style="background-image:url(assets/cr_centipede.jpg)"></i><button class="cs-k t-open" data-src="assets/cr_centipede.jpg" data-cap="エンバーセンティピード" data-km="焼け跡に群がる" data-desc="全長2m程まで育つ大型のムカデ。耐熱性の高い外殻を持ち、天井や氷壁を伝って、焚き火の跡や灯りの熱源へ群がる。死肉性のスカヴェンジャーであり、旅人を狙っているわけではないが、結果として灯りを奪い、噛みつかれれば毒にも侵される。強い毒性を持つ為、頂点捕食者たるグリンデイルはこの虫を捕食しない。故に、グリンデイルの狩りのおこぼれをいつも狙っている。"><b>エンバーセンティピード</b><span class="t-km">焼け跡に群がる</span></button><div class="cs-v">全長2m程まで育つ大型のムカデ。耐熱性の高い外殻を持ち、天井や氷壁を伝って、焚き火の跡や灯りの熱源へ群がる。死肉性のスカヴェンジャーであり、旅人を狙っているわけではないが、結果として灯りを奪い、噛みつかれれば毒にも侵される。強い毒性を持つ為、頂点捕食者たるグリンデイルはこの虫を捕食しない。故に、グリンデイルの狩りのおこぼれをいつも狙っている。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostfly.jpg)"><i class="tlight" style="background-image:url(assets/cr_frostfly.jpg)"></i><button class="cs-k t-open" data-src="assets/cr_frostfly.jpg" data-cap="霜蛍" data-km="灯りを生む虫" data-desc="指先ほどの小さな虫。危機を感じると火のような橙色の光を放つ。だがその光に熱はない。まやかしの火である。回廊の獣の多くは火を恐れる。だから火のふりをして身を守るのだ。この虫を器具にしたものが蛍灯。明るいのに少しも暖かくない灯りである。"><b>霜蛍</b><span class="t-km">灯りを生む虫</span></button><div class="cs-v">指先ほどの小さな虫。危機を感じると火のような橙色の光を放つ。だがその光に熱はない。まやかしの火である。回廊の獣の多くは火を恐れる。だから火のふりをして身を守るのだ。この虫を器具にしたものが蛍灯。明るいのに少しも暖かくない灯りである。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostelk.jpg)"><i class="tlight" style="background-image:url(assets/cr_frostelk.jpg)"></i><button class="cs-k t-open" data-src="assets/cr_frostelk.jpg" data-cap="フロストエルク" data-km="白い群れ" data-desc="白い毛の大鹿。眼は退化して見えない。だが群れは迷わない。氷壁の白い苔を食みながら回廊をゆっくり巡っている。開拓団はこれを狩り、肉と皮を得てきた───回廊で人が生きていけるのは半分はこの獣のおかげである。群れが駆け出したときは周囲を警戒したほうがよい。彼らは理由なく走らない。"><b>フロストエルク</b><span class="t-km">白い群れ</span></button><div class="cs-v">白い毛の大鹿。眼は退化して見えない。だが群れは迷わない。氷壁の白い苔を食みながら回廊をゆっくり巡っている。開拓団はこれを狩り、肉と皮を得てきた───回廊で人が生きていけるのは半分はこの獣のおかげである。群れが駆け出したときは周囲を警戒したほうがよい。彼らは理由なく走らない。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_giantbat.jpg);background-position:center 75%"><i class="tlight" style="background-image:url(assets/cr_giantbat.jpg);background-position:center 75%"></i><button class="cs-k t-open" data-src="assets/cr_giantbat.jpg" data-cap="ジャイアントバット" data-km="灯りの通じない翼" data-desc="天井の闇に棲む大蝙蝠。眼ではなく声の反響で飛ぶため、灯りには寄りも退きもしない───つまり、灯りでは防げない。ふだんは霜蛍や虫を獲っているが、人や馬を襲うこともある。"><b>ジャイアントバット</b><span class="t-km">灯りの通じない翼</span></button><div class="cs-v">天井の闇に棲む大蝙蝠。眼ではなく声の反響で飛ぶため、灯りには寄りも退きもしない───つまり、灯りでは防げない。ふだんは霜蛍や虫を獲っているが、人や馬を襲うこともある。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_hikeshibana.jpg)"><i class="tlight" style="background-image:url(assets/cr_hikeshibana.jpg)"></i><button class="cs-k t-open" data-src="assets/cr_hikeshibana.jpg" data-cap="火消花" data-km="回廊の火消し" data-desc="氷壁の苔むらに群生する半透明の白い花。ふだんは固く閉じて眠っているが、近くに光がともると花弁を開き、精霊魔術によってその光をかき消す。逃げることのできない植物が、火災から群落を守るために身につけた魔術だと考えられている。
-
-ランタンも蛍灯も、区別なく消される。もっとも、街道沿いの群生は開拓団の手でおおむね駆除されている。灯りの消える闇が残っているのは、道を外れた先である。"><b>火消花</b><span class="t-km">回廊の火消し</span></button><div class="cs-v">氷壁の苔むらに群生する半透明の白い花。ふだんは固く閉じて眠っているが、近くに光がともると花弁を開き、精霊魔術によってその光をかき消す。逃げることのできない植物が、火災から群落を守るために身につけた魔術だと考えられている。<br><br>ランタンも蛍灯も、区別なく消される。もっとも、街道沿いの群生は開拓団の手でおおむね駆除されている。灯りの消える闇が残っているのは、道を外れた先である。</div></div></div>
+    <div class="cs-grid reveal"><div class="cs-row t-img" style="background-image:url(assets/cr_grendel_v2.jpg)"><i class="tlight" style="background-image:url(assets/cr_grendel_v2.jpg)"></i><button class="cs-k t-open" data-cat="creature" data-idx="0"><b>グリンデイル</b><span class="t-km">回廊の頂点</span></button><div class="cs-v">回廊の陸上生態系の頂点に立つ大型魔獣。乳白色の巨体は厚い脂肪に覆われ、体表には可燃性の油脂が絶えず分泌されている。鱗も甲殻も持たないが、その皮膚は自身の炎に耐えるほど熱に強い。凍気の中でも身体から湯気を立てており、周囲の冷え込みが不意に緩むことが、接近を知るほぼ唯一の兆しとなる。<br><br>成体の眼は退化して閉じているため、灯りには反応しない。匂いと体温を頼りに獲物を追う。狩りに際しては、獲物に浴びせた油に火花を散らす事で燃焼させる姿がよく目撃されている。討伐隊の報告によれば、グリンデイルが追い詰められると全身を炎で包み、手当たりしだいに暴れ回るともいう。フロストゲートには専任のグリンデイルの迎撃部隊が置かれているが、確認された個体は一頭ではない。大峡谷の未踏部に、繁殖地があるとみられている。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_squid.jpg)"><i class="tlight" style="background-image:url(assets/cr_squid.jpg)"></i><button class="cs-k t-open" data-cat="creature" data-idx="1"><b>ジャイアントスクイード</b><span class="t-km">地底湖の底</span></button><div class="cs-v">凍った地底湖の底に潜む巨大な軟体生物。骨格を持たない身体を細く変形させ、わずかな割れ目からでも太い腕を差し込んで、氷上の獲物を絡め取る。失った腕は時間をかけて再生する。<br><br>地底湖では、氷を踏む振動が水中の遠くまで伝わる。渡る者がその存在に気づかれずに済むことは、ほとんどない。ただし、気づいた獲物を必ず襲うわけでもない。開拓団は最も厚く安定した氷を選んで道を定め、立ち止まらずに渡ることを鉄則としている。討伐記録は少なく、残るのは襲撃から逃げ切った記録ばかりだ。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_icedragon.jpg)"><i class="tlight" style="background-image:url(assets/cr_icedragon.jpg)"></i><button class="cs-k t-open" data-cat="creature" data-idx="2"><b>アイスドラゴン</b><span class="t-km">氷の群像の竜</span></button><div class="cs-v">凍結の回路にすむ竜。地上の雪山にすむアイスドラゴンの近縁種が、回廊の闇に適応したものと考えられている。常に極寒の吹雪を身にまとい、近づくものを凍てつかせる。生息数はごく少なく、目撃の記録は氷の群像からその南の区間に集中している。翼を持ちながら、飛ぶことはほとんどない。巨体を低くして、氷の上を這って進む。<br><br>回廊の脅威として、グリンデイル、ジャイアントスクイードと並べて語られる。幸いは、遭遇そのものが稀なことだけだ。竜の影を見たという報せがあれば、隊商は日を改める。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostwolf.jpg);background-position:center 80%"><i class="tlight" style="background-image:url(assets/cr_frostwolf.jpg);background-position:center 80%"></i><button class="cs-k t-open" data-cat="creature" data-idx="3"><b>ノースウルフ</b><span class="t-km">灯りの輪の外</span></button><div class="cs-v">暗闇に棲む狼。コナカタ山脈の地表部にも近縁種が多く生息している。彼らは群れで旅人を追い、隊列から離れた者や、灯りを失った者に一斉に襲いかかる。炎を狩りに用いるグリンデイルと生息域を共にしている故か、回廊内のノースウルフはとくに灯りを恐れる。「灯りから離れるな」という開拓団の掟は、この獣による犠牲から生まれた。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostspider.jpg);background-position:center 88%"><i class="tlight" style="background-image:url(assets/cr_frostspider.jpg);background-position:center 88%"></i><button class="cs-k t-open" data-cat="creature" data-idx="4"><b>フロストスパイダー</b><span class="t-km">天井の待ち伏せ</span></button><div class="cs-v">天井や氷壁に張りつき、獲物が真下を通るのを待つ大型の蜘蛛。半透明の脚と白い胴は氷に紛れ、正面からの灯りでは見つけにくい。旅人の灯りが前方と足元に集中することを利用し、頭上から音もなく落下する。フロストスパイダーの生息域では、隊列のうち一人が灯りを真上へ向ける。それが開拓団の定めた警戒法である。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_centipede.jpg)"><i class="tlight" style="background-image:url(assets/cr_centipede.jpg)"></i><button class="cs-k t-open" data-cat="creature" data-idx="5"><b>エンバーセンティピード</b><span class="t-km">焼け跡に群がる</span></button><div class="cs-v">全長2m程まで育つ大型のムカデ。耐熱性の高い外殻を持ち、天井や氷壁を伝って、焚き火の跡や灯りの熱源へ群がる。死肉性のスカヴェンジャーであり、旅人を狙っているわけではないが、結果として灯りを奪い、噛みつかれれば毒にも侵される。強い毒性を持つ為、頂点捕食者たるグリンデイルはこの虫を捕食しない。故に、グリンデイルの狩りのおこぼれをいつも狙っている。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostfly.jpg)"><i class="tlight" style="background-image:url(assets/cr_frostfly.jpg)"></i><button class="cs-k t-open" data-cat="creature" data-idx="6"><b>霜蛍</b><span class="t-km">灯りを生む虫</span></button><div class="cs-v">指先ほどの小さな虫。危機を感じると火のような橙色の光を放つ。だがその光に熱はない。まやかしの火である。回廊の獣の多くは火を恐れる。だから火のふりをして身を守るのだ。この虫を器具にしたものが蛍灯。明るいのに少しも暖かくない灯りである。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_frostelk.jpg)"><i class="tlight" style="background-image:url(assets/cr_frostelk.jpg)"></i><button class="cs-k t-open" data-cat="creature" data-idx="7"><b>フロストエルク</b><span class="t-km">白い群れ</span></button><div class="cs-v">白い毛の大鹿。眼は退化して見えない。だが群れは迷わない。氷壁の白い苔を食みながら回廊をゆっくり巡っている。開拓団はこれを狩り、肉と皮を得てきた───回廊で人が生きていけるのは半分はこの獣のおかげである。群れが駆け出したときは周囲を警戒したほうがよい。彼らは理由なく走らない。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_giantbat.jpg);background-position:center 75%"><i class="tlight" style="background-image:url(assets/cr_giantbat.jpg);background-position:center 75%"></i><button class="cs-k t-open" data-cat="creature" data-idx="8"><b>ジャイアントバット</b><span class="t-km">灯りの通じない翼</span></button><div class="cs-v">天井の闇に棲む大蝙蝠。眼ではなく声の反響で飛ぶため、灯りには寄りも退きもしない───つまり、灯りでは防げない。ふだんは霜蛍や虫を獲っているが、人や馬を襲うこともある。</div></div><div class="cs-row t-img" style="background-image:url(assets/cr_hikeshibana.jpg)"><i class="tlight" style="background-image:url(assets/cr_hikeshibana.jpg)"></i><button class="cs-k t-open" data-cat="creature" data-idx="9"><b>火消花</b><span class="t-km">回廊の火消し</span></button><div class="cs-v">氷壁の苔むらに群生する半透明の白い花。ふだんは固く閉じて眠っているが、近くに光がともると花弁を開き、精霊魔術によってその光をかき消す。逃げることのできない植物が、火災から群落を守るために身につけた魔術だと考えられている。<br><br>ランタンも蛍灯も、区別なく消される。もっとも、街道沿いの群生は開拓団の手でおおむね駆除されている。灯りの消える闇が残っているのは、道を外れた先である。</div></div></div>
     <p class="reveal wl-note">灯りは旅人にとって最初の防壁だが、万能ではない。光に寄るもの、光から退くもの、そして意に介さないものがいる。近年では、灯りに慣れた個体による襲撃も複数記録されている。回廊が開かれてから十数年。獣たちはすでに、人間と灯りの関係を学び始めている。</p>
     <p class="reveal wl-note">危険な原生生物への対応策は拠点ごとに異なる。フロストゲートには迎撃部隊が常駐し、特に頂点捕食者たるグリンデイルの出没記録や生態情報が蓄積されている。坩堝横丁では獣除けの香が調合され、ラーフ大洞窟では炉の熱と煙が、人の匂いと体温を覆い隠す。ランタン亭が、なぜあれほど静かで安全なのかについては、客のあいだでさまざまな噂が囁かれている。</p>
     <p class="reveal wl-caveat">ここに記されたのは、開拓団とラーフ大洞窟がこれまでに確かめてきたものにすぎない。既知の名を持つ生物より、まだ名を持たず、遭遇記録のないもののほうが多いだろう。凍結の回路の闇は、いまも人の知らない生命を抱えている。</p>
@@ -998,38 +1018,31 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <h3 class="wsec reveal">プリムス</h3>
       <article class="card reveal"><p>沈黙の氷原にただひとつ根を張った、人の暮らす拠点。掲げる使命は入植───この氷の大地を、人が生き続けられる土地に変えること。西方とつなぐ唯一の道・凍結の回路が止まれば、その営みは立ち行かなくなる。運営はパリス同盟諸都市とヴァイス王国の共同───遠い中原の同盟と始まりの王国が、この最果ての灯の後ろ盾である。</p><details class="fmore"><summary>詳しく読む</summary><div><p>聖暦1043年、ヴァイス王国の子爵ヴェルトール・ランベントがその立場を退き、開拓団の設立を宣言したことに始まる。現在の代表は、彼の遺志を継いだ娘のアリス・ランベント。統治は団員による合議制。</p><p>パリス同盟各国の共同出資による国際機関だが、事務方の多くはヴァイス王国の出身者で、ランベント騎士団の斥候隊「黄色中隊」もプリムスに常駐している。輸入は食料と生活必需品と薬品。輸出は、氷原で採れる純度の高い宝石。</p><p>団員は食堂での共同の食事に代表される共同生活を営む。氷原育ちの子供たち───低温と豪雪にきわめて高く適応した世代は「アイスメイト」と呼ばれ、12歳ごろから入団試験を経て団の仕事を手伝う。</p><p>後ろ盾のパリス同盟は、神聖ヴァンスター帝国への抑止のため聖暦1002年に中原の国家が結んだ政治・軍事同盟であり、氷原開拓団の生みの親でもある。母体はネルス川流域の商業同盟。宗主格は&quot;遺跡の街&quot;ライン（同盟評議会の開催地）。中枢7国家で構成され、その領域は北のヴェンガルド川から南のラッセル川に及ぶ。</p><p>魔将戦争と薔薇の災厄の復旧、そして聖暦1009年に北方から受けた妖魔の大侵攻───同盟はいまも多くの傷を抱えている。それでも人口増加と資源不足の未来に備え、北の氷原の開拓に望みを賭けた。</p></div></details></article>
       <div class="chgrid">
-      <button class="ch reveal fac-primus t-open" data-src="assets/p_alice.png" data-cap="アリス・ランベント"
-        data-km="ヒューリン・18歳／開拓団・団長" data-desc="ランベント領主にして、氷原開拓団の代表。領地では“国王無き王国”ヴァイスの共和制移行準備に奔走している一方で、氷原ではフィールドに復帰しつつある。なお、開拓団での書類仕事はフルールにかなりの割合を負担してもらっている。">
+      <button class="ch reveal fac-primus t-open" data-cat="people" data-name="アリス・ランベント">
         <span class="ch-face"><img src="assets/p_alice.png" loading="lazy" alt="アリス・ランベント"><span class="ch-desc">ランベント領主にして、氷原開拓団の代表。領地では“国王無き王国”ヴァイスの共和制移行準備に奔走している一方で、氷原ではフィールドに復帰しつつある。なお、開拓団での書類仕事はフルールにかなりの割合を負担してもらっている。</span></span>
         <span class="ch-body"><b>アリス・ランベント</b><span class="race">ヒューリン・18歳</span><span class="role">開拓団・団長</span></span>
       </button>
-      <button class="ch reveal fac-primus t-open" data-src="assets/p_reif.png" data-cap="レイフ・ストーム"
-        data-km="ヒューリン・40代／凍結の回路・安全通行責任者" data-desc="フロストゲートの野営地に常駐し、回廊を通る人と荷、そのすべてを記録する安全通行責任者。几帳面で世話好きだが、「たぶん大丈夫」という言葉だけは決して信用しない。回廊で起きたことは最後にはすべて彼の机へ集まり、旅の始まりと終わりには、たいてい彼の顔がある。">
+      <button class="ch reveal fac-primus t-open" data-cat="people" data-name="レイフ・ストーム">
         <span class="ch-face"><img src="assets/p_reif.png" loading="lazy" alt="レイフ・ストーム"><span class="ch-desc">フロストゲートの野営地に常駐し、回廊を通る人と荷、そのすべてを記録する安全通行責任者。几帳面で世話好きだが、「たぶん大丈夫」という言葉だけは決して信用しない。回廊で起きたことは最後にはすべて彼の机へ集まり、旅の始まりと終わりには、たいてい彼の顔がある。</span></span>
         <span class="ch-body"><b>レイフ・ストーム</b><span class="race">ヒューリン・40代</span><span class="role">凍結の回路・安全通行責任者</span></span>
       </button>
-      <button class="ch reveal fac-primus t-open" data-src="assets/p_fleur.png" data-cap="フルール・シュリエール"
-        data-km="ヒューリン・19歳／開拓団・代理団長（外交担当）" data-desc="シュリエール伯爵家の次男にして、開拓団の外交実務を預かる十九歳の青年。真面目で礼儀正しく、誰の話にも丁寧に耳を傾けるため、団内での評判は上々である。ただし、いくつもの国と勢力を相手に自分の言葉で立つような大舞台は、まだ経験していない。">
+      <button class="ch reveal fac-primus t-open" data-cat="people" data-name="フルール・シュリエール">
         <span class="ch-face"><img src="assets/p_fleur.png" loading="lazy" alt="フルール・シュリエール"><span class="ch-desc">シュリエール伯爵家の次男にして、開拓団の外交実務を預かる十九歳の青年。真面目で礼儀正しく、誰の話にも丁寧に耳を傾けるため、団内での評判は上々である。ただし、いくつもの国と勢力を相手に自分の言葉で立つような大舞台は、まだ経験していない。</span></span>
-        <span class="ch-body"><b>フルール・シュリエール</b><span class="race">ヒューリン・19歳</span><span class="role">開拓団・代理団長（外交担当）</span></span>
+        <span class="ch-body"><b>フルール・シュリエール</b><span class="race">ヒューリン・19歳</span><span class="role">開拓団・代理団長</span></span>
       </button>
-      <button class="ch reveal fac-primus t-open" data-src="assets/p_garen.png" data-cap="ガレン"
-        data-km="ヒューリン・30代／フロストゲート検問・通行記録係" data-desc="フロストゲートで通行記録をつける、レイフの部下。小心者でいつも書類と印章の束を抱えているが、その筆跡は驚くほど美しく、他人の字や封蝋の違いにもよく気づく。人の顔と名前だけでなく、「いつもと何かが違う」という小さな違和感まで、彼の帳面には記されている。">
+      <button class="ch reveal fac-primus t-open" data-cat="people" data-name="ガレン">
         <span class="ch-face"><img src="assets/p_garen.png" loading="lazy" alt="ガレン"><span class="ch-desc">フロストゲートで通行記録をつける、レイフの部下。小心者でいつも書類と印章の束を抱えているが、その筆跡は驚くほど美しく、他人の字や封蝋の違いにもよく気づく。人の顔と名前だけでなく、「いつもと何かが違う」という小さな違和感まで、彼の帳面には記されている。</span></span>
         <span class="ch-body"><b>ガレン</b><span class="race">ヒューリン・30代</span><span class="role">フロストゲート検問・通行記録係</span></span>
       </button>
-      <button class="ch reveal fac-primus t-open" data-src="assets/p_dorg.png" data-cap="ドルグ"
-        data-km="ドゥアン（牙爪族）・40代／開拓団・南方隊の野営世話役" data-desc="南へ下る開拓団の隊列で、野営と人員の取りまとめを預かる世話役。口も態度も荒く、働かない者には容赦がないが、任された場所と仲間の面倒は最後まで見る。「壊すのは一晩、直すのは十年」が口癖で、今日も誰かの張ったまずい天幕を黙って直している。">
+      <button class="ch reveal fac-primus t-open" data-cat="people" data-name="ドルグ">
         <span class="ch-face"><img src="assets/p_dorg.png" loading="lazy" alt="ドルグ"><span class="ch-desc">南へ下る開拓団の隊列で、野営と人員の取りまとめを預かる世話役。口も態度も荒く、働かない者には容赦がないが、任された場所と仲間の面倒は最後まで見る。「壊すのは一晩、直すのは十年」が口癖で、今日も誰かの張ったまずい天幕を黙って直している。</span></span>
         <span class="ch-body"><b>ドルグ</b><span class="race">ドゥアン（牙爪族）・40代</span><span class="role">開拓団・南方隊の野営世話役</span></span>
       </button>
-      <button class="ch reveal fac-primus t-open" data-src="assets/p_evald.png" data-cap="エヴァルド・クロス"
-        data-km="ドゥアン（有角族）・57歳／プリムス警備隊・古参兵" data-desc="開拓の初期から氷原に立ち続けてきた、プリムス警備隊の古参兵。騎士だった頃の古い装備をいまも丹念に磨き、夜番が終わっても、しばらく持ち場を離れようとしない。口数は少なく無愛想だが、若い団員の防寒具が緩んでいれば、何も言わずに締め直してやる。">
+      <button class="ch reveal fac-primus t-open" data-cat="people" data-name="エヴァルド・クロス">
         <span class="ch-face"><img src="assets/p_evald.png" loading="lazy" alt="エヴァルド・クロス"><span class="ch-desc">開拓の初期から氷原に立ち続けてきた、プリムス警備隊の古参兵。騎士だった頃の古い装備をいまも丹念に磨き、夜番が終わっても、しばらく持ち場を離れようとしない。口数は少なく無愛想だが、若い団員の防寒具が緩んでいれば、何も言わずに締め直してやる。</span></span>
         <span class="ch-body"><b>エヴァルド・クロス</b><span class="race">ドゥアン（有角族）・57歳</span><span class="role">プリムス警備隊・古参兵</span></span>
       </button>
-      <button class="ch reveal fac-primus t-open" data-src="assets/p_kyle.png" data-cap="カイル・コズワース"
-        data-km="ヒューリン／開拓団・元団長直衛" data-desc="かつてヴェルトール団長の直衛を務め、氷原の最前線をともに歩いた男。長く後方勤務に退いていたが、近頃ふたたび剣を取り、前線へ戻ろうとしている。エヴァルドとは古い騎士団時代からの知り合いだが、二人が過去について語り合う姿を見た者はいない。">
+      <button class="ch reveal fac-primus t-open" data-cat="people" data-name="カイル・コズワース">
         <span class="ch-face"><img src="assets/p_kyle.png" loading="lazy" alt="カイル・コズワース"><span class="ch-desc">かつてヴェルトール団長の直衛を務め、氷原の最前線をともに歩いた男。長く後方勤務に退いていたが、近頃ふたたび剣を取り、前線へ戻ろうとしている。エヴァルドとは古い騎士団時代からの知り合いだが、二人が過去について語り合う姿を見た者はいない。</span></span>
         <span class="ch-body"><b>カイル・コズワース</b><span class="race">ヒューリン</span><span class="role">開拓団・元団長直衛</span></span>
       </button>
@@ -1040,48 +1053,39 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <h3 class="wsec reveal">ラーフ大洞窟</h3>
       <article class="card reveal"><p>南端の都市国家、人口8万。ネヴァーフたちが築いた千年の都にして、錬金術の総本山。中立を掲げてどの国とも等しく商いをする。その中立が何を守るためのものかは、誰も問わない。</p><details class="fmore"><summary>詳しく読む</summary><div><p>伝承では&quot;地の粛清&quot;の時に生まれた大空洞に、むき出しになった鉱石資源へ目をつけたネヴァーフたちが都市を築いたのが始まり。錬金術で明かりを灯し、空気を循環させて完成した都は、古い建物になると千年を越える。</p><p>統治は長老による合議制。主産業は錬金術師たちの発明品で、ポーションに代表される薬品は、パリス同盟や神聖ヴァンスター帝国といった大国も買いつけに来る。他国が支配を試みたこともあるが、特殊な立地と技術力の高さではねのけてきた。</p><p>回廊から入ってすぐの場所には市場が、街の中心には長老議会が所有する大工房が、東には発明品の倉庫街がある。……なお、廃棄された発明品が互いに干渉し、魔法生物や機械が闊歩する迷宮と化した「第十三番倉庫」には近づかないこと。「十三番送りにするぞ」は、ラーフで最大級の脅し文句である。</p></div></details></article>
       <div class="chgrid">
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_omga.png" data-cap="オムガ・ドゥール"
-        data-km="ネヴァーフ・推定180歳超／ラーフ現首長・長老" data-desc="千年の都ラーフ大洞窟と、そこに暮らす八万の民を束ねる長老。齢は百八十を超えるともいわれ、小さな身体に都市ひとつぶんの責任を背負っている。何事にも慎重で、答えを急がない───その沈黙によってラーフを守ってきた男である。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="オムガ・ドゥール">
         <span class="ch-face"><img src="assets/p_omga.png" loading="lazy" alt="オムガ・ドゥール"><span class="ch-desc">千年の都ラーフ大洞窟と、そこに暮らす八万の民を束ねる長老。齢は百八十を超えるともいわれ、小さな身体に都市ひとつぶんの責任を背負っている。何事にも慎重で、答えを急がない───その沈黙によってラーフを守ってきた男である。</span></span>
         <span class="ch-body"><b>オムガ・ドゥール</b><span class="race">ネヴァーフ・推定180歳超</span><span class="role">ラーフ現首長・長老</span></span>
       </button>
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_kruta.png" data-cap="クルタ"
-        data-km="ネヴァーフ・70代／ラーフの炉場の職人頭" data-desc="ラーフの炉場を束ねる職人頭にして、首長オムガの孫。錬金と鍛冶の知識は一部の直弟子だけで抱えず、必要とする者へ広く伝えるべきだと、五十年にわたって祖父へ異を唱え続けている。口は悪いが、若い職人が失敗した品も捨てずに拾い、どこを直せば使えるかを教えてやる。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="クルタ">
         <span class="ch-face"><img src="assets/p_kruta.png" loading="lazy" alt="クルタ"><span class="ch-desc">ラーフの炉場を束ねる職人頭にして、首長オムガの孫。錬金と鍛冶の知識は一部の直弟子だけで抱えず、必要とする者へ広く伝えるべきだと、五十年にわたって祖父へ異を唱え続けている。口は悪いが、若い職人が失敗した品も捨てずに拾い、どこを直せば使えるかを教えてやる。</span></span>
         <span class="ch-body"><b>クルタ</b><span class="race">ネヴァーフ・70代</span><span class="role">ラーフの炉場の職人頭</span></span>
       </button>
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_velka.png" data-cap="ヴェルカ・ナイン"
-        data-km="ネヴァーフ・60代／筆頭書記官・オムガの右腕" data-desc="オムガの右腕を務める筆頭書記官。ラーフの帳簿と封蝋はすべて彼女の手を通り、千年続いた記録のどこに何が書かれているかを、ほとんど記憶している。計算の合わない数字や、あるはずの名前がない空白を見つけると、納得するまで決して放置しない。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="ヴェルカ・ナイン">
         <span class="ch-face"><img src="assets/p_velka.png" loading="lazy" alt="ヴェルカ・ナイン"><span class="ch-desc">オムガの右腕を務める筆頭書記官。ラーフの帳簿と封蝋はすべて彼女の手を通り、千年続いた記録のどこに何が書かれているかを、ほとんど記憶している。計算の合わない数字や、あるはずの名前がない空白を見つけると、納得するまで決して放置しない。</span></span>
         <span class="ch-body"><b>ヴェルカ・ナイン</b><span class="race">ネヴァーフ・60代</span><span class="role">筆頭書記官・オムガの右腕</span></span>
       </button>
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_tesha.png" data-cap="テシャ・スウィン"
-        data-km="フィルボル・44歳／ラーフ派遣・錬金術師" data-desc="ラーフから回廊へ派遣されている、小柄な錬金術師。好奇心旺盛で世話好き、使い込んだ採掘装備の扱いにも慣れた、頼れる仕事人である。けれど古い遺構の話題になるときだけ、ときおり笑顔が途切れ、遠くを見るような目をする。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="テシャ・スウィン">
         <span class="ch-face"><img src="assets/p_tesha.png" loading="lazy" alt="テシャ・スウィン"><span class="ch-desc">ラーフから回廊へ派遣されている、小柄な錬金術師。好奇心旺盛で世話好き、使い込んだ採掘装備の扱いにも慣れた、頼れる仕事人である。けれど古い遺構の話題になるときだけ、ときおり笑顔が途切れ、遠くを見るような目をする。</span></span>
         <span class="ch-body"><b>テシャ・スウィン</b><span class="race">フィルボル・44歳</span><span class="role">ラーフ派遣・錬金術師</span></span>
       </button>
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_linne.png" data-cap="リンネ・ソウル"
-        data-km="エルダナーン・20代／ラーフ大工房・若手錬金術師" data-desc="ラーフ大工房に所属する若手錬金術師。エルダ文明への学術的な興味が強く、読めない碑文や用途不明の装置を前にすると、危険も忘れて夢中になってしまう。誰も答えてくれない問いほど知りたくなる性分で、その好奇心はしばしば彼女を街道の外へ連れ出す。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="リンネ・ソウル">
         <span class="ch-face"><img src="assets/p_linne.png" loading="lazy" alt="リンネ・ソウル"><span class="ch-desc">ラーフ大工房に所属する若手錬金術師。エルダ文明への学術的な興味が強く、読めない碑文や用途不明の装置を前にすると、危険も忘れて夢中になってしまう。誰も答えてくれない問いほど知りたくなる性分で、その好奇心はしばしば彼女を街道の外へ連れ出す。</span></span>
         <span class="ch-body"><b>リンネ・ソウル</b><span class="race">エルダナーン・20代</span><span class="role">ラーフ大工房・若手錬金術師</span></span>
       </button>
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_muvak.png" data-cap="ムヴァク"
-        data-km="ネヴァーフ・60代／ラーフ派遣・鉱夫頭" data-desc="坩堝横丁で採掘現場を預かる、ラーフ派遣の鉱夫頭。つるはし一本で岩盤と話をつける力自慢で、難しい理屈より、叩いた音と手に返る感触を信じている。テシャをいまだに「嬢ちゃん」と呼び、そのたびに本人から訂正されている。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="ムヴァク">
         <span class="ch-face"><img src="assets/p_muvak.png" loading="lazy" alt="ムヴァク"><span class="ch-desc">坩堝横丁で採掘現場を預かる、ラーフ派遣の鉱夫頭。つるはし一本で岩盤と話をつける力自慢で、難しい理屈より、叩いた音と手に返る感触を信じている。テシャをいまだに「嬢ちゃん」と呼び、そのたびに本人から訂正されている。</span></span>
         <span class="ch-body"><b>ムヴァク</b><span class="race">ネヴァーフ・60代</span><span class="role">ラーフ派遣・鉱夫頭</span></span>
       </button>
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_marco.png" data-cap="マルコ・ダン"
-        data-km="ヒューリン・50代／坩堝横丁の情報屋" data-desc="坩堝横丁に店を構える情報屋。銭と帳面を何より信用し、帝国にも同盟にも、払うものを払う客には等しく商売をする。愛想のよい男ではないが、売った情報に嘘を混ぜないことだけは、長年の信用として守り続けている。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="マルコ・ダン">
         <span class="ch-face"><img src="assets/p_marco.png" loading="lazy" alt="マルコ・ダン"><span class="ch-desc">坩堝横丁に店を構える情報屋。銭と帳面を何より信用し、帝国にも同盟にも、払うものを払う客には等しく商売をする。愛想のよい男ではないが、売った情報に嘘を混ぜないことだけは、長年の信用として守り続けている。</span></span>
         <span class="ch-body"><b>マルコ・ダン</b><span class="race">ヒューリン・50代</span><span class="role">坩堝横丁の情報屋</span></span>
       </button>
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_bolt.png" data-cap="ボルト"
-        data-km="ドゥアン（牙爪族）・50代／坩堝横丁・ゴヴァノン小祠の世話人" data-desc="坩堝横丁の小さなゴヴァノン祠を守る、無骨な信徒。かつては鉱夫として岩盤を掘っていたが、いまは鍵と聖印を提げ、坑道へ向かう者の無事を祈っている。祈りの言葉は不得手で、たいていは黙って炉へ薪を足す。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="ボルト">
         <span class="ch-face"><img src="assets/p_bolt.png" loading="lazy" alt="ボルト"><span class="ch-desc">坩堝横丁の小さなゴヴァノン祠を守る、無骨な信徒。かつては鉱夫として岩盤を掘っていたが、いまは鍵と聖印を提げ、坑道へ向かう者の無事を祈っている。祈りの言葉は不得手で、たいていは黙って炉へ薪を足す。</span></span>
         <span class="ch-body"><b>ボルト</b><span class="race">ドゥアン（牙爪族）・50代</span><span class="role">坩堝横丁・ゴヴァノン小祠の世話人</span></span>
       </button>
-      <button class="ch reveal fac-rahf t-open" data-src="assets/p_ifrit.png" data-cap="黒い剣士"
-        data-km="ドゥアン（天翼族）／ラーフに居付く流れの剣士" data-desc="黒い翼と大剣を持ち、十年前からラーフ大洞窟に居付いている流れの剣士。八万の都に彼へ敵う者はいないと噂されるが、本人は強さを誇ることも、過去を語ることもない。彼は嘘をつかない───名を訊かれたときには、ただ答えずにいる。">
+      <button class="ch reveal fac-rahf t-open" data-cat="people" data-name="黒い剣士">
         <span class="ch-face"><img src="assets/p_ifrit.png" loading="lazy" alt="黒い剣士"><span class="ch-desc">黒い翼と大剣を持ち、十年前からラーフ大洞窟に居付いている流れの剣士。八万の都に彼へ敵う者はいないと噂されるが、本人は強さを誇ることも、過去を語ることもない。彼は嘘をつかない───名を訊かれたときには、ただ答えずにいる。</span></span>
         <span class="ch-body"><b>黒い剣士</b><span class="race">ドゥアン（天翼族）</span><span class="role">ラーフに居付く流れの剣士</span></span>
       </button>
@@ -1092,23 +1096,19 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <h3 class="wsec reveal">神聖ヴァンスター帝国</h3>
       <article class="card reveal"><p>協定により、回廊南部での学術調査と遺跡研究の権利を持つ。学者の顔と、それ以外の顔。</p><details class="fmore"><summary>詳しく読む</summary><div><p>大陸南西のフィンジアス島を本拠とする帝政国家。聖暦999年、若き皇帝ゼダンの即位を機に国号を「神聖ヴァンスター帝国」と改め、エリンディル統一を掲げて侵略路線を強めた。</p><p>皇帝ゼダンは&quot;風の時代&quot;の神聖王アルトリウスの末裔を自称し、その象徴として魔剣クラウ・ソラスを手にする。錬金術の軍事利用と、高山に住まう天翼族との盟約が、圧倒的な軍事力を支える。帝都は八芒星の城壁に守られた&quot;天空の街&quot;ヴァンスター。</p><p>薔薇の災厄で国力が傷つき、現在は他国への侵攻を停止している。───だが国力が回復すれば再び動き出すと、誰もが予測している。聖都ディアスロンドには、ゼダンを「神聖王の末裔を僭称する者」と非難する声が強い。</p><p>即位から、五十七年。ゼダンはもう若くない。侵攻が止まってから、ずいぶんになる。それでも誰ひとり、あの帝国が牙を抜いたとは思っていない。───玉座に座り続けるあの老人が、何を待っているのか。知る者はいない。</p><p>ただ、こんな話がある。皇帝は、国の戦力を割いてまで、神々の遺した道具───神具を探させているのだと。クラウ・ソラスのほかにも、いくつかは、すでにあの男の手にあるのだとも。</p></div></details></article>
       <div class="chgrid">
-      <button class="ch reveal fac-empire t-open" data-src="assets/p_zedan.png" data-cap="ゼダン"
-        data-km="ヒューリン・76歳／神聖ヴァンスター帝国 皇帝" data-desc="聖暦999年に即位し、五十七年にわたって帝国を治めてきた老皇帝。かつて西方諸国へ侵攻した帝国の主でありながら、その軍勢はもう四十年以上、外征のために動いていない。それでも世界は、老いた皇帝が次の戦争を諦めたとは信じていない。">
+      <button class="ch reveal fac-empire t-open" data-cat="people" data-name="ゼダン">
         <span class="ch-face"><img src="assets/p_zedan.png" loading="lazy" alt="ゼダン"><span class="ch-desc">聖暦999年に即位し、五十七年にわたって帝国を治めてきた老皇帝。かつて西方諸国へ侵攻した帝国の主でありながら、その軍勢はもう四十年以上、外征のために動いていない。それでも世界は、老いた皇帝が次の戦争を諦めたとは信じていない。</span></span>
         <span class="ch-body"><b>ゼダン</b><span class="race">ヒューリン・76歳</span><span class="role">神聖ヴァンスター帝国 皇帝</span></span>
       </button>
-      <button class="ch reveal fac-empire t-open" data-src="assets/p_gaius.png" data-cap="ガイウス・ヴェルム"
-        data-km="ヒューリン・48歳／帝国商会代表" data-desc="帝国商会の代表として回廊に根を張る、冷静沈着な商人。物資にも情報にも適正な値をつけ、困ったときには頼りになるが、自分の損得を計算せずに手を差し伸べることはない。礼儀正しい微笑みの奥で、いつも相手が何を欲しがっているのかを見定めている。">
+      <button class="ch reveal fac-empire t-open" data-cat="people" data-name="ガイウス・ヴェルム">
         <span class="ch-face"><img src="assets/p_gaius.png" loading="lazy" alt="ガイウス・ヴェルム"><span class="ch-desc">帝国商会の代表として回廊に根を張る、冷静沈着な商人。物資にも情報にも適正な値をつけ、困ったときには頼りになるが、自分の損得を計算せずに手を差し伸べることはない。礼儀正しい微笑みの奥で、いつも相手が何を欲しがっているのかを見定めている。</span></span>
         <span class="ch-body"><b>ガイウス・ヴェルム</b><span class="race">ヒューリン・48歳</span><span class="role">帝国商会代表</span></span>
       </button>
-      <button class="ch reveal fac-empire t-open" data-src="assets/p_isolde.png" data-cap="イゾルデ・クラン"
-        data-km="ヒューリン・30代／古代文明研究の学者" data-desc="古代文明と遺構研究を専門とする、帝国出身の学者。知的で話好きなため他勢力の研究者ともすぐ打ち解け、なかでもリンネとは、立場を越えて遺構談義に花を咲かせている。彼女の作る地図は正確だが、そこに描かれた道のすべてを他人に見せるとは限らない。">
+      <button class="ch reveal fac-empire t-open" data-cat="people" data-name="イゾルデ・クラン">
         <span class="ch-face"><img src="assets/p_isolde.png" loading="lazy" alt="イゾルデ・クラン"><span class="ch-desc">古代文明と遺構研究を専門とする、帝国出身の学者。知的で話好きなため他勢力の研究者ともすぐ打ち解け、なかでもリンネとは、立場を越えて遺構談義に花を咲かせている。彼女の作る地図は正確だが、そこに描かれた道のすべてを他人に見せるとは限らない。</span></span>
-        <span class="ch-body"><b>イゾルデ・クラン</b><span class="race">ヒューリン・30代</span><span class="role">古代文明研究の学者</span></span>
+        <span class="ch-body"><b>イゾルデ・クラン</b><span class="race">ヒューリン・30代</span><span class="role">遺跡学者</span></span>
       </button>
-      <button class="ch reveal fac-empire t-open" data-src="assets/p_drek.png" data-cap="ドレク"
-        data-km="ヒューリン・30代／帝国調査隊・現場隊長" data-desc="帝国調査隊の現場を預かる、測量と野外活動の叩き上げ。命令には従うが無益な争いを好まず、所属が違っても、負傷者や取り残された者を見捨てることはない。帝国の目的をすべて知らされているわけではないが、現場の仲間を無事に帰すことだけは自分の仕事だと考えている。">
+      <button class="ch reveal fac-empire t-open" data-cat="people" data-name="ドレク">
         <span class="ch-face"><img src="assets/p_drek.png" loading="lazy" alt="ドレク"><span class="ch-desc">帝国調査隊の現場を預かる、測量と野外活動の叩き上げ。命令には従うが無益な争いを好まず、所属が違っても、負傷者や取り残された者を見捨てることはない。帝国の目的をすべて知らされているわけではないが、現場の仲間を無事に帰すことだけは自分の仕事だと考えている。</span></span>
         <span class="ch-body"><b>ドレク</b><span class="race">ヒューリン・30代</span><span class="role">帝国調査隊・現場隊長</span></span>
       </button>
@@ -1119,28 +1119,23 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <h3 class="wsec reveal">聖都ディアスロンド監察特使団</h3>
       <article class="card reveal"><p>ドートーベン協定の履行を確認するため、聖都ディアスロンドから派遣された特使団。身分を偽った通行を禁じる第七条と、違反の認定を聖都に委ねた第八条に基づき、通行記録の照合と三者の紛争調停を担う。拠点はどの勢力にも属さないランタン亭。「争っている場合ではない」───調停者たちは今日も回廊を歩く。</p><details class="fmore"><summary>詳しく読む</summary><div><p>任務は、各勢力から届け出られた公務従事者の名簿と通行記録の照合、身分偽装に関する申し立ての調査、協定違反が疑われる場合の事情聴取、そして締約三者の紛争調停である。当初は、協定締結後最初の履行確認を行うための短期派遣だった。だが通行記録の食い違い、所属を明かさない調査員、荷の紛失、そして“同じ人物を別の場所で見た”という証言が相次いだため、任期は繰り返し延長されている。</p><p>特使団に逮捕や捜索の権限はない。違反の認定には、記録、証言または物証を必要とする。紙に書かれた協定を、現実の秩序として働かせること───それが彼らの仕事である。</p><p>エリンディルに存在する神殿を統括する都市。宗教的な均衡と平等性を保つため、どの国家にも属さず、独立した国家機能を持つ。冒険者への依頼を統括する神殿機能の本部でもあり、各地の異変や事件の情報がこの都市に集まる。</p><p>白く輝く6つの塔に囲まれた六角形の都市。巡礼者は城壁沿いに6つの神殿───鍛冶、月、戦い、天空、大地、豊穣───を巡り、最後に中心部の大聖堂を礼拝するのが通例だ。大聖堂の奥には&quot;風の時代&quot;の遺物と伝えられる7つの塔が立ち、その足もとの「光の門」の中で、教皇は即位から退位までを過ごす。</p><p>聖典『白の書』によれば、都市は&quot;古の民&quot;エルダが神々の声を聞くために築き、のちの初代教皇ルキアノスが7つの塔の下で神々の声を聞いて再興した。以来800年───神の武具、神の道具を探し求めることが、神殿組織の使命のひとつであり続けている。</p></div></details></article>
       <div class="chgrid">
-      <button class="ch reveal fac-holy t-open" data-src="assets/p_alma.png" data-cap="シスター・アルマ"
-        data-km="ヒューリン・55歳／協定履行監察・全権特使" data-desc="ドートーベン協定の履行を監察するため、聖都から遣わされた全権特使。「争っている場合ではない」───その信念ひとつで、帝国と同盟とラーフのあいだに立ち続けている。携える聖都の印章には協定違反を認定し、通行権を止める権限がある───だが本人は、その印を使わずに済むことをいつも願っている。">
+      <button class="ch reveal fac-holy t-open" data-cat="people" data-name="シスター・アルマ">
         <span class="ch-face"><img src="assets/p_alma.png" loading="lazy" alt="シスター・アルマ"><span class="ch-desc">ドートーベン協定の履行を監察するため、聖都から遣わされた全権特使。「争っている場合ではない」───その信念ひとつで、帝国と同盟とラーフのあいだに立ち続けている。携える聖都の印章には協定違反を認定し、通行権を止める権限がある───だが本人は、その印を使わずに済むことをいつも願っている。</span></span>
         <span class="ch-body"><b>シスター・アルマ</b><span class="race">ヒューリン・55歳</span><span class="role">協定履行監察・全権特使</span></span>
       </button>
-      <button class="ch reveal fac-holy t-open" data-src="assets/p_laila_disarm.png" data-cap="ライラ"
-        data-km="ドゥアン（天翼族）・20代／特使団護衛・戦闘聖職者" data-desc="聖都の全権特使を護衛する戦闘聖職者。“剣の聖女”の異名は飾りではなく、いま回廊に集う人間のなかで、正面から彼女を制圧できる者はほとんどいない。その役目は敵を斬ることではなく───誰にも剣を抜かせないことである。アルマが言葉によって争いを止める者なら、ライラは、その言葉が踏みにじられた後に立つ者である。">
+      <button class="ch reveal fac-holy t-open" data-cat="people" data-name="ライラ">
         <span class="ch-face"><img src="assets/p_laila_disarm.png" loading="lazy" alt="ライラ"><span class="ch-desc">聖都の全権特使を護衛する戦闘聖職者。“剣の聖女”の異名は飾りではなく、いま回廊に集う人間のなかで、正面から彼女を制圧できる者はほとんどいない。その役目は敵を斬ることではなく───誰にも剣を抜かせないことである。アルマが言葉によって争いを止める者なら、ライラは、その言葉が踏みにじられた後に立つ者である。</span></span>
         <span class="ch-body"><b>ライラ</b><span class="race">ドゥアン（天翼族）・20代</span><span class="role">特使団護衛・戦闘聖職者</span></span>
       </button>
-      <button class="ch reveal fac-holy t-open" data-src="assets/p_bradan.png" data-cap="ブラダン神父"
-        data-km="ドゥアン（有角族）・60代／特使団の宗教顧問・布教担当" data-desc="ゴヴァノンとブリガンティアの教えを、地の底まで届けようとする布教師。朗らかで話好きなため堅苦しい聖職者には見えず、説教のあとはボルトと酒を飲んでいることのほうが多い。誰もいないときにも小祠へ立ち寄り、返事を待つように、長く祈り続けている。">
-        <span class="ch-face"><img src="assets/p_bradan.png" loading="lazy" alt="ブラダン神父"><span class="ch-desc">ゴヴァノンとブリガンティアの教えを、地の底まで届けようとする布教師。朗らかで話好きなため堅苦しい聖職者には見えず、説教のあとはボルトと酒を飲んでいることのほうが多い。誰もいないときにも小祠へ立ち寄り、返事を待つように、長く祈り続けている。</span></span>
+      <button class="ch reveal fac-holy t-open" data-cat="people" data-name="ブラダン神父">
+        <span class="ch-face"><img src="assets/p_bradan.png" loading="lazy" alt="ブラダン神父"><span class="ch-desc">神々の教えを、地の底まで届けようとする布教師。朗らかで話好きなため堅苦しい聖職者には見えず、説教のあとはボルトと酒を飲んでいることのほうが多い。誰もいないときにも小祠へ立ち寄り、返事を待つように、長く祈り続けている。</span></span>
         <span class="ch-body"><b>ブラダン神父</b><span class="race">ドゥアン（有角族）・60代</span><span class="role">特使団の宗教顧問・布教担当</span></span>
       </button>
-      <button class="ch reveal fac-holy t-open" data-src="assets/p_tobias.png" data-cap="トバイアス"
-        data-km="エルダナーン・30代／特使団監察記録官" data-desc="聖都から派遣された、温厚な記録係。争いごとを嫌い、フロストゲートとランタン亭を行き来しながら、回廊で起きた出来事を静かに書き留めている。人が語った言葉だけでなく、語ろうとしてやめた沈黙まで記憶しているような男である。">
+      <button class="ch reveal fac-holy t-open" data-cat="people" data-name="トバイアス">
         <span class="ch-face"><img src="assets/p_tobias.png" loading="lazy" alt="トバイアス"><span class="ch-desc">聖都から派遣された、温厚な記録係。争いごとを嫌い、フロストゲートとランタン亭を行き来しながら、回廊で起きた出来事を静かに書き留めている。人が語った言葉だけでなく、語ろうとしてやめた沈黙まで記憶しているような男である。</span></span>
         <span class="ch-body"><b>トバイアス</b><span class="race">エルダナーン・30代</span><span class="role">特使団監察記録官</span></span>
       </button>
-      <button class="ch reveal fac-holy t-open" data-src="assets/p_nao.png" data-cap="ナオ"
-        data-km="フィルボル・10代／見習い聖職者" data-desc="アルマを慕って回廊までついてきた、若い見習い聖職者。明るく素直で人懐こいが、信仰と神学の素養は本物で、七大神の伝承や祈りの作法を尋ねれば、見習いとは思えない確かな答えが返ってくる。ランタン亭では給仕を手伝いながら、旅人の話へ熱心に耳を傾けている。">
+      <button class="ch reveal fac-holy t-open" data-cat="people" data-name="ナオ">
         <span class="ch-face"><img src="assets/p_nao.png" loading="lazy" alt="ナオ"><span class="ch-desc">アルマを慕って回廊までついてきた、若い見習い聖職者。明るく素直で人懐こいが、信仰と神学の素養は本物で、七大神の伝承や祈りの作法を尋ねれば、見習いとは思えない確かな答えが返ってくる。ランタン亭では給仕を手伝いながら、旅人の話へ熱心に耳を傾けている。</span></span>
         <span class="ch-body"><b>ナオ</b><span class="race">フィルボル・10代</span><span class="role">見習い聖職者</span></span>
       </button>
@@ -1149,30 +1144,25 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <div class="treaty reveal"><h4>ドートーベン協定<span>THE DORTOBEN ACCORD</span></h4><p>凍結の回路の中では、誰も刃を抜かない。帝国は石門より手前まで。対価はラーフへ───聖都の仲介で結ばれた、回廊の秩序の背骨である。</p><details class="fmore"><summary>協定の全文を読む</summary><div><p class="tr-pre">聖都ディアスロンドの仲介により、北部平原の交易都市ドートーベンにて締結。署名───パリス同盟（共同運営元の委任を受けた氷原開拓団）・神聖ヴァンスター帝国・ラーフ大洞窟。</p><p class="tr-art">第一条　凍結の回路の内において、締約三者は互いに武器を取らない。</p><p class="tr-art">第二条　帝国の通行は、ランタン亭の北───石門より手前までとする。</p><p class="tr-art">第三条　回廊の管理は石門を境とし、北を氷原開拓団が、南をラーフ大洞窟が担う。</p><p class="tr-art">第四条　パリス同盟および帝国は、ラーフの門と市場を使う対価をラーフ大洞窟に納める。</p><p class="tr-art">第五条　帝国は、石門より南の回廊内における学術調査および遺跡研究の権利を有する。</p><p class="tr-art">第六条　回廊の安全に関わる事柄は、三者の間で速やかに共有する。</p><p class="tr-art">第七条　民間の通行は従前の慣行に拠る。国家の任にある者が身分を偽って通行することを禁ずる。</p><p class="tr-art">第八条　違反の認定は仲介者たる聖都ディアスロンドが行い、制裁は通行権の停止をもってする。</p><p class="tr-art tr-apx">【第七条の運用について】締約三者は、国家の任により回廊へ入る者の氏名、所属および公的資格を、仲介者たる聖都ディアスロンドへ届け出る。聖都は協定の履行を確認するため特使を派遣し、各拠点の通行記録と届出を照合できる。</p><p class="tr-art tr-apx">【緊急制止権】締約者またはその関係者が回廊内で武器を取り、他者の生命、協定の履行、または回廊の安全を現に脅かしている場合、聖都特使はその行為の停止を命じることができる。停止命令に従わない者に対しては、特使団の護衛が武装解除および一時拘束を行う。</p><p class="tr-art tr-apx">ただし、特使団に刑罰を科す権限はない。拘束した者の処遇は、事情聴取と違反認定を経て、所属勢力へ引き渡すものとする。違反の認定には、記録、証言または物証を必要とする。</p></div></details><p class="tr-close">───と、紙の上では定められている。実際には、それぞれの思惑が、灯りの届かぬ回廊を静かに行き交っている。</p></div>
     <h3 class="wsec reveal">回廊の人々<small>PEOPLE OF THE CIRCUIT</small></h3>
     <div class="chgrid">
-      <button class="ch reveal fac-people t-open" data-src="assets/p_louve.png" data-cap="ルーヴェ・レイン"
-        data-km="エルダナーン・年齢不明／ランタン亭の女将" data-desc="回廊のなかほど、暖かな灯りの宿をひとりで営む女将。客の好みも、置き忘れた品も、帰ってこなかった旅人の名も、彼女は忘れない。人も荷も噂も通り過ぎていく宿で、彼女だけは、いつもそこにいる。">
+      <button class="ch reveal fac-people t-open" data-cat="people" data-name="ルーヴェ・レイン">
         <span class="ch-face"><img src="assets/p_louve.png" loading="lazy" alt="ルーヴェ・レイン"><span class="ch-desc">回廊のなかほど、暖かな灯りの宿をひとりで営む女将。客の好みも、置き忘れた品も、帰ってこなかった旅人の名も、彼女は忘れない。人も荷も噂も通り過ぎていく宿で、彼女だけは、いつもそこにいる。</span></span>
         <span class="ch-body"><b>ルーヴェ・レイン</b><span class="race">エルダナーン・年齢不明</span><span class="role">ランタン亭の女将</span></span>
       </button>
-      <button class="ch reveal fac-people t-open" data-src="assets/p_erna.png" data-cap="エルナ"
-        data-km="ヒューリン・40代／行商人" data-desc="ランタン亭を商いの折り返し地点にする、常連の行商人。旅装の箱には蝋燭や薬、遠い街の上等品と、値札のつけられない噂話が詰まっている。ルーヴェの数少ない話し相手でもあり、宿に着けばまず商売より先に、女将へ各地の出来事を聞かせる。">
-        <span class="ch-face"><img src="assets/p_erna.png" loading="lazy" alt="エルナ"><span class="ch-desc">ランタン亭を商いの折り返し地点にする、常連の行商人。旅装の箱には蝋燭や薬、遠い街の上等品と、値札のつけられない噂話が詰まっている。ルーヴェの数少ない話し相手でもあり、宿に着けばまず商売より先に、女将へ各地の出来事を聞かせる。</span></span>
+      <button class="ch reveal fac-people t-open" data-cat="people" data-name="エルナ">
+        <span class="ch-face"><img src="assets/p_erna.png" loading="lazy" alt="エルナ"><span class="ch-desc">ランタン亭を商いの折り返し地点にする、常連の行商人。旅装の箱には蝋燭や薬、遠い街の上等品と、値札のつけられない噂話が詰まっている。宿に着けばまず商売より先に、女将へ各地の出来事を聞かせる。</span></span>
         <span class="ch-body"><b>エルナ</b><span class="race">ヒューリン・40代</span><span class="role">行商人</span></span>
       </button>
-      <button class="ch reveal fac-people t-open" data-src="assets/p_sera.png" data-cap="セラ・ウィン"
-        data-km="ヴァーナ（猫族）・20代／旅の少女" data-desc="物見遊山だと言って回廊まで流れてきた、愛嬌のある若い旅人。誰とでもすぐ仲良くなり、近頃はランタン亭の仕事まで手伝うようになった。旅の理由や故郷について尋ねられると、冗談をひとつ返して、するりと話をはぐらかす。">
+      <button class="ch reveal fac-people t-open" data-cat="people" data-name="セラ・ウィン">
         <span class="ch-face"><img src="assets/p_sera.png" loading="lazy" alt="セラ・ウィン"><span class="ch-desc">物見遊山だと言って回廊まで流れてきた、愛嬌のある若い旅人。誰とでもすぐ仲良くなり、近頃はランタン亭の仕事まで手伝うようになった。旅の理由や故郷について尋ねられると、冗談をひとつ返して、するりと話をはぐらかす。</span></span>
         <span class="ch-body"><b>セラ・ウィン</b><span class="race">ヴァーナ（猫族）・20代</span><span class="role">旅の少女</span></span>
       </button>
-      <button class="ch reveal fac-people t-open" data-src="assets/p_aquarielna.png" data-cap="アクアリエルナ"
-        data-km="エルダナーン・推定950歳／放浪の魔術士" data-desc="毛糸のショールに口元をうずめた、年老いぬ放浪の魔術士。“火の粛清の始まる場所”を探して九百年あまり旅を続けている───と、本人はいたって真面目に語る。古い時代の伝承に驚くほど詳しいが、その探しものへ辿り着いた者は、まだひとりもいない。">
+      <button class="ch reveal fac-people t-open" data-cat="people" data-name="アクアリエルナ">
         <span class="ch-face"><img src="assets/p_aquarielna.png" loading="lazy" alt="アクアリエルナ"><span class="ch-desc">毛糸のショールに口元をうずめた、年老いぬ放浪の魔術士。“火の粛清の始まる場所”を探して九百年あまり旅を続けている───と、本人はいたって真面目に語る。古い時代の伝承に驚くほど詳しいが、その探しものへ辿り着いた者は、まだひとりもいない。</span></span>
         <span class="ch-body"><b>アクアリエルナ</b><span class="race">エルダナーン・推定950歳</span><span class="role">放浪の魔術士</span></span>
       </button>
-      <button class="ch reveal fac-people t-open" data-src="assets/p_seraphine_v5.png" data-cap="セラフィーヌ"
-        data-km="エルダナーン・不明／渡りの古物商" data-desc="背に一振りの大太刀を負った、坩堝横丁の顔なじみ。エルダの遺物や古い書を商う渡りの古物商で、品定めのついでに世の噂へやたらと詳しい。肩の黒い鴉に話しかけ、ときには背の大太刀にも「ふぅむ、面妖じゃのう」と相槌を求める───そのどちらも返事をしているように見えるのが、坩堝横丁の七不思議のひとつ。">
-        <span class="ch-face"><img src="assets/p_seraphine_v5.png" loading="lazy" alt="セラフィーヌ"><span class="ch-desc">背に一振りの大太刀を負った、坩堝横丁の顔なじみ。エルダの遺物や古い書を商う渡りの古物商で、品定めのついでに世の噂へやたらと詳しい。肩の黒い鴉に話しかけ、ときには背の大太刀にも「ふぅむ、面妖じゃのう」と相槌を求める───そのどちらも返事をしているように見えるのが、坩堝横丁の七不思議のひとつ。</span></span>
-        <span class="ch-body"><b>セラフィーヌ</b><span class="race">エルダナーン・不明</span><span class="role">渡りの古物商</span></span>
+      <button class="ch reveal fac-people t-open" data-cat="people" data-name="ヤーヌス">
+        <span class="ch-face"><img src="assets/p_seraphine_v5.png" loading="lazy" alt="ヤーヌス"><span class="ch-desc">背に一振りの大太刀を負った、坩堝横丁の顔なじみ。エルダの遺物や古い書を商う渡りの古物商で、品定めのついでに世の噂へやたらと詳しい。肩の黒い鴉に話しかけ、ときには背の大太刀にも「ふぅむ、面妖じゃのう」と相槌を求める───そのどちらも返事をしているように見えるのが、坩堝横丁の七不思議のひとつ。</span></span>
+        <span class="ch-body"><b>ヤーヌス</b><span class="race">エルダナーン・不明</span><span class="role">渡りの古物商</span></span>
       </button>
     </div>
 <p class="ch-more reveal">誰にでも語らないことのひとつはある。この回廊で出会う人々は、これから増えていく。</p>
@@ -1325,6 +1315,9 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 </main>
 
 <div id="lb" role="dialog" aria-modal="true" aria-label="拡大表示">
+  <button id="lbClose" class="lb-x" type="button" aria-label="閉じる">×</button>
+  <button id="lbPrev" class="lb-nav lb-prev" type="button" aria-label="前へ"><span class="lb-arw">‹</span></button>
+  <button id="lbNext" class="lb-nav lb-next" type="button" aria-label="次へ"><span class="lb-arw">›</span></button>
   <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
 </div>
 
@@ -1332,6 +1325,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   <p>本サイトは個人のTRPGキャンペーン運用のための非公式ファンページです。株式会社FEARの公式ガイドラインに基づく、セッション目的・非営利の個人運用です。</p>
 </footer>
 
+<script>window.LBSETS={"people": [{"img": "assets/still_alice.jpg", "name": "アリス・ランベント", "race": "ヒューリン", "age": "18歳", "sex": "女性", "faction": "プリムス", "role": "開拓団・団長", "desc": "ランベント領主にして、氷原開拓団の代表。領地では“国王無き王国”ヴァイスの共和制移行準備に奔走している一方で、氷原ではフィールドに復帰しつつある。なお、開拓団での書類仕事はフルールにかなりの割合を負担してもらっている。"}, {"img": "assets/still_reif.jpg", "name": "レイフ・ストーム", "race": "ヒューリン", "age": "40代", "sex": "男性", "faction": "プリムス", "role": "凍結の回路・安全通行責任者", "desc": "フロストゲートの野営地に常駐し、回廊を通る人と荷、そのすべてを記録する安全通行責任者。几帳面で世話好きだが、「たぶん大丈夫」という言葉だけは決して信用しない。回廊で起きたことは最後にはすべて彼の机へ集まり、旅の始まりと終わりには、たいてい彼の顔がある。"}, {"img": "assets/still_fleur.jpg", "name": "フルール・シュリエール", "race": "ヒューリン", "age": "19歳", "sex": "男性", "faction": "プリムス", "role": "開拓団・代理団長", "desc": "シュリエール伯爵家の次男にして、開拓団の外交実務を預かる十九歳の青年。真面目で礼儀正しく、誰の話にも丁寧に耳を傾けるため、団内での評判は上々である。ただし、いくつもの国と勢力を相手に自分の言葉で立つような大舞台は、まだ経験していない。"}, {"img": "assets/still_garen.jpg", "name": "ガレン", "race": "ヒューリン", "age": "30代", "sex": "男性", "faction": "プリムス", "role": "フロストゲート検問・通行記録係", "desc": "フロストゲートで通行記録をつける、レイフの部下。小心者でいつも書類と印章の束を抱えているが、その筆跡は驚くほど美しく、他人の字や封蝋の違いにもよく気づく。人の顔と名前だけでなく、「いつもと何かが違う」という小さな違和感まで、彼の帳面には記されている。"}, {"img": "assets/still_dorg.jpg", "name": "ドルグ", "race": "ドゥアン（牙爪族）", "age": "40代", "sex": "男性", "faction": "プリムス", "role": "開拓団・南方隊の野営世話役", "desc": "南へ下る開拓団の隊列で、野営と人員の取りまとめを預かる世話役。口も態度も荒く、働かない者には容赦がないが、任された場所と仲間の面倒は最後まで見る。「壊すのは一晩、直すのは十年」が口癖で、今日も誰かの張ったまずい天幕を黙って直している。"}, {"img": "assets/still_evald.jpg", "name": "エヴァルド・クロス", "race": "ドゥアン（有角族）", "age": "57歳", "sex": "男性", "faction": "プリムス", "role": "プリムス警備隊・古参兵", "desc": "開拓の初期から氷原に立ち続けてきた、プリムス警備隊の古参兵。騎士だった頃の古い装備をいまも丹念に磨き、夜番が終わっても、しばらく持ち場を離れようとしない。口数は少なく無愛想だが、若い団員の防寒具が緩んでいれば、何も言わずに締め直してやる。"}, {"img": "assets/still_kyle.jpg", "name": "カイル・コズワース", "race": "ヒューリン", "age": "", "sex": "男性", "faction": "プリムス", "role": "開拓団・元団長直衛", "desc": "かつてヴェルトール団長の直衛を務め、氷原の最前線をともに歩いた男。長く後方勤務に退いていたが、近頃ふたたび剣を取り、前線へ戻ろうとしている。エヴァルドとは古い騎士団時代からの知り合いだが、二人が過去について語り合う姿を見た者はいない。"}, {"img": "assets/still_omga.jpg", "name": "オムガ・ドゥール", "race": "ネヴァーフ", "age": "推定180歳超", "sex": "男性", "faction": "ラーフ大洞窟", "role": "ラーフ現首長・長老", "desc": "千年の都ラーフ大洞窟と、そこに暮らす八万の民を束ねる長老。齢は百八十を超えるともいわれ、小さな身体に都市ひとつぶんの責任を背負っている。何事にも慎重で、答えを急がない───その沈黙によってラーフを守ってきた男である。"}, {"img": "assets/still_kruta.jpg", "name": "クルタ", "race": "ネヴァーフ", "age": "70代", "sex": "女性", "faction": "ラーフ大洞窟", "role": "ラーフの炉場の職人頭", "desc": "ラーフの炉場を束ねる職人頭にして、首長オムガの孫。錬金と鍛冶の知識は一部の直弟子だけで抱えず、必要とする者へ広く伝えるべきだと、五十年にわたって祖父へ異を唱え続けている。口は悪いが、若い職人が失敗した品も捨てずに拾い、どこを直せば使えるかを教えてやる。"}, {"img": "assets/still_velka.jpg", "name": "ヴェルカ・ナイン", "race": "ネヴァーフ", "age": "60代", "sex": "女性", "faction": "ラーフ大洞窟", "role": "筆頭書記官・オムガの右腕", "desc": "オムガの右腕を務める筆頭書記官。ラーフの帳簿と封蝋はすべて彼女の手を通り、千年続いた記録のどこに何が書かれているかを、ほとんど記憶している。計算の合わない数字や、あるはずの名前がない空白を見つけると、納得するまで決して放置しない。"}, {"img": "assets/still_tesha.jpg", "name": "テシャ・スウィン", "race": "フィルボル", "age": "44歳", "sex": "女性", "faction": "ラーフ大洞窟", "role": "ラーフ派遣・錬金術師", "desc": "ラーフから回廊へ派遣されている、小柄な錬金術師。好奇心旺盛で世話好き、使い込んだ採掘装備の扱いにも慣れた、頼れる仕事人である。けれど古い遺構の話題になるときだけ、ときおり笑顔が途切れ、遠くを見るような目をする。"}, {"img": "assets/still_linne.jpg", "name": "リンネ・ソウル", "race": "エルダナーン", "age": "20代", "sex": "女性", "faction": "ラーフ大洞窟", "role": "ラーフ大工房・若手錬金術師", "desc": "ラーフ大工房に所属する若手錬金術師。エルダ文明への学術的な興味が強く、読めない碑文や用途不明の装置を前にすると、危険も忘れて夢中になってしまう。誰も答えてくれない問いほど知りたくなる性分で、その好奇心はしばしば彼女を街道の外へ連れ出す。"}, {"img": "assets/still_muvak.jpg", "name": "ムヴァク", "race": "ネヴァーフ", "age": "60代", "sex": "男性", "faction": "ラーフ大洞窟", "role": "ラーフ派遣・鉱夫頭", "desc": "坩堝横丁で採掘現場を預かる、ラーフ派遣の鉱夫頭。つるはし一本で岩盤と話をつける力自慢で、難しい理屈より、叩いた音と手に返る感触を信じている。テシャをいまだに「嬢ちゃん」と呼び、そのたびに本人から訂正されている。"}, {"img": "assets/still_marco.jpg", "name": "マルコ・ダン", "race": "ヒューリン", "age": "50代", "sex": "男性", "faction": "ラーフ大洞窟", "role": "坩堝横丁の情報屋", "desc": "坩堝横丁に店を構える情報屋。銭と帳面を何より信用し、帝国にも同盟にも、払うものを払う客には等しく商売をする。愛想のよい男ではないが、売った情報に嘘を混ぜないことだけは、長年の信用として守り続けている。"}, {"img": "assets/still_bolt.jpg", "name": "ボルト", "race": "ドゥアン（牙爪族）", "age": "50代", "sex": "男性", "faction": "ラーフ大洞窟", "role": "坩堝横丁・ゴヴァノン小祠の世話人", "desc": "坩堝横丁の小さなゴヴァノン祠を守る、無骨な信徒。かつては鉱夫として岩盤を掘っていたが、いまは鍵と聖印を提げ、坑道へ向かう者の無事を祈っている。祈りの言葉は不得手で、たいていは黙って炉へ薪を足す。"}, {"img": "assets/still_kokushi.jpg", "name": "黒い剣士", "race": "ドゥアン（天翼族）", "age": "", "sex": "男性", "faction": "ラーフ大洞窟", "role": "ラーフに居付く流れの剣士", "desc": "黒い翼と大剣を持ち、十年前からラーフ大洞窟に居付いている流れの剣士。八万の都に彼へ敵う者はいないと噂されるが、本人は強さを誇ることも、過去を語ることもない。彼は嘘をつかない───名を訊かれたときには、ただ答えずにいる。"}, {"img": "assets/still_zedan.jpg", "name": "ゼダン", "race": "ヒューリン", "age": "76歳", "sex": "男性", "faction": "神聖ヴァンスター帝国", "role": "神聖ヴァンスター帝国 皇帝", "desc": "聖暦999年に即位し、五十七年にわたって帝国を治めてきた老皇帝。かつて西方諸国へ侵攻した帝国の主でありながら、その軍勢はもう四十年以上、外征のために動いていない。それでも世界は、老いた皇帝が次の戦争を諦めたとは信じていない。"}, {"img": "assets/still_gaius.jpg", "name": "ガイウス・ヴェルム", "race": "ヒューリン", "age": "48歳", "sex": "男性", "faction": "神聖ヴァンスター帝国", "role": "帝国商会代表", "desc": "帝国商会の代表として回廊に根を張る、冷静沈着な商人。物資にも情報にも適正な値をつけ、困ったときには頼りになるが、自分の損得を計算せずに手を差し伸べることはない。礼儀正しい微笑みの奥で、いつも相手が何を欲しがっているのかを見定めている。"}, {"img": "assets/still_isolde.jpg", "name": "イゾルデ・クラン", "race": "ヒューリン", "age": "30代", "sex": "女性", "faction": "神聖ヴァンスター帝国", "role": "遺跡学者", "desc": "古代文明と遺構研究を専門とする、帝国出身の学者。知的で話好きなため他勢力の研究者ともすぐ打ち解け、なかでもリンネとは、立場を越えて遺構談義に花を咲かせている。彼女の作る地図は正確だが、そこに描かれた道のすべてを他人に見せるとは限らない。"}, {"img": "assets/still_drek.jpg", "name": "ドレク", "race": "ヒューリン", "age": "30代", "sex": "男性", "faction": "神聖ヴァンスター帝国", "role": "帝国調査隊・現場隊長", "desc": "帝国調査隊の現場を預かる、測量と野外活動の叩き上げ。命令には従うが無益な争いを好まず、所属が違っても、負傷者や取り残された者を見捨てることはない。帝国の目的をすべて知らされているわけではないが、現場の仲間を無事に帰すことだけは自分の仕事だと考えている。"}, {"img": "assets/still_alma.jpg", "name": "シスター・アルマ", "race": "ヒューリン", "age": "55歳", "sex": "女性", "faction": "聖都ディアスロンド監察特使団", "role": "協定履行監察・全権特使", "desc": "ドートーベン協定の履行を監察するため、聖都から遣わされた全権特使。「争っている場合ではない」───その信念ひとつで、帝国と同盟とラーフのあいだに立ち続けている。携える聖都の印章には協定違反を認定し、通行権を止める権限がある───だが本人は、その印を使わずに済むことをいつも願っている。"}, {"img": "assets/still_laila.jpg", "name": "ライラ", "race": "ドゥアン（天翼族）", "age": "20代", "sex": "女性", "faction": "聖都ディアスロンド監察特使団", "role": "特使団護衛・戦闘聖職者", "desc": "聖都の全権特使を護衛する戦闘聖職者。“剣の聖女”の異名は飾りではなく、いま回廊に集う人間のなかで、正面から彼女を制圧できる者はほとんどいない。その役目は敵を斬ることではなく───誰にも剣を抜かせないことである。アルマが言葉によって争いを止める者なら、ライラは、その言葉が踏みにじられた後に立つ者である。"}, {"img": "assets/still_bradan.jpg", "name": "ブラダン神父", "race": "ドゥアン（有角族）", "age": "60代", "sex": "男性", "faction": "聖都ディアスロンド監察特使団", "role": "特使団の宗教顧問・布教担当", "desc": "神々の教えを、地の底まで届けようとする布教師。朗らかで話好きなため堅苦しい聖職者には見えず、説教のあとはボルトと酒を飲んでいることのほうが多い。誰もいないときにも小祠へ立ち寄り、返事を待つように、長く祈り続けている。"}, {"img": "assets/still_tobias.jpg", "name": "トバイアス", "race": "エルダナーン", "age": "30代", "sex": "男性", "faction": "聖都ディアスロンド監察特使団", "role": "特使団監察記録官", "desc": "聖都から派遣された、温厚な記録係。争いごとを嫌い、フロストゲートとランタン亭を行き来しながら、回廊で起きた出来事を静かに書き留めている。人が語った言葉だけでなく、語ろうとしてやめた沈黙まで記憶しているような男である。"}, {"img": "assets/still_nao.jpg", "name": "ナオ", "race": "フィルボル", "age": "10代", "sex": "女性", "faction": "聖都ディアスロンド監察特使団", "role": "見習い聖職者", "desc": "アルマを慕って回廊までついてきた、若い見習い聖職者。明るく素直で人懐こいが、信仰と神学の素養は本物で、七大神の伝承や祈りの作法を尋ねれば、見習いとは思えない確かな答えが返ってくる。ランタン亭では給仕を手伝いながら、旅人の話へ熱心に耳を傾けている。"}, {"img": "assets/still_louve.jpg", "name": "ルーヴェ・レイン", "race": "エルダナーン", "age": "年齢不明", "sex": "女性", "faction": "", "role": "ランタン亭の女将", "desc": "回廊のなかほど、暖かな灯りの宿をひとりで営む女将。客の好みも、置き忘れた品も、帰ってこなかった旅人の名も、彼女は忘れない。人も荷も噂も通り過ぎていく宿で、彼女だけは、いつもそこにいる。"}, {"img": "assets/still_erna.jpg", "name": "エルナ", "race": "ヒューリン", "age": "40代", "sex": "女性", "faction": "", "role": "行商人", "desc": "ランタン亭を商いの折り返し地点にする、常連の行商人。旅装の箱には蝋燭や薬、遠い街の上等品と、値札のつけられない噂話が詰まっている。宿に着けばまず商売より先に、女将へ各地の出来事を聞かせる。"}, {"img": "assets/still_sera.jpg", "name": "セラ・ウィン", "race": "ヴァーナ（猫族）", "age": "20代", "sex": "女性", "faction": "", "role": "旅の少女", "desc": "物見遊山だと言って回廊まで流れてきた、愛嬌のある若い旅人。誰とでもすぐ仲良くなり、近頃はランタン亭の仕事まで手伝うようになった。旅の理由や故郷について尋ねられると、冗談をひとつ返して、するりと話をはぐらかす。"}, {"img": "assets/still_aquarielna.jpg", "name": "アクアリエルナ", "race": "エルダナーン", "age": "推定950歳", "sex": "女性", "faction": "", "role": "放浪の魔術士", "desc": "毛糸のショールに口元をうずめた、年老いぬ放浪の魔術士。“火の粛清の始まる場所”を探して九百年あまり旅を続けている───と、本人はいたって真面目に語る。古い時代の伝承に驚くほど詳しいが、その探しものへ辿り着いた者は、まだひとりもいない。"}, {"img": "assets/still_seraphine.jpg", "name": "ヤーヌス", "race": "エルダナーン", "age": "不明", "sex": "不明", "faction": "", "role": "渡りの古物商", "desc": "背に一振りの大太刀を負った、坩堝横丁の顔なじみ。エルダの遺物や古い書を商う渡りの古物商で、品定めのついでに世の噂へやたらと詳しい。肩の黒い鴉に話しかけ、ときには背の大太刀にも「ふぅむ、面妖じゃのう」と相槌を求める───そのどちらも返事をしているように見えるのが、坩堝横丁の七不思議のひとつ。"}], "terrain": [{"img": "assets/t_abyss_edge.jpg", "name": "奈落の縁", "km": "18–28km", "desc": "回廊の床が幾度も崩れ落ち、巨大な穴がいくつも連なっている区間。いずれも灯りや測量綱が底まで届かず、地下深くでつながっているのかどうかも分かっていない。道は穴と穴のあいだに残された岩盤の縁を縫い、場所によっては両側に奈落を見ながら進むことになる。小石を落としても、底に当たる音が返ってきた記録はない。", "kind": "terrain"}, {"img": "assets/t_cascade_wild.jpg", "name": "永遠の滝", "km": "44–50km", "desc": "幾筋もの大瀑布が、落下の途中で時を止めたように凍りついている。外殻だけを残して水が失われたためか、青白い氷柱の内部は空洞になっている。その異様な姿が、時の止まった滝を思わせることから、この名がついた。", "kind": "terrain"}, {"img": "assets/t_canyon_wild.jpg", "name": "大峡谷", "km": "55–68km", "desc": "狭い回廊が突如として途方もない裂谷へ開け、道はその谷底を南北に延びている。両側には絶壁がそびえ、天井は見上げても闇の中に消えたままだ。崖面には無数の横穴が口を開けているが、その多くは未調査である。峡谷には頂点捕食者たるグリンデイルが多く生息しており、容易には踏み込めないためだ。", "kind": "terrain"}, {"img": "assets/t_bones.jpg", "name": "死の道", "km": "70–78km", "desc": "氷の中に横たわる、途方もなく巨大な生物の遺骸。その胸郭を貫くように道が延びている。両側の肋骨は柱のように立ち上がり、その先は天井の闇へ消えて見えない。遺骸の全体像も、何の生物であったのかも分かっていない。旅人は、名も知れぬ死者の内側を通るこの区間を「死の道」と呼ぶ。", "kind": "terrain"}, {"img": "assets/t_gate_wild.jpg", "name": "石門の遺跡", "km": "80–86km", "desc": "ランタン亭の北側一帯に広がる、氷に閉ざされた都市遺跡。崩れた建物のあいだを細い通路が網目状に走り、かつての街路だったと考えられている。築造年代も、ここに暮らしていた者たちの正体も分かっていない。遺跡のひときわ巨大な石門は技師らの尽力によって開閉機構が蘇っている。", "kind": "terrain"}, {"img": "assets/t_statues_wild.jpg", "name": "氷の群像", "km": "92–98km", "desc": "無数の水の精霊が、身じろぎの途中で時を止めたように凍りついている区間。呼びかけても、触れても、応えはない。水の精霊が氷へ変じること自体はありうるが、これほどの数が一か所に集まっていた理由は分かっていない。いまの回廊には、精霊を群れさせるほど豊かな水の流れもない。開拓団の者はここを通るあいだ、自然と声をひそめる。いつ、誰から始まったのかも分からない習わしである。", "kind": "terrain"}, {"img": "assets/t_lake_wild.jpg", "name": "地底湖", "km": "100–115km", "desc": "回廊いっぱいに広がる地底湖。水面は端から端まで凍りつき、道はその上をまっすぐ横切っている。測量は何度も試みられたが、湖の正確な深さはいまだ分かっていない。道から大きく外れるのは危険だ。場所によっては氷が薄く、さらには、水底から巨大な影───ジャイアントスクイードが近づいてくるためだ。", "kind": "terrain"}, {"img": "assets/t_stoneforest_wild.jpg", "name": "石の森", "km": "地底湖から分岐", "desc": "地底湖から道を外れ、薄氷の上を進んだ先にある。湖底から天井へ届く無数の石柱が立ち並び、その景観が木立に似ることから「石の森」と呼ばれるようになった。足元の氷が薄く、重装備の者や大人数の隊は近づけない。さらに、ジャイアントスクイードの目撃例も多く、故に奥部まで踏査した記録はほとんどない。", "kind": "terrain"}, {"img": "assets/t_drift_wild.jpg", "name": "吹き溜まり", "km": "128–140km", "desc": "吐息の谷から吹く風は、回廊を北へ抜けていく。その途中で壁面の霜と白い苔の粉を巻き上げ、坩堝横丁の前後に、膝の深さまで達する白い吹き溜まりをつくる。雪のように見えるものの、その正体は壁から剥がれ落ちた霜と、苔が放つ細かな粉が混じり合ったものだ。踏み込めば地上の雪と同じように足を取られ、舞い上がった粉は視界を奪う。", "kind": "terrain"}, {"img": "assets/t_breath_wild.jpg", "name": "吐息の谷", "km": "145–160km", "desc": "岩盤の裂け目から、熱を帯びた蒸気と有毒なガスが噴き出す区間。溶岩の光はなく、闇の中で空気だけが生温かい。噴気には毒性があるものの、風があるかぎり濃度は低く、通過するだけなら大きな害はない。危険なのは噴出口へ近づくこと、長く留まること、そして風が止まることだ。\n\nこの谷が生む温度差によって、回廊には絶えず北向きの風が流れている。既知の出入口が閉ざされていた時代にも風が止まらず、空気が淀むこともなかった。ならばどこかに、回廊の外───あるいは別の大空洞へ通じる、未確認の空気の通り道があるはずだ。研究者たちはそう考えている。\n\n毒を吐く谷が回廊を生かし、その呼吸の先には、まだ誰も知らない場所がある。", "kind": "terrain"}], "creature": [{"img": "assets/cr_grendel_v2.jpg", "name": "グリンデイル", "km": "回廊の頂点", "desc": "回廊の陸上生態系の頂点に立つ大型魔獣。乳白色の巨体は厚い脂肪に覆われ、体表には可燃性の油脂が絶えず分泌されている。鱗も甲殻も持たないが、その皮膚は自身の炎に耐えるほど熱に強い。凍気の中でも身体から湯気を立てており、周囲の冷え込みが不意に緩むことが、接近を知るほぼ唯一の兆しとなる。\n\n成体の眼は退化して閉じているため、灯りには反応しない。匂いと体温を頼りに獲物を追う。狩りに際しては、獲物に浴びせた油に火花を散らす事で燃焼させる姿がよく目撃されている。討伐隊の報告によれば、グリンデイルが追い詰められると全身を炎で包み、手当たりしだいに暴れ回るともいう。フロストゲートには専任のグリンデイルの迎撃部隊が置かれているが、確認された個体は一頭ではない。大峡谷の未踏部に、繁殖地があるとみられている。", "kind": "creature"}, {"img": "assets/cr_squid.jpg", "name": "ジャイアントスクイード", "km": "地底湖の底", "desc": "凍った地底湖の底に潜む巨大な軟体生物。骨格を持たない身体を細く変形させ、わずかな割れ目からでも太い腕を差し込んで、氷上の獲物を絡め取る。失った腕は時間をかけて再生する。\n\n地底湖では、氷を踏む振動が水中の遠くまで伝わる。渡る者がその存在に気づかれずに済むことは、ほとんどない。ただし、気づいた獲物を必ず襲うわけでもない。開拓団は最も厚く安定した氷を選んで道を定め、立ち止まらずに渡ることを鉄則としている。討伐記録は少なく、残るのは襲撃から逃げ切った記録ばかりだ。", "kind": "creature"}, {"img": "assets/cr_icedragon.jpg", "name": "アイスドラゴン", "km": "氷の群像の竜", "desc": "凍結の回路にすむ竜。地上の雪山にすむアイスドラゴンの近縁種が、回廊の闇に適応したものと考えられている。常に極寒の吹雪を身にまとい、近づくものを凍てつかせる。生息数はごく少なく、目撃の記録は氷の群像からその南の区間に集中している。翼を持ちながら、飛ぶことはほとんどない。巨体を低くして、氷の上を這って進む。\n\n回廊の脅威として、グリンデイル、ジャイアントスクイードと並べて語られる。幸いは、遭遇そのものが稀なことだけだ。竜の影を見たという報せがあれば、隊商は日を改める。", "kind": "creature"}, {"img": "assets/cr_frostwolf.jpg", "name": "ノースウルフ", "km": "灯りの輪の外", "desc": "暗闇に棲む狼。コナカタ山脈の地表部にも近縁種が多く生息している。彼らは群れで旅人を追い、隊列から離れた者や、灯りを失った者に一斉に襲いかかる。炎を狩りに用いるグリンデイルと生息域を共にしている故か、回廊内のノースウルフはとくに灯りを恐れる。「灯りから離れるな」という開拓団の掟は、この獣による犠牲から生まれた。", "kind": "creature"}, {"img": "assets/cr_frostspider.jpg", "name": "フロストスパイダー", "km": "天井の待ち伏せ", "desc": "天井や氷壁に張りつき、獲物が真下を通るのを待つ大型の蜘蛛。半透明の脚と白い胴は氷に紛れ、正面からの灯りでは見つけにくい。旅人の灯りが前方と足元に集中することを利用し、頭上から音もなく落下する。フロストスパイダーの生息域では、隊列のうち一人が灯りを真上へ向ける。それが開拓団の定めた警戒法である。", "kind": "creature"}, {"img": "assets/cr_centipede.jpg", "name": "エンバーセンティピード", "km": "焼け跡に群がる", "desc": "全長2m程まで育つ大型のムカデ。耐熱性の高い外殻を持ち、天井や氷壁を伝って、焚き火の跡や灯りの熱源へ群がる。死肉性のスカヴェンジャーであり、旅人を狙っているわけではないが、結果として灯りを奪い、噛みつかれれば毒にも侵される。強い毒性を持つ為、頂点捕食者たるグリンデイルはこの虫を捕食しない。故に、グリンデイルの狩りのおこぼれをいつも狙っている。", "kind": "creature"}, {"img": "assets/cr_frostfly.jpg", "name": "霜蛍", "km": "灯りを生む虫", "desc": "指先ほどの小さな虫。危機を感じると火のような橙色の光を放つ。だがその光に熱はない。まやかしの火である。回廊の獣の多くは火を恐れる。だから火のふりをして身を守るのだ。この虫を器具にしたものが蛍灯。明るいのに少しも暖かくない灯りである。", "kind": "creature"}, {"img": "assets/cr_frostelk.jpg", "name": "フロストエルク", "km": "白い群れ", "desc": "白い毛の大鹿。眼は退化して見えない。だが群れは迷わない。氷壁の白い苔を食みながら回廊をゆっくり巡っている。開拓団はこれを狩り、肉と皮を得てきた───回廊で人が生きていけるのは半分はこの獣のおかげである。群れが駆け出したときは周囲を警戒したほうがよい。彼らは理由なく走らない。", "kind": "creature"}, {"img": "assets/cr_giantbat.jpg", "name": "ジャイアントバット", "km": "灯りの通じない翼", "desc": "天井の闇に棲む大蝙蝠。眼ではなく声の反響で飛ぶため、灯りには寄りも退きもしない───つまり、灯りでは防げない。ふだんは霜蛍や虫を獲っているが、人や馬を襲うこともある。", "kind": "creature"}, {"img": "assets/cr_hikeshibana.jpg", "name": "火消花", "km": "回廊の火消し", "desc": "氷壁の苔むらに群生する半透明の白い花。ふだんは固く閉じて眠っているが、近くに光がともると花弁を開き、精霊魔術によってその光をかき消す。逃げることのできない植物が、火災から群落を守るために身につけた魔術だと考えられている。\n\nランタンも蛍灯も、区別なく消される。もっとも、街道沿いの群生は開拓団の手でおおむね駆除されている。灯りの消える闇が残っているのは、道を外れた先である。", "kind": "creature"}]};</script>
 <script>
 (function() {
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1595,52 +1589,78 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   buildSecnav();
   addEventListener('hashchange', function() { setTimeout(buildSecnav, 30); });
 
-  // ── ギャラリー ライトボックス ──
+  // ── ライトボックス（ギャラリー単票＋人物/地形/原生生物の前後ナビ） ──
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'),
-      lbCap = document.getElementById('lbCap');
-  document.querySelectorAll('.gbtn').forEach(function(b) {
-    b.addEventListener('click', function() {
-      lbImg.src = b.querySelector('img').src;
-      lbCap.className = '';
-      lbCap.textContent = b.dataset.cap || '';
-      lb.classList.add('on');
-    });
-  });
-  // 地形の地名をクリック＝その地形の絵を大きく表示し、下に説明文を全文出す
+      lbCap = document.getElementById('lbCap'),
+      lbPrev = document.getElementById('lbPrev'), lbNext = document.getElementById('lbNext'),
+      lbClose = document.getElementById('lbClose');
+  var SETS = window.LBSETS || { people: [], terrain: [], creature: [] };
+  var lbCat = null, lbIdx = 0;
+  function lbEsc(t) { var e = document.createElement('div'); e.textContent = (t == null ? '' : t); return e.innerHTML; }
+  function renderLB() {
+    var set = SETS[lbCat]; if (!set || !set.length) return;
+    var it = set[lbIdx];
+    lbImg.src = it.img || ''; lbImg.alt = it.name || '';
+    var isPerson = (lbCat === 'people');
+    lb.classList.toggle('lb-person', isPerson);
+    var html = '<h4>' + lbEsc(it.name) + '</h4>';
+    if (isPerson) {
+      var meta = [['種族', it.race], ['年齢', it.age], ['性別', it.sex], ['所属', it.faction], ['職業', it.role]]
+        .filter(function(m) { return m[1]; })
+        .map(function(m) { return '<span><i>' + m[0] + '</i>' + lbEsc(m[1]) + '</span>'; }).join('');
+      if (meta) html += '<div class="lb-meta">' + meta + '</div>';
+    } else if (it.km) {
+      html += '<div class="lb-km">' + lbEsc(it.km) + '</div>';
+    }
+    html += '<p>' + lbEsc(it.desc).replace(/\n/g, '<br>') + '</p>';
+    lbCap.className = 'lb-terrain'; lbCap.innerHTML = html;
+    var multi = set.length > 1;
+    lbPrev.style.display = multi ? '' : 'none';
+    lbNext.style.display = multi ? '' : 'none';
+    lb.scrollTop = 0;
+  }
+  function openLB(cat, idx) {
+    if (!SETS[cat] || !SETS[cat].length) return;
+    lbCat = cat; lbIdx = idx; renderLB(); lb.classList.add('on');
+  }
+  function stepLB(dir) { var set = SETS[lbCat]; if (!set) return; lbIdx = (lbIdx + dir + set.length) % set.length; renderLB(); }
+  function closeLB() { lb.classList.remove('on'); lb.classList.remove('lb-person'); lbImg.removeAttribute('src'); lbCat = null; }
+  var PIDX = {};
+  (SETS.people || []).forEach(function(it, i) { PIDX[it.name] = i; });
   document.querySelectorAll('.t-open').forEach(function(b) {
     b.addEventListener('click', function() {
-      lbImg.src = b.dataset.src;
-      lbCap.textContent = '';
-      lbCap.className = 'lb-terrain';
-      // 人物カード発なら説明を画像下部へ重ねる（スマホ見切れ対策）
-      var isPerson = b.classList.contains('ch');
-      lb.classList.toggle('lb-person', isPerson);
-      var h = document.createElement('h4');
-      h.textContent = b.dataset.cap || '';
-      var km2 = null;
-      if (b.dataset.km) {
-        if (isPerson) {
-          // 人物＝種族・年齢は名前の下の独立行（2026-07-19 後輩くん指定）
-          km2 = document.createElement('div');
-          km2.className = 'lb-km';
-          km2.textContent = b.dataset.km;
-        } else {
-          var km = document.createElement('span');
-          km.textContent = b.dataset.km;
-          h.appendChild(km);
-        }
-      }
-      var p = document.createElement('p');
-      p.textContent = b.dataset.desc || '';
-      lbCap.appendChild(h);
-      if (km2) lbCap.appendChild(km2);
-      lbCap.appendChild(p);
-      lb.classList.add('on');
+      var cat = b.dataset.cat;
+      openLB(cat, cat === 'people' ? PIDX[b.dataset.name] : +b.dataset.idx);
+    });
+  });
+  document.querySelectorAll('.gbtn').forEach(function(b) {
+    b.addEventListener('click', function() {
+      lbCat = null; lbImg.src = b.querySelector('img').src; lbImg.alt = '';
+      lbCap.className = ''; lbCap.textContent = b.dataset.cap || '';
+      lb.classList.remove('lb-person');
+      lbPrev.style.display = 'none'; lbNext.style.display = 'none';
+      lb.classList.add('on'); lb.scrollTop = 0;
     });
   });
   if (lb) {
-    lb.addEventListener('click', function() { lb.classList.remove('on'); lb.classList.remove('lb-person'); lbImg.removeAttribute('src'); });
-    addEventListener('keydown', function(e) { if (e.key === 'Escape') { lb.classList.remove('on'); lb.classList.remove('lb-person'); lbImg.removeAttribute('src'); } });
+    lbPrev.addEventListener('click', function(e) { e.stopPropagation(); stepLB(-1); });
+    lbNext.addEventListener('click', function(e) { e.stopPropagation(); stepLB(1); });
+    lbClose.addEventListener('click', function(e) { e.stopPropagation(); closeLB(); });
+    lb.addEventListener('click', function(e) { if (e.target === lb) closeLB(); });
+    lb.querySelector('figure').addEventListener('click', function(e) { e.stopPropagation(); });
+    addEventListener('keydown', function(e) {
+      if (!lb.classList.contains('on')) return;
+      if (e.key === 'Escape') closeLB();
+      else if (e.key === 'ArrowRight' && lbCat) stepLB(1);
+      else if (e.key === 'ArrowLeft' && lbCat) stepLB(-1);
+    });
+    var lbTx = 0, lbTy = 0;
+    lb.addEventListener('touchstart', function(e) { lbTx = e.changedTouches[0].clientX; lbTy = e.changedTouches[0].clientY; }, { passive: true });
+    lb.addEventListener('touchend', function(e) {
+      if (!lbCat) return;
+      var dx = e.changedTouches[0].clientX - lbTx, dy = e.changedTouches[0].clientY - lbTy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) stepLB(dx < 0 ? 1 : -1);
+    }, { passive: true });
   }
 
   // ── リビール＋駅ランプ ──
