@@ -747,10 +747,49 @@ button.ch { cursor:pointer; }
 .icedvd.on::before { transform:scaleX(1); }
 .icedvd.on i { opacity:1; }
 /* GALLERY音楽棚（SUNO曲・tracksが空なら出ない） */
-.track { display:flex; align-items:center; gap:16px; border:1px solid var(--line2);
-  background:rgba(6,10,17,.6); padding:12px 16px; margin-bottom:12px; flex-wrap:wrap; }
-.track .tt { min-width:200px; color:#e9f3f7; font-size:13px; letter-spacing:.12em; }
-.track audio { flex:1; min-width:220px; height:36px; }
+.track { display:grid; grid-template-columns:auto 1fr auto auto; align-items:center; gap:8px 14px;
+  border:1px solid var(--line2); background:rgba(6,10,17,.6); padding:13px 18px 10px; margin-bottom:12px;
+  transition:background .6s ease, border-color .6s ease, box-shadow .6s ease; }
+.track.playing { border-color:rgba(228,180,118,.5);
+  background:linear-gradient(100deg, rgba(228,180,118,.22) 0%, rgba(196,136,72,.13) 34%, rgba(8,10,16,.86) 80%),
+    url('assets/marble.jpg') center / cover;
+  box-shadow:inset 0 0 34px rgba(228,180,118,.08), 0 0 18px rgba(228,180,118,.05); }
+.track audio { display:none; }
+.track .tp { background:none; border:1px solid var(--line2); border-radius:50%; width:34px; height:34px;
+  color:var(--dim); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;
+  transition:color .3s, border-color .3s; }
+.track .tp svg { width:14px; height:14px; }
+.track .tp:hover { color:var(--ice); border-color:var(--ice2); }
+.track .tp .i-pause { display:none; }
+.track.playing .tp { color:var(--warm); border-color:var(--warm); }
+.track.playing .tp .i-play { display:none; } .track.playing .tp .i-pause { display:block; }
+.track .tt { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  color:#e9f3f7; font-size:13px; letter-spacing:.12em; transition:color .3s; }
+.track.playing .tt { color:var(--ice); text-shadow:0 0 10px rgba(120,190,215,.25); }
+.track .tm { font-size:11px; color:var(--dim); letter-spacing:.08em; font-variant-numeric:tabular-nums;
+  white-space:nowrap; }
+.track .trbgm { background:none; border:1px solid var(--line2); color:var(--dim); cursor:pointer;
+  font-family:var(--serif); font-size:11.5px; letter-spacing:.1em; padding:7px 0; width:118px; text-align:center;
+  transition:color .3s, border-color .3s; white-space:nowrap; }
+.track .trbgm:hover { color:var(--ice); border-color:var(--ice2); }
+.track .trbgm.on { color:var(--warm); border-color:var(--warm); }
+.track .tbar { grid-column:1 / -1; position:relative; height:14px; cursor:pointer; }
+.track .tbar::before { content:""; position:absolute; left:0; right:0; top:50%; height:2px;
+  background:rgba(159,216,232,.14); }
+.track .tbar i { position:absolute; left:0; top:50%; height:2px; width:0;
+  background:linear-gradient(90deg, rgba(120,190,215,.5), var(--ice2));
+  box-shadow:0 0 8px rgba(159,216,232,.5); }
+@media (max-width:560px) { .track { grid-template-columns:auto 1fr auto; } .track .tm { display:none; }
+  .track .trbgm { width:96px; font-size:10.5px; } }
+.trcredit { font-size:11.5px; color:var(--dim); letter-spacing:.1em; margin:-4px 0 14px; }
+.trmodes { display:flex; align-items:center; gap:10px; margin:0 0 16px; flex-wrap:wrap; }
+.trmodes .trmode { background:none; border:1px solid var(--line2); color:var(--dim); cursor:pointer;
+  font-family:var(--serif); font-size:11.5px; letter-spacing:.12em; padding:7px 14px;
+  transition:color .3s, border-color .3s; }
+.trmodes .trmode:hover { color:var(--ice); border-color:var(--ice2); }
+.trmodes .trmode.on { color:var(--warm); border-color:var(--warm); }
+.trmode-note { font-size:11px; color:var(--dim); letter-spacing:.06em; }
+.trnote { font-size:11.5px; color:var(--dim); letter-spacing:.08em; line-height:2; }
 .reveal { opacity:0; transform:translateY(18px); transition:opacity .9s ease, transform .9s ease; }
 .reveal.on { opacity:1; transform:none; }
 
@@ -762,13 +801,23 @@ body[data-page="world"] #odo { display:block; }
 #odo b { color:var(--ice); font-weight:normal; font-size:21px; letter-spacing:.08em;
   text-shadow:0 0 12px rgba(120,190,215,.35); }
 @media (max-width:680px) { #odo { font-size:12px; padding:7px 12px; } #odo b { font-size:17px; } }
-#bgmBox { position:fixed; left:14px; bottom:12px; z-index:10; display:flex; align-items:center; gap:8px;
-  background:rgba(5,7,12,.7); border:1px solid var(--line); border-radius:2px; padding:5px 10px; }
-#bgmBtn { background:none; border:none; color:var(--dim); cursor:pointer; font-family:var(--serif);
-  font-size:12px; letter-spacing:.1em; transition:color .3s; }
-#bgmBtn.on { color:var(--warm); }
-#bgmVol { width:64px; accent-color:var(--ice2); display:none; }
-#bgmBox.playing #bgmVol { display:block; }
+#bgmBox { position:fixed; top:60px; right:18px; z-index:26; display:flex; align-items:center; gap:10px;
+  background:rgba(4,7,13,.78); border:1px solid var(--line); border-radius:2px; padding:6px 12px;
+  backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); }
+#bgmVol { width:86px; accent-color:var(--ice2); }
+#bgmBtn { background:none; border:none; color:var(--dim); cursor:pointer; width:22px; height:22px;
+  display:flex; align-items:center; justify-content:center; padding:0; transition:color .3s; }
+#bgmBtn:hover { color:var(--ice); }
+#bgmBox.playing #bgmBtn { color:var(--warm); }
+#bgmBtn .sp-on { display:none; } #bgmBtn .sp-off { display:block; }
+#bgmBox.playing #bgmBtn .sp-on { display:block; } #bgmBox.playing #bgmBtn .sp-off { display:none; }
+#bgmTitle { font-family:var(--serif); font-size:11.5px; letter-spacing:.14em; color:var(--dim);
+  max-width:170px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; transition:color .3s;
+  cursor:pointer; }
+#bgmTitle:hover { color:var(--ice); text-decoration:underline; text-underline-offset:3px; }
+#bgmBox.playing #bgmTitle { color:var(--ice); text-shadow:0 0 10px rgba(120,190,215,.25); }
+@media (max-width:1179px) { #bgmBox { top:auto; right:auto; left:12px; bottom:12px; }
+  #bgmVol { width:64px; } #bgmTitle { max-width:34vw; } }
 
 footer { position:relative; z-index:3; border-top:1px solid var(--line); padding:5vh 22px 7vh; text-align:center; }
 footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; line-height:2.1; }
@@ -815,7 +864,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 </header>
 
 <div id="odo" aria-hidden="true">プリムスより <b>000.0</b> km</div>
-<div id="bgmBox"><button id="bgmBtn" data-track="Frozen Echoes">♪ Frozen Echoes</button><input type="range" id="bgmVol" min="0" max="100" value="35" aria-label="音量"></div>
+<div id="bgmBox"><input type="range" id="bgmVol" min="0" max="100" value="35" aria-label="音量"><button id="bgmBtn" data-track="Frozen Echoes" aria-label="BGMミュート切替"><svg class="sp-on" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18V6L7.5 9.5H4z" fill="currentColor"/><path d="M15.5 8.5a4.5 4.5 0 0 1 0 7M18 6a8 8 0 0 1 0 12" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round"/></svg><svg class="sp-off" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18V6L7.5 9.5H4z" fill="currentColor"/><path d="M15.5 9.5l5 5m0-5l-5 5" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round"/></svg></button><span id="bgmTitle" title="音楽ページへ">Frozen Echoes</span></div>
 <audio id="bgm" loop preload="none" src="assets/bgm.mp3"></audio>
 
 <main>
@@ -1205,6 +1254,67 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <figure class="gitem reveal"><button class="gbtn" data-cap="死の道 ─── 巨きなものの、内側を"><img src="assets/g_bones.jpg" loading="lazy" alt="死の道 ─── 巨きなものの、内側を"></button><figcaption>死の道 ─── 巨きなものの、内側を</figcaption></figure>
     <figure class="gitem reveal"><button class="gbtn" data-cap="永遠の滝 ─── 落ちる途中で、時が止まった"><img src="assets/g_cascade.jpg" loading="lazy" alt="永遠の滝 ─── 落ちる途中で、時が止まった"></button><figcaption>永遠の滝 ─── 落ちる途中で、時が止まった</figcaption></figure>
     </div>
+    <div id="musicshelf"></div>
+    <h3 class="wsec reveal">音楽<small>MUSIC</small></h3>
+    <p class="trcredit reveal">本ページの楽曲は、すべて本キャンペーンのために SUNO（AI作曲）で制作したオリジナル曲です。</p>
+    <div class="trmodes reveal"><button class="trmode" data-mode="seq">連続再生</button><button class="trmode" data-mode="shuffle">シャッフル再生</button><span class="trmode-note">曲が終わると次の曲へ。もう一度押すと1曲ループに戻ります。</span></div>
+      <div class="track reveal">
+        <button class="tp" aria-label="再生/一時停止"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3.4v13H7.5zM13.1 5.5h3.4v13h-3.4z" fill="currentColor"/></svg></button>
+        <span class="tt">The Weight of Silence</span><span class="tm">–:– / –:–</span>
+        <button class="trbgm" data-file="assets/weight_of_silence.mp3" data-title="The Weight of Silence">BGMに設定</button>
+        <div class="tbar" role="slider" aria-label="再生位置"><i></i></div>
+        <audio preload="metadata" src="assets/weight_of_silence.mp3"></audio>
+      </div>
+      <div class="track reveal">
+        <button class="tp" aria-label="再生/一時停止"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3.4v13H7.5zM13.1 5.5h3.4v13h-3.4z" fill="currentColor"/></svg></button>
+        <span class="tt">Frostbound Hymn</span><span class="tm">–:– / –:–</span>
+        <button class="trbgm" data-file="assets/frostbound_hymn.mp3" data-title="Frostbound Hymn">BGMに設定</button>
+        <div class="tbar" role="slider" aria-label="再生位置"><i></i></div>
+        <audio preload="metadata" src="assets/frostbound_hymn.mp3"></audio>
+      </div>
+      <div class="track reveal">
+        <button class="tp" aria-label="再生/一時停止"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3.4v13H7.5zM13.1 5.5h3.4v13h-3.4z" fill="currentColor"/></svg></button>
+        <span class="tt">Frostbound Vigil</span><span class="tm">–:– / –:–</span>
+        <button class="trbgm" data-file="assets/frostbound_vigil.mp3" data-title="Frostbound Vigil">BGMに設定</button>
+        <div class="tbar" role="slider" aria-label="再生位置"><i></i></div>
+        <audio preload="metadata" src="assets/frostbound_vigil.mp3"></audio>
+      </div>
+      <div class="track reveal">
+        <button class="tp" aria-label="再生/一時停止"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3.4v13H7.5zM13.1 5.5h3.4v13h-3.4z" fill="currentColor"/></svg></button>
+        <span class="tt">The Frozen Apex</span><span class="tm">–:– / –:–</span>
+        <button class="trbgm" data-file="assets/frozen_apex.mp3" data-title="The Frozen Apex">BGMに設定</button>
+        <div class="tbar" role="slider" aria-label="再生位置"><i></i></div>
+        <audio preload="metadata" src="assets/frozen_apex.mp3"></audio>
+      </div>
+      <div class="track reveal">
+        <button class="tp" aria-label="再生/一時停止"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3.4v13H7.5zM13.1 5.5h3.4v13h-3.4z" fill="currentColor"/></svg></button>
+        <span class="tt">The Frozen Awe</span><span class="tm">–:– / –:–</span>
+        <button class="trbgm" data-file="assets/frozen_awe.mp3" data-title="The Frozen Awe">BGMに設定</button>
+        <div class="tbar" role="slider" aria-label="再生位置"><i></i></div>
+        <audio preload="metadata" src="assets/frozen_awe.mp3"></audio>
+      </div>
+      <div class="track reveal">
+        <button class="tp" aria-label="再生/一時停止"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3.4v13H7.5zM13.1 5.5h3.4v13h-3.4z" fill="currentColor"/></svg></button>
+        <span class="tt">Embers in the Frost</span><span class="tm">–:– / –:–</span>
+        <button class="trbgm" data-file="assets/embers_in_the_frost.mp3" data-title="Embers in the Frost">BGMに設定</button>
+        <div class="tbar" role="slider" aria-label="再生位置"><i></i></div>
+        <audio preload="metadata" src="assets/embers_in_the_frost.mp3"></audio>
+      </div>
+      <div class="track reveal">
+        <button class="tp" aria-label="再生/一時停止"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3.4v13H7.5zM13.1 5.5h3.4v13h-3.4z" fill="currentColor"/></svg></button>
+        <span class="tt">Hold the Light</span><span class="tm">–:– / –:–</span>
+        <button class="trbgm" data-file="assets/hold_the_light.mp3" data-title="Hold the Light">BGMに設定</button>
+        <div class="tbar" role="slider" aria-label="再生位置"><i></i></div>
+        <audio preload="metadata" src="assets/hold_the_light.mp3"></audio>
+      </div>
+      <div class="track reveal">
+        <button class="tp" aria-label="再生/一時停止"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5h3.4v13H7.5zM13.1 5.5h3.4v13h-3.4z" fill="currentColor"/></svg></button>
+        <span class="tt">Frozen Echoes</span><span class="tm">–:– / –:–</span>
+        <button class="trbgm" data-file="assets/bgm.mp3" data-title="Frozen Echoes">BGMに設定</button>
+        <div class="tbar" role="slider" aria-label="再生位置"><i></i></div>
+        <audio preload="metadata" src="assets/bgm.mp3"></audio>
+      </div>
+    <p class="trnote reveal">「BGMに設定」を押すと、このサイトのBGMが選んだ曲に変わります（ブラウザに記憶されます。もう一度押すと元の Frozen Echoes に戻ります）。</p>
   </div>
 </div>
 
@@ -1756,22 +1866,183 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 
   // ── BGM ──
   var bgm = document.getElementById('bgm'), btn = document.getElementById('bgmBtn'),
-      vol = document.getElementById('bgmVol'), box = document.getElementById('bgmBox');
+      vol = document.getElementById('bgmVol'), box = document.getElementById('bgmBox'),
+      ttl = document.getElementById('bgmTitle');
   try { vol.value = localStorage.getItem('cp_bgm_vol') || 35; } catch(e) {}
   bgm.volume = vol.value / 100;
   var wantBgm = true;
   try { wantBgm = localStorage.getItem('cp_bgm_off') !== '1'; } catch(e) {}
-  bgm.addEventListener('error', function() { btn.textContent = '♪ BGM準備中'; btn.disabled = true; });
+  // ── サイトBGMの曲切替（GALLERY音楽棚 2026-07-24）──
+  var DEFAULT_BGM = { src: 'assets/bgm.mp3', title: 'Frozen Echoes' };
+  var trBtns = [].slice.call(document.querySelectorAll('.trbgm'));
+  function setBgmTrack(file, title, save) {
+    var playing = !bgm.paused;
+    bgm.src = file; bgm.load();
+    btn.dataset.track = title;
+    ttl.textContent = title;
+    trBtns.forEach(function(b) {
+      var on = b.dataset.file === file;
+      b.classList.toggle('on', on);
+      b.textContent = on ? '◆ 設定中' : 'BGMに設定';
+    });
+    if (save) { try { localStorage.setItem('cp_bgm_track', file === DEFAULT_BGM.src ? '' : file); } catch(e) {} }
+    curFile = file;
+    syncRows();
+    if (playing) bgm.play().catch(function() {});
+  }
+  trBtns.forEach(function(b) {
+    b.addEventListener('click', function() {
+      var back = b.classList.contains('on');
+      var f = back ? DEFAULT_BGM.src : b.dataset.file;
+      var t = back ? DEFAULT_BGM.title : b.dataset.title;
+      wantBgm = true;
+      try { localStorage.setItem('cp_bgm_off', '0'); } catch(e) {}
+      setBgmTrack(f, t, true);
+      bgm.play().then(function() { btn.classList.add('on'); box.classList.add('playing'); }).catch(function() {});
+    });
+  });
+  try {
+    var savedTrack = localStorage.getItem('cp_bgm_track');
+    if (savedTrack) {
+      var hitB = trBtns.filter(function(b) { return b.dataset.file === savedTrack; })[0];
+      if (hitB) setBgmTrack(savedTrack, hitB.dataset.title, false);
+      else localStorage.removeItem('cp_bgm_track');
+    }
+  } catch(e) {}
+  if (trBtns.length && btn.dataset.track === DEFAULT_BGM.title) {
+    trBtns.forEach(function(b) {
+      if (b.dataset.file === DEFAULT_BGM.src) { b.classList.add('on'); b.textContent = '◆ 設定中'; }
+    });
+  }
+  // ── 音楽棚＝サイトBGMの操作盤（音源は#bgmの1本だけ・常に完全同期 2026-07-25）──
+  // 行の<audio>は曲の長さ表示用のメタデータ専用（再生には一切使わない）
+  function fmt(s2) { if (!isFinite(s2) || !s2) return '–:–'; var m2 = Math.floor(s2 / 60); return m2 + ':' + ('0' + Math.floor(s2 % 60)).slice(-2); }
+  var galRows = [].slice.call(document.querySelectorAll('.track'));
+  var curFile = curFile || DEFAULT_BGM.src;
+  var pendingSeek = null;
+  function rowFile(row) { return row.querySelector('.trbgm').dataset.file; }
+  function syncRows() {
+    galRows.forEach(function(row) {
+      var isCur = rowFile(row) === curFile;
+      var meta = row.querySelector('audio'), tm = row.querySelector('.tm'), fill = row.querySelector('.tbar i');
+      row.classList.toggle('playing', isCur && !bgm.paused);
+      row.classList.toggle('current', isCur);
+      var dur = (isCur && isFinite(bgm.duration) && bgm.duration) ? bgm.duration : (meta ? meta.duration : NaN);
+      if (isCur) {
+        tm.textContent = fmt(bgm.currentTime) + ' / ' + fmt(dur);
+        fill.style.width = (isFinite(dur) && dur ? (bgm.currentTime / dur * 100) : 0) + '%';
+      } else {
+        tm.textContent = fmt(dur);
+        fill.style.width = '0%';
+      }
+    });
+  }
+  galRows.forEach(function(row) {
+    var meta = row.querySelector('audio'), tp = row.querySelector('.tp'), bar = row.querySelector('.tbar');
+    if (meta) meta.addEventListener('loadedmetadata', syncRows);
+    function makeCurrent() {
+      var b2 = row.querySelector('.trbgm');
+      setBgmTrack(b2.dataset.file, b2.dataset.title, false);
+    }
+    tp.addEventListener('click', function() {
+      if (rowFile(row) === curFile && !bgm.paused) {
+        wantBgm = false;
+        try { localStorage.setItem('cp_bgm_off', '1'); } catch(e) {}
+        bgm.pause();
+        return;
+      }
+      wantBgm = true;
+      try { localStorage.setItem('cp_bgm_off', '0'); } catch(e) {}
+      if (rowFile(row) !== curFile) makeCurrent();
+      bgm.play().catch(function() {});
+    });
+    bar.addEventListener('click', function(ev) {
+      var r2 = bar.getBoundingClientRect();
+      var ratio = Math.max(0, Math.min(1, (ev.clientX - r2.left) / r2.width));
+      if (rowFile(row) !== curFile) makeCurrent();
+      if (isFinite(bgm.duration) && bgm.duration) bgm.currentTime = ratio * bgm.duration;
+      else pendingSeek = ratio;
+      wantBgm = true;
+      try { localStorage.setItem('cp_bgm_off', '0'); } catch(e) {}
+      bgm.play().catch(function() {});
+      syncRows();
+    });
+  });
+  bgm.addEventListener('loadedmetadata', function() {
+    if (pendingSeek != null && isFinite(bgm.duration) && bgm.duration) {
+      bgm.currentTime = pendingSeek * bgm.duration; pendingSeek = null;
+    }
+    syncRows();
+  });
+  bgm.addEventListener('timeupdate', syncRows);
+  bgm.addEventListener('play', function() { btn.classList.add('on'); box.classList.add('playing'); syncRows(); });
+  bgm.addEventListener('pause', function() { btn.classList.remove('on'); box.classList.remove('playing'); syncRows(); });
+  syncRows();
+  // 曲名クリック→音楽棚へ（後輩くん案 2026-07-25）
+  // ⚠routeが即/rAF/60msの三段でトップへ戻すため、その後に同じ流儀（scrollTop直接代入）で棚へ寄せる。
+  //   遅延読み込み画像で棚の位置が下がるので、こちらも三段で念押し。
+  function jumpShelf() {
+    var el2 = document.getElementById('musicshelf');
+    if (!el2) return;
+    var se2 = document.scrollingElement || document.documentElement;
+    var y2 = el2.getBoundingClientRect().top + se2.scrollTop - 66;
+    se2.scrollTop = y2; document.body.scrollTop = y2;
+  }
+  ttl.addEventListener('click', function() {
+    location.hash = '#/gallery';
+    setTimeout(jumpShelf, 140);
+    setTimeout(jumpShelf, 550);
+    setTimeout(jumpShelf, 1100);
+  });
+  // ── 再生モード（loop=1曲リピート / seq=連続 / shuffle=シャッフル 2026-07-25）──
+  var PLIST = trBtns.map(function(b) { return { file: b.dataset.file, title: b.dataset.title }; });
+  var bgmMode = 'loop';
+  try { bgmMode = localStorage.getItem('cp_bgm_mode') || 'loop'; } catch(e) {}
+  if (!PLIST.length) bgmMode = 'loop';
+  var modeBtns = [].slice.call(document.querySelectorAll('.trmode'));
+  function applyMode(m, save) {
+    bgmMode = m; bgm.loop = (m === 'loop');
+    modeBtns.forEach(function(b) { b.classList.toggle('on', b.dataset.mode === m); });
+    if (save) { try { localStorage.setItem('cp_bgm_mode', m); } catch(e) {} }
+  }
+  modeBtns.forEach(function(b) {
+    b.addEventListener('click', function() {
+      var m = b.classList.contains('on') ? 'loop' : b.dataset.mode;
+      applyMode(m, true);
+      if (m !== 'loop' && bgm.paused) {
+        wantBgm = true;
+        try { localStorage.setItem('cp_bgm_off', '0'); } catch(e) {}
+        bgm.play().then(function() { btn.classList.add('on'); box.classList.add('playing'); }).catch(function() {});
+      }
+    });
+  });
+  bgm.addEventListener('ended', function() {
+    if (bgmMode === 'loop' || !PLIST.length) return;
+    var cur = -1;
+    PLIST.forEach(function(p, i) { if (p.title === btn.dataset.track) cur = i; });
+    var nx;
+    if (bgmMode === 'shuffle') {
+      do { nx = Math.floor(Math.random() * PLIST.length); } while (PLIST.length > 1 && nx === cur);
+    } else { nx = (cur + 1) % PLIST.length; }
+    setBgmTrack(PLIST[nx].file, PLIST[nx].title, true);
+    bgm.play().then(function() { btn.classList.add('on'); box.classList.add('playing'); }).catch(function() {});
+  });
+  applyMode(bgmMode, false);
+
+  bgm.addEventListener('error', function() {
+    if (btn.dataset.track !== DEFAULT_BGM.title) { setBgmTrack(DEFAULT_BGM.src, DEFAULT_BGM.title, true); return; }
+    ttl.textContent = 'BGM準備中'; btn.disabled = true;
+  });
   btn.addEventListener('click', function() {
     if (bgm.paused) {
       wantBgm = true;
       try { localStorage.setItem('cp_bgm_off', '0'); } catch(e) {}
-      bgm.play().then(function() { btn.textContent = '♪ ' + btn.dataset.track + ' 演奏中'; btn.classList.add('on'); box.classList.add('playing'); })
-      .catch(function() { btn.textContent = '♪ BGM準備中'; });
+      bgm.play().then(function() { btn.classList.add('on'); box.classList.add('playing'); })
+      .catch(function() { ttl.textContent = 'BGM準備中'; });
     } else {
       wantBgm = false;
       try { localStorage.setItem('cp_bgm_off', '1'); } catch(e) {}
-      bgm.pause(); btn.textContent = '♪ ' + btn.dataset.track; btn.classList.remove('on'); box.classList.remove('playing');
+      bgm.pause(); btn.classList.remove('on'); box.classList.remove('playing');
     }
   });
   vol.addEventListener('input', function() {
@@ -1783,7 +2054,6 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   // 訪問者が一度OFFにしたら尊重して自動再生しない（localStorage）。
   function bgmOn() {
     bgm.play().then(function() {
-      btn.textContent = '♪ ' + btn.dataset.track + ' 演奏中';
       btn.classList.add('on'); box.classList.add('playing');
     }).catch(function() {});
   }
@@ -1794,7 +2064,6 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
         removeEventListener('pointerdown', kick); removeEventListener('keydown', kick); return;
       }
       bgm.play().then(function() {
-        btn.textContent = '♪ ' + btn.dataset.track + ' 演奏中';
         btn.classList.add('on'); box.classList.add('playing');
         removeEventListener('pointerdown', kick); removeEventListener('keydown', kick);
       }).catch(function() {});  // 失敗時はリスナーを残し次の操作で再試行（Codex監査 2026-07-12）
