@@ -381,6 +381,9 @@ body[data-page="top"] #kvbg { opacity:1; }
   color:var(--ice); border:1px solid rgba(159,216,232,.35); letter-spacing:0; }
 .jstep h5 { font-size:14px; letter-spacing:.1em; color:var(--ice); margin-bottom:5px; }
 .jstep p { font-size:12.5px; line-height:2; color:#a8bac4; }
+.jrecruit { list-style:none; margin:14px 0 26px; padding:0; }
+.jrecruit li { position:relative; padding:7px 0 7px 18px; font-size:13.5px; line-height:1.9; border-bottom:1px solid rgba(190,215,235,.12); }
+.jrecruit li::before { content:"◆"; position:absolute; left:0; top:8px; font-size:10px; color:var(--lantern, #e2b56a); }
 .jnote { font-size:11.5px; line-height:1.95; color:var(--dim); margin-top:10px;
   padding-left:12px; border-left:1px solid rgba(196,162,101,.35); }
 
@@ -896,6 +899,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="page" data-page="news">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">NEWS</span><h2>お知らせ</h2><p class="sub">NEWS</p></div></div>
   <div class="wrap newslist">
+      <div class="nw reveal"><span class="d">2026.10.18</span><span class="tag">RECRUIT</span><span>第1話「深く、長い闇」の参加者募集を開始しました。要点は「参加案内」に掲載しています（募集トピックは〈辺境TRPG村〉内）。</span></div>
       <div class="nw reveal"><span class="d">2026.10.18</span><span class="tag">INFO</span><span>第1話「深く、長い闇」の参加者募集を10月に開始します。募集要項は確定し次第、この欄と「参加案内」に掲載します。</span></div>
       <div class="nw reveal"><span class="d">2026.05.25</span><span class="tag">SESSION</span><span>プロローグ「月は誰の夢を見る」を実施しました。記録保管庫に掲載しています。</span></div>
   </div>
@@ -1415,8 +1419,8 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="page" data-page="join">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">JOIN</span><h2>参加案内</h2><p class="sub">JOIN</p></div></div>
   <div class="wrap join-body">
-    <p class="reveal">本キャンペーンは、Discordサーバー〈辺境TRPG村〉の氷原開拓団レギュレーション内で開催されます。レギュレーション「氷原開拓団」のPCなら、いつでも・誰でも・どの話からでも参加できます。毎話の冒頭に「前回のあらすじ」があり、途中参加でも迷いません。募集要項は確定し次第このページに掲載します。</p>
-<h3 class="wsec reveal">はじめての方へ — 参加のしかた</h3><p class="reveal">〈辺境TRPG村〉では、セッションごとにフォーラムのトピックを立て、その中でGMとPLのやり取りを完結させます。流れはこうです。</p><ol class="jsteps"><li class="jstep reveal"><span class="js-n">1</span><div><h5>卓を探す</h5><p>サーバーのセッション一覧（スプレッドシート）を開きます。色がついているのが募集中の卓、グレーになっているのが締め切られた卓です。</p></div></li><li class="jstep reveal"><span class="js-n">2</span><div><h5>トピックを読む</h5><p>気になる卓のリンクから、その卓のトピックへ。日程・レベル帯・レギュレーション・卓の重さなど、書いてあることをひととおり確かめます。</p></div></li><li class="jstep reveal"><span class="js-n">3</span><div><h5>参加を表明する</h5><p>トピックに参加希望を書き込みます。事前に伝えておいたほうがよいこと（苦手な描写、都合のつかない時間帯など）があれば、このときに。</p></div></li><li class="jstep reveal"><span class="js-n">4</span><div><h5>みんなで相談する</h5><p>卓のスレッドで、GMや他のPLと相談しながら準備します。〈辺境TRPG村〉では合意形成（コンセンサス）を大切にしています。「このキャラを出します！」ではなく「こういうキャラを出したいのですが、みなさんどうでしょう？」───そんな空気です。</p></div></li><li class="jstep reveal"><span class="js-n">5</span><div><h5>卓につく</h5><p>当日、回廊へ。……灯りは、忘れずに。</p></div></li></ol><p class="jnote reveal">レギュレーションによっては、レベル帯などの参加条件があります。特殊レギュレーションの卓に参加する前に、サーバーのレギュレーション一覧を確認してください。</p><p class="jnote reveal">本キャンペーンは「氷原開拓団」レギュレーションの卓です。同レギュレーションのPCであれば、どの話からでも参加できます。</p><p class="jnote reveal">⚠ 本キャンペーンの終盤には、AR2E公式シナリオ『帝国の玉座』のごく軽微なネタバレが含まれます（皇帝の過去にまつわる事実がひとつ明かされるのみで、筋書きそのものには触れません）。これから『帝国の玉座』を遊ぶ予定のある方は、GMまでご相談ください。</p>
+    <p class="reveal">本キャンペーンは、Discordサーバー〈辺境TRPG村〉の氷原開拓団レギュレーション内で開催されます。レギュレーション「氷原開拓団」のPCなら、いつでも・誰でも・どの話からでも参加できます。毎話の冒頭に「前回のあらすじ」があり、途中参加でも迷いません。第1話「深く、長い闇」の参加者募集は2026年10月18日に開始しました（募集トピックは〈辺境TRPG村〉内）。</p>
+<h3 class="wsec reveal">第1話 募集要項（要点）</h3><ul class="jrecruit"><li class="reveal">形式：半テキ（実質テキスト＋補助的にVC）／日程は参加者とすり合わせ（所要6時間程度・2日に分けて実施）</li><li class="reveal">募集人数：3〜5名（選考→抽選→先着の順で移行）</li><li class="reveal">PC指定レベル：CL3〜9（PC間のCL差が大きい場合、バランス調整はしません）</li><li class="reveal">戦闘予定：2回／選択ルール：スクウェア戦闘・騎乗戦闘・明度・誓約・レガシー</li><li class="reveal">寒度の運用：回路内ではシーン開始時のランダム天候変化なし。人類拠点＝寒度3（屋内0）、回路内＝寒度4（「吐息の谷」のみ寒度3）。特殊トラップ［常闇］を使用</li><li class="reveal">見学可能な卓です（参加者は見学者が入る場合があることをご承知おきください）</li><li class="reveal">注意：生成AIを使用しています／残虐・死体・出血・欠損を含む暴力表現とシリアスな内容を含みます（地雷は事前にGMへ申告）／キャラクターロストの可能性は常にあります</li><li class="reveal">日程・出欠管理は卓ピタを利用します</li></ul><h3 class="wsec reveal">はじめての方へ — 参加のしかた</h3><p class="reveal">〈辺境TRPG村〉では、セッションごとにフォーラムのトピックを立て、その中でGMとPLのやり取りを完結させます。流れはこうです。</p><ol class="jsteps"><li class="jstep reveal"><span class="js-n">1</span><div><h5>卓を探す</h5><p>サーバーのセッション一覧（スプレッドシート）を開きます。色がついているのが募集中の卓、グレーになっているのが締め切られた卓です。</p></div></li><li class="jstep reveal"><span class="js-n">2</span><div><h5>トピックを読む</h5><p>気になる卓のリンクから、その卓のトピックへ。日程・レベル帯・レギュレーション・卓の重さなど、書いてあることをひととおり確かめます。</p></div></li><li class="jstep reveal"><span class="js-n">3</span><div><h5>参加を表明する</h5><p>トピックに参加希望を書き込みます。事前に伝えておいたほうがよいこと（苦手な描写、都合のつかない時間帯など）があれば、このときに。</p></div></li><li class="jstep reveal"><span class="js-n">4</span><div><h5>みんなで相談する</h5><p>卓のスレッドで、GMや他のPLと相談しながら準備します。〈辺境TRPG村〉では合意形成（コンセンサス）を大切にしています。「このキャラを出します！」ではなく「こういうキャラを出したいのですが、みなさんどうでしょう？」───そんな空気です。</p></div></li><li class="jstep reveal"><span class="js-n">5</span><div><h5>卓につく</h5><p>当日、回廊へ。……灯りは、忘れずに。</p></div></li></ol><p class="jnote reveal">レギュレーションによっては、レベル帯などの参加条件があります。特殊レギュレーションの卓に参加する前に、サーバーのレギュレーション一覧を確認してください。</p><p class="jnote reveal">本キャンペーンは「氷原開拓団」レギュレーションの卓です。同レギュレーションのPCであれば、どの話からでも参加できます。</p><p class="jnote reveal">⚠ 本キャンペーンの終盤には、AR2E公式シナリオ『帝国の玉座』のごく軽微なネタバレが含まれます（皇帝の過去にまつわる事実がひとつ明かされるのみで、筋書きそのものには触れません）。これから『帝国の玉座』を遊ぶ予定のある方は、GMまでご相談ください。</p>
   </div>
 </div>
 
