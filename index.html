@@ -415,6 +415,10 @@ body[data-page="top"] #kvbg { opacity:1; }
 .plink:hover, .plink:focus-visible { color:var(--warm); border-bottom-color:var(--warm); }
 .nlink { color:var(--ice); text-decoration:none; border-bottom:1px dotted rgba(159,216,232,.55); }
 .nlink:hover { color:var(--warm); border-bottom-color:var(--warm); }
+.ep-jump { display:flex; flex-wrap:wrap; gap:8px; margin:-6px 0 22px; }
+.ejump { background:rgba(6,10,17,.72); border:1px solid var(--line2); color:var(--fog); font:inherit; font-size:12.5px; letter-spacing:.12em; padding:6px 14px; cursor:pointer; }
+.ejump:hover, .ejump:focus-visible { border-color:var(--warm); color:var(--warm); }
+.ejump.ej-next { color:var(--dim); border-style:dashed; }
 .ep.has-still { position:relative; overflow:hidden; }
 .ep-still { position:absolute; top:0; right:0; bottom:0; width:62%; background-size:cover; background-position:center 25%; opacity:.4; pointer-events:none;
   -webkit-mask-image:linear-gradient(to left, #000 25%, transparent 95%); mask-image:linear-gradient(to left, #000 25%, transparent 95%); }
@@ -1319,6 +1323,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   <div class="wrap">
     <p class="arc-note reveal">凍結の回路で起きたことは、最後にはすべてこの棚に集まる。───整理・保管：フロストゲート 安全通行責任者 レイフ・ストーム</p>
     <h3 class="wsec reveal" style="margin-top:0;">話数の記録<small>SESSIONS</small></h3>
+    <nav class="ep-jump reveal" aria-label="各話へ"><button type="button" class="ejump" data-ep="ep-0">第0話</button><button type="button" class="ejump" data-ep="ep-1">第1話</button><button type="button" class="ejump ej-next" data-ep="ep-2">第2話</button></nav>
 
     <article class="ep ep-done reveal has-still" id="ep-0"><div class="ep-still" style="background-image:url(assets/ep0_still.jpg)"></div>
       <div class="ep-head"><span class="ep-no">第0話</span><h4>月は誰の夢を見る</h4><span class="ep-date">2026-05-25 実施</span></div>
@@ -1327,7 +1332,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
       <p class="ep-log"><a class="ep-loglink" href="assets/log_ep0.html" target="_blank" rel="noopener">📜 セッションログ</a> <a class="ep-loglink" href="assets/handout_ep0_salma.pdf" target="_blank" rel="noopener">📎 報告書 月光観測所について（報告者：サルマ）</a></p>
     </article>
 
-    <article class="ep ep-done reveal" id="ep-1">
+    <article class="ep ep-done reveal has-still" id="ep-1"><div class="ep-still" style="background-image:url(assets/ep1_still.jpg)"></div>
       <div class="ep-head"><span class="ep-no">第1話</span><h4>深く、長い闇</h4><span class="ep-date">2026-11-16・11-25 実施</span></div>
       <p class="ep-sum">死んだはずの冒険者が凍結の回路内で目撃された。調査に向かった開拓団員が野営地で見たモノは、居合わせた者達の記憶が光となって闇の中へと溢れ出す光景だった。野営地には変身妖魔が2体紛れており、開拓団員と交戦。1体を逃すが、開拓団員はかろうじて迎撃に成功する。だが、問題は漏れ出した記憶の方だった。ラーフの錬金術師から漏出したそれは、まるで<a class="nlink" href="#/myth" data-ep="deity-ゴヴァノン">ゴヴァノン</a>と<a class="nlink" href="#/myth" data-ep="deity-ブリガンティア">ブリガンティア</a>が何者かに討たれたかのような内容だったのだ。</p>
 <div class="ep-blk ep-found"><h5>判明したこと</h5><ul><li>回廊の内側に、他者の姿に化ける妖魔が潜んでいた。人に化けていた妖魔召喚士は仮面を持っており、そこには他者の姿を変える魔術が古エルダ語で刻まれていた。別の者に扮していた妖魔司祭もまた、同じ力を使っていたのだろう。</li><li>野営地を包んだ光、周囲の存在がもつ記憶を漏出させた力の正体は《リメンブランスフレア》。伝承にある<a class="nlink" href="#/myth" data-ep="deity-ブリガンティア">ブリガンティア</a>の館から持ち出された、女神の魔術だった。</li><li>光の中にラーフの錬金術師、<button type="button" class="plink t-open" data-cat="people" data-name="テシャ・スウィン">テシャ</button>の記憶が映し出された。凍りついた街。氷の裂け目に倒れた鍛冶神<a class="nlink" href="#/myth" data-ep="deity-ゴヴァノン">ゴヴァノン</a>と月の女神<a class="nlink" href="#/myth" data-ep="deity-ブリガンティア">ブリガンティア</a>に似た影。<button type="button" class="plink t-open" data-cat="people" data-name="テシャ・スウィン">テシャ</button>はそれを二年前に地底湖のそばの裂け目の先で見たという。</li></ul></div><div class="ep-blk ep-open"><h5>未解決の記録</h5><ul><li>なぜ、姿を変える妖魔が回廊の内側にいるのか。死んだはずの冒険者もまた、誰かが化けた姿だったのか。</li><li>なぜ、女神の魔術が妖魔の手にあったのか。</li><li><button type="button" class="plink t-open" data-cat="people" data-name="テシャ・スウィン">テシャ</button>が見たのは、神々が討たれた光景だったのか。───真相を確かめるため、開拓団員たちは地底湖の調査に向かう。</li></ul></div>
@@ -1748,7 +1753,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   function stepLB(dir) { var set = SETS[lbCat]; if (!set) return; lbIdx = (lbIdx + dir + set.length) % set.length; renderLB(); }
   function closeLB() { lb.classList.remove('on'); lb.classList.remove('lb-person'); lbImg.removeAttribute('src'); lbCat = null; }
   // NEWS の「記録保管庫」→ ページが切り替わって最上部に戻ったあとで、その話のカードまで送って光らせる（2026-11-26）
-  document.querySelectorAll('.nlink[data-ep]').forEach(function(a) {
+  document.querySelectorAll('.nlink[data-ep], .ejump[data-ep]').forEach(function(a) {
     a.addEventListener('click', function() {
       var id = a.dataset.ep; if (!id) return;
       setTimeout(function() {
