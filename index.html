@@ -411,6 +411,17 @@ body[data-page="top"] #kvbg { opacity:1; }
 
 /* ══ NEWS ══ */
 .newslist { padding-bottom:12vh; }
+.plink { background:none; border:0; padding:0; margin:0; font:inherit; color:var(--ice); border-bottom:1px dotted rgba(159,216,232,.55); cursor:pointer; line-height:inherit; }
+.plink:hover, .plink:focus-visible { color:var(--warm); border-bottom-color:var(--warm); }
+.nlink { color:var(--ice); text-decoration:none; border-bottom:1px dotted rgba(159,216,232,.55); }
+.nlink:hover { color:var(--warm); border-bottom-color:var(--warm); }
+.ep.has-still { position:relative; overflow:hidden; }
+.ep-still { position:absolute; top:0; right:0; bottom:0; width:62%; background-size:cover; background-position:center 25%; opacity:.4; pointer-events:none;
+  -webkit-mask-image:linear-gradient(to left, #000 25%, transparent 95%); mask-image:linear-gradient(to left, #000 25%, transparent 95%); }
+.ep.has-still > *:not(.ep-still) { position:relative; }
+@media (max-width:640px) { .ep-still { width:100%; opacity:.24; -webkit-mask-image:linear-gradient(to bottom, #000 0%, transparent 70%); mask-image:linear-gradient(to bottom, #000 0%, transparent 70%); } }
+.deity.ep-flash { box-shadow:0 0 0 1px var(--warm), 0 0 22px rgba(255,183,94,.35); transition:box-shadow .6s; }
+.ep.ep-flash { box-shadow:0 0 0 1px var(--warm), 0 0 26px rgba(255,183,94,.35); transition:box-shadow .6s; }
 .nw { display:flex; gap:18px; align-items:baseline; border-bottom:1px solid var(--line); padding:20px 4px; font-size:14.5px; }
 .nw .d { color:var(--dim); font-size:12px; letter-spacing:.12em; white-space:nowrap; font-variant-numeric:tabular-nums; }
 .nw .tag { font-size:10px; letter-spacing:.2em; color:var(--ice); border:1px solid rgba(95,168,196,.5); padding:1px 9px; white-space:nowrap; }
@@ -899,11 +910,11 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 <div class="page" data-page="news">
   <div class="wrap"><div class="phead"><div class="phm" style="background-image:url(assets/marble.jpg)" aria-hidden="true"></div><span class="ghost" aria-hidden="true">NEWS</span><h2>お知らせ</h2><p class="sub">NEWS</p></div></div>
   <div class="wrap newslist">
-      <div class="nw reveal"><span class="d">2026.11.26</span><span class="tag">RECRUIT</span><span>第2話「地底湖の悪魔」の参加者募集を開始しました。要点は「参加案内」に掲載しています（募集トピックは〈辺境TRPG村〉内）。</span></div>
-      <div class="nw reveal"><span class="d">2026.11.26</span><span class="tag">SESSION</span><span>第1話「深く、長い闇」を実施しました。記録保管庫に掲載しています。</span></div>
+      <div class="nw reveal"><span class="d">2026.11.26</span><span class="tag">RECRUIT</span><span>第2話「地底湖の悪魔」の参加者募集を開始しました。要点は「<a class="nlink" href="#/join">参加案内</a>」に掲載しています（募集トピックは〈辺境TRPG村〉内）。</span></div>
+      <div class="nw reveal"><span class="d">2026.11.26</span><span class="tag">SESSION</span><span>第1話「深く、長い闇」を実施しました。<a class="nlink" href="#/record" data-ep="ep-1">記録保管庫</a>に掲載しています。</span></div>
       <div class="nw reveal"><span class="d">2026.11.15</span><span class="tag">INFO</span><span>第1話「深く、長い闇」の開催日が決まりました。11月16日（月）と11月25日（水）、いずれも21時〜24時の2日開催です。参加者の募集は締め切りました。</span></div>
-      <div class="nw reveal"><span class="d">2026.10.18</span><span class="tag">RECRUIT</span><span>第1話「深く、長い闇」の参加者募集を開始しました。要点は「参加案内」に掲載しています（募集トピックは〈辺境TRPG村〉内）。</span></div>
-      <div class="nw reveal"><span class="d">2026.05.25</span><span class="tag">SESSION</span><span>プロローグ「月は誰の夢を見る」を実施しました。記録保管庫に掲載しています。</span></div>
+      <div class="nw reveal"><span class="d">2026.10.18</span><span class="tag">RECRUIT</span><span>第1話「深く、長い闇」の参加者募集を開始しました。要点は「<a class="nlink" href="#/join">参加案内</a>」に掲載しています（募集トピックは〈辺境TRPG村〉内）。</span></div>
+      <div class="nw reveal"><span class="d">2026.05.25</span><span class="tag">SESSION</span><span>プロローグ「月は誰の夢を見る」を実施しました。<a class="nlink" href="#/record" data-ep="ep-0">記録保管庫</a>に掲載しています。</span></div>
   </div>
 </div>
 
@@ -1037,33 +1048,33 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     </div>
     <h3 class="wsec reveal">七大神<small>THE SEVEN GODS</small></h3>
     <p class="g-intro reveal">エリンディル西方の人々のあいだには、今の世界を創った七柱の神々───七大神への信仰が広く根づいている。闇に沈み、冷気が身を削るこの地下回廊を歩く者は、果たして神に何を祈るだろうか。</p>
-    <details class="deity god reveal"><summary><span class="g-name">アーケンラーヴ</span><span class="g-dom">神々の王・太陽の神。裁きと勇武。ヒューリンの創造主</span></summary><p class="g-detail">妖魔がふたたび目覚める日のため、世界を護り戦う民としてヒューリンを創り、地上へ遣わした神々の王。黄金の髪の若き戦士の姿で描かれ、その手には───山の神が打ち、雷の神が加護を授けたという銀色に輝く長剣がある。神々の王として勇武と裁きを司り、多くの国と民に篤く信仰されている。<br><br>その剣はクラウ・ソラスと呼ばれ、邪神との戦いで幾度も王の危機を救ったと伝えられる。剣を頭上に掲げ、神々の先頭に立って邪神の軍勢へ立ち向かう姿で描かれることが多い。───なお、神聖ヴァンスター帝国の皇帝が持つ魔剣クラウ・ソラスは、この佩剣そのものであるともいわれている。</p></details>
-    <details class="deity god reveal"><summary><span class="g-name">ブリガンティア</span><span class="g-dom">予言の女神・月の女神。魔術と夢見。エルダナーンの創造主</span></summary><p class="g-detail">月光のごとき銀の髪に薄衣をまとい、盃を手にした若い女神。未来を視る権能を持ち、人の眠りにそっと働きかけて啓示を授ける───人が「夢」を見るようになったのは、この女神が神々の通信手段として与えたものの名残だという。魔術の女神として、いくたびも邪神の企みを見破ってきた。<br><br>神々の王に次いで生まれ、神々の権能たる秘術をもっとも強く行使する。エルダの民に権能の一部と知恵を分け与えたものが、今日“魔術”と呼ばれるものの始まりだという。東方では月の神ツキヨミの名で呼ばれる。</p></details>
-    <details class="deity god reveal"><summary><span class="g-name">ダグデモア</span><span class="g-dom">天空の神。ヴァーナの創造主</span></summary><p class="g-detail">天地開闢のとき、地母神ダナンと対をなして数多の神々を生んだ天空の父。竪琴を携えた恰幅のよい初老の姿で語られる。水の時代、獣の耳と尾を持つ&quot;野なる民&quot;ヴァーナを創り出した。<br><br>風の時代、美しい娘に化けた虚栄の女神の誘惑を受けたが、それを見抜いたのは予言の女神ただひとりだった。闇の王の闇がその目と耳を覆って誘惑を遮り、天空神は一度闇に溶けて消え───予言の女神の魔法で蘇ったと伝えられる。</p></details>
-    <details class="deity god reveal"><summary><span class="g-name">ダナン</span><span class="g-dom">大地の女神。天空神と対をなす地母神</span></summary><p class="g-detail">天空神ダグデモアと対をなす大地の母。薄緑の衣をまとい、植物のような緑の髪と瞳を持つ。山の神に命じて大地に起伏を与え、世界の骨格を形づくったと伝わる。</p></details>
-    <details class="deity god reveal"><summary><span class="g-name">アエマ</span><span class="g-dom">豊穣の女神。フィルボルの創造主</span></summary><p class="g-detail">青い髪に花のティアラを飾り、腕に穀物を抱いた豊穣の女神。地の時代、陽の光と風と草木を愛する小さき民フィルボルを生み、地上に暮らすよう定めた。</p></details>
-    <details class="deity god reveal"><summary><span class="g-name">ゴヴァノン</span><span class="g-dom">鍛冶の神・山の神。ネヴァーフの創造主</span></summary><p class="g-detail">赤い髭と髪の、寡黙な鍛冶の神。ハンマーで地を叩いて山を隆起させ、地下に住まう民ネヴァーフを生んだ。彼が与えた&quot;決して消えぬ炉の種火&quot;は、地の底で燃え続けていつしか希少な鉱石を生むという───鍛冶師にとって最上の栄誉である。<br><br>寡黙にして実直───“職人気質”という言葉の由縁ともされる。妖魔の王が攻め寄せた時代、鍛冶師たちは神から授かった最初の種火を奪われぬよう、住処の奥深くに隠したと伝えられている。</p></details>
-    <details class="deity god reveal"><summary><span class="g-name">グランアイン</span><span class="g-dom">戦の神・雷の神。ドゥアンの創造主</span></summary><p class="g-detail">雷の槍を握る若き戦神。角・翼・牙爪───のちにドゥアン三部族それぞれが受け継ぐ特徴を、その身に備える。水の時代、邪神の勢力に抗する堅忍不抜の民として、剛なる人ドゥアンを鍛え上げた。空を飛ぶ翼を持つ&quot;天翼族&quot;も、この神の子である。<br><br>また、地・水・火・風───世界を構成する精霊たちを創り出したのは、この神であるとも伝えられている。</p></details>
+    <details class="deity god reveal" id="deity-アーケンラーヴ"><summary><span class="g-name">アーケンラーヴ</span><span class="g-dom">神々の王・太陽の神。裁きと勇武。ヒューリンの創造主</span></summary><p class="g-detail">妖魔がふたたび目覚める日のため、世界を護り戦う民としてヒューリンを創り、地上へ遣わした神々の王。黄金の髪の若き戦士の姿で描かれ、その手には───山の神が打ち、雷の神が加護を授けたという銀色に輝く長剣がある。神々の王として勇武と裁きを司り、多くの国と民に篤く信仰されている。<br><br>その剣はクラウ・ソラスと呼ばれ、邪神との戦いで幾度も王の危機を救ったと伝えられる。剣を頭上に掲げ、神々の先頭に立って邪神の軍勢へ立ち向かう姿で描かれることが多い。───なお、神聖ヴァンスター帝国の皇帝が持つ魔剣クラウ・ソラスは、この佩剣そのものであるともいわれている。</p></details>
+    <details class="deity god reveal" id="deity-ブリガンティア"><summary><span class="g-name">ブリガンティア</span><span class="g-dom">予言の女神・月の女神。魔術と夢見。エルダナーンの創造主</span></summary><p class="g-detail">月光のごとき銀の髪に薄衣をまとい、盃を手にした若い女神。未来を視る権能を持ち、人の眠りにそっと働きかけて啓示を授ける───人が「夢」を見るようになったのは、この女神が神々の通信手段として与えたものの名残だという。魔術の女神として、いくたびも邪神の企みを見破ってきた。<br><br>神々の王に次いで生まれ、神々の権能たる秘術をもっとも強く行使する。エルダの民に権能の一部と知恵を分け与えたものが、今日“魔術”と呼ばれるものの始まりだという。東方では月の神ツキヨミの名で呼ばれる。</p></details>
+    <details class="deity god reveal" id="deity-ダグデモア"><summary><span class="g-name">ダグデモア</span><span class="g-dom">天空の神。ヴァーナの創造主</span></summary><p class="g-detail">天地開闢のとき、地母神ダナンと対をなして数多の神々を生んだ天空の父。竪琴を携えた恰幅のよい初老の姿で語られる。水の時代、獣の耳と尾を持つ&quot;野なる民&quot;ヴァーナを創り出した。<br><br>風の時代、美しい娘に化けた虚栄の女神の誘惑を受けたが、それを見抜いたのは予言の女神ただひとりだった。闇の王の闇がその目と耳を覆って誘惑を遮り、天空神は一度闇に溶けて消え───予言の女神の魔法で蘇ったと伝えられる。</p></details>
+    <details class="deity god reveal" id="deity-ダナン"><summary><span class="g-name">ダナン</span><span class="g-dom">大地の女神。天空神と対をなす地母神</span></summary><p class="g-detail">天空神ダグデモアと対をなす大地の母。薄緑の衣をまとい、植物のような緑の髪と瞳を持つ。山の神に命じて大地に起伏を与え、世界の骨格を形づくったと伝わる。</p></details>
+    <details class="deity god reveal" id="deity-アエマ"><summary><span class="g-name">アエマ</span><span class="g-dom">豊穣の女神。フィルボルの創造主</span></summary><p class="g-detail">青い髪に花のティアラを飾り、腕に穀物を抱いた豊穣の女神。地の時代、陽の光と風と草木を愛する小さき民フィルボルを生み、地上に暮らすよう定めた。</p></details>
+    <details class="deity god reveal" id="deity-ゴヴァノン"><summary><span class="g-name">ゴヴァノン</span><span class="g-dom">鍛冶の神・山の神。ネヴァーフの創造主</span></summary><p class="g-detail">赤い髭と髪の、寡黙な鍛冶の神。ハンマーで地を叩いて山を隆起させ、地下に住まう民ネヴァーフを生んだ。彼が与えた&quot;決して消えぬ炉の種火&quot;は、地の底で燃え続けていつしか希少な鉱石を生むという───鍛冶師にとって最上の栄誉である。<br><br>寡黙にして実直───“職人気質”という言葉の由縁ともされる。妖魔の王が攻め寄せた時代、鍛冶師たちは神から授かった最初の種火を奪われぬよう、住処の奥深くに隠したと伝えられている。</p></details>
+    <details class="deity god reveal" id="deity-グランアイン"><summary><span class="g-name">グランアイン</span><span class="g-dom">戦の神・雷の神。ドゥアンの創造主</span></summary><p class="g-detail">雷の槍を握る若き戦神。角・翼・牙爪───のちにドゥアン三部族それぞれが受け継ぐ特徴を、その身に備える。水の時代、邪神の勢力に抗する堅忍不抜の民として、剛なる人ドゥアンを鍛え上げた。空を飛ぶ翼を持つ&quot;天翼族&quot;も、この神の子である。<br><br>また、地・水・火・風───世界を構成する精霊たちを創り出したのは、この神であるとも伝えられている。</p></details>
     <p class="g-outro reveal">神々の名は、回廊を歩く者の祈りとともにある。───だが、世界を支えるのは神々だけではない。</p>
     <h3 class="wsec reveal">精霊の王<small>THE ELEMENTAL KINGS</small></h3>
     <p class="g-intro reveal">世界には、地・水・火・風・光・闇───六つの&quot;理&quot;がある。光の時代、神々はそれぞれの理を司る精霊を創り、ひときわ強く輝くものを&quot;精霊の王&quot;と定めた。王たちはただ淡々と、世界の理を司り続けている。ただし───六つの理の外に、もう一柱。運命を司る“銀の輪の女王”アリアンロッドの伝説だけが、王たちと並べて語られている。</p>
-    <details class="deity spirit reveal"><summary><span class="g-name">ディジニ</span><span class="g-dom">大気の王〈風〉</span></summary><p class="g-detail">風と大気を司る精霊の王。目には見えず、しかしどこにでも吹き通う。船乗りや旅人が、順風を願って名を呼ぶ。<br><br>風の時代の終わり、神々の命を受けたこの王は突風を呼び、世界に満ちたおぞましい瘴気を吹き払った───“風の粛清”である。</p></details>
-    <details class="deity spirit reveal"><summary><span class="g-name">マリッド</span><span class="g-dom">水流の王〈水〉</span></summary><p class="g-detail">水でできた身体をまとう、美しい乙女の姿の王。泉や沼など水辺は異界への入り口とされ、その門を管理するのがこの王だという。旅人が泉に祈る習慣は、ここに由来する。慈愛深い王だが、かつて神々の命により「水の粛清」を起こし、大地の七割を水底へ沈めたのもこの王であった。<br><br>湖畔の民話には、真面目に働き、馬を大事にする者を見守り、迷い込んだ者を元の世界へ帰してやった、という話も残っている。</p></details>
-    <details class="deity spirit reveal"><summary><span class="g-name">イフリート</span><span class="g-dom">火焔の王〈火〉</span></summary><p class="g-detail">炎をまとった全身鎧の戦士、あるいは赤い肌の巨人として顕現する火の王。性質は剛直で、虚偽と優柔不断を嫌う。激しい気性だが、みずからが敬意を払う者にはどこまでも従順だという。<br><br>煙に巻かれて姿を変える力を持つといい、変じた身からはかすかに煙の匂いがするという。古いおまじない「えふりた・のすた・うぇらー」は、月の女神がこの王に炎の番を命じた故事に由来する。地下の民の炉入れの儀式では、鍛冶の神とともにその名が呼ばれる。</p></details>
-    <details class="deity spirit reveal"><summary><span class="g-name">ダオ</span><span class="g-dom">大地の王〈地〉</span></summary><p class="g-detail">大地と岩盤を司る精霊の王。山の重み、地の底の静けさ、揺るがぬものの象徴。大地が裂けるとき、この王の意思が働いているとも。<br><br>地の時代の終わり、この王は地殻を裂き、妖魔の王とその軍勢を底知れぬ魔界の底へ投げ込んだ───“地の粛清”である。ラーフの大洞窟は、その傷跡のひとつだと言われている。</p></details>
-    <details class="deity spirit reveal"><summary><span class="g-name">マライカ</span><span class="g-dom">光輝の王〈光〉</span></summary><p class="g-detail">光の時代からただひたすらに世界を清め続けてきた、光輝の王。その輝きの届く場所には、穢れも闇もとどまることができないという。</p></details>
-    <details class="deity spirit reveal"><summary><span class="g-name">ディアボロス</span><span class="g-dom">暗黒の王〈闇〉</span></summary><p class="g-detail">闇の王。物質界では暗がりにしか姿を現さない。盗賊や暗殺者など、夜陰に生きる者に加護を与える。眠りのあいだに見る夢を司るとも言われる。「&quot;何か&quot;であることは確かだが、それがなんなのかは、けして捉えることができない」───そう語り継がれる、掴みどころのない存在。<br><br>一説には───この王が支配する“闇の時代”は、火の時代が終わったのちに訪れ、世界の再生を待つあいだの、何もない時代であると唱える者もいる。</p></details>
-    <details class="deity spirit reveal"><summary><span class="g-name">アリアンロッド</span><span class="g-dom">銀の輪の女王〈運命〉</span></summary><p class="g-detail">六つの理のほかに、運命の精霊を司る第七の王が存在するという伝説がある。その名は&quot;銀の輪の女王&quot;アリアンロッド。運命の糸を紡ぎ、断ち、結び直す───語られることは少なく、しかしすべての物語のかたわらに、静かに在るという。</p></details>
+    <details class="deity spirit reveal" id="deity-ディジニ"><summary><span class="g-name">ディジニ</span><span class="g-dom">大気の王〈風〉</span></summary><p class="g-detail">風と大気を司る精霊の王。目には見えず、しかしどこにでも吹き通う。船乗りや旅人が、順風を願って名を呼ぶ。<br><br>風の時代の終わり、神々の命を受けたこの王は突風を呼び、世界に満ちたおぞましい瘴気を吹き払った───“風の粛清”である。</p></details>
+    <details class="deity spirit reveal" id="deity-マリッド"><summary><span class="g-name">マリッド</span><span class="g-dom">水流の王〈水〉</span></summary><p class="g-detail">水でできた身体をまとう、美しい乙女の姿の王。泉や沼など水辺は異界への入り口とされ、その門を管理するのがこの王だという。旅人が泉に祈る習慣は、ここに由来する。慈愛深い王だが、かつて神々の命により「水の粛清」を起こし、大地の七割を水底へ沈めたのもこの王であった。<br><br>湖畔の民話には、真面目に働き、馬を大事にする者を見守り、迷い込んだ者を元の世界へ帰してやった、という話も残っている。</p></details>
+    <details class="deity spirit reveal" id="deity-イフリート"><summary><span class="g-name">イフリート</span><span class="g-dom">火焔の王〈火〉</span></summary><p class="g-detail">炎をまとった全身鎧の戦士、あるいは赤い肌の巨人として顕現する火の王。性質は剛直で、虚偽と優柔不断を嫌う。激しい気性だが、みずからが敬意を払う者にはどこまでも従順だという。<br><br>煙に巻かれて姿を変える力を持つといい、変じた身からはかすかに煙の匂いがするという。古いおまじない「えふりた・のすた・うぇらー」は、月の女神がこの王に炎の番を命じた故事に由来する。地下の民の炉入れの儀式では、鍛冶の神とともにその名が呼ばれる。</p></details>
+    <details class="deity spirit reveal" id="deity-ダオ"><summary><span class="g-name">ダオ</span><span class="g-dom">大地の王〈地〉</span></summary><p class="g-detail">大地と岩盤を司る精霊の王。山の重み、地の底の静けさ、揺るがぬものの象徴。大地が裂けるとき、この王の意思が働いているとも。<br><br>地の時代の終わり、この王は地殻を裂き、妖魔の王とその軍勢を底知れぬ魔界の底へ投げ込んだ───“地の粛清”である。ラーフの大洞窟は、その傷跡のひとつだと言われている。</p></details>
+    <details class="deity spirit reveal" id="deity-マライカ"><summary><span class="g-name">マライカ</span><span class="g-dom">光輝の王〈光〉</span></summary><p class="g-detail">光の時代からただひたすらに世界を清め続けてきた、光輝の王。その輝きの届く場所には、穢れも闇もとどまることができないという。</p></details>
+    <details class="deity spirit reveal" id="deity-ディアボロス"><summary><span class="g-name">ディアボロス</span><span class="g-dom">暗黒の王〈闇〉</span></summary><p class="g-detail">闇の王。物質界では暗がりにしか姿を現さない。盗賊や暗殺者など、夜陰に生きる者に加護を与える。眠りのあいだに見る夢を司るとも言われる。「&quot;何か&quot;であることは確かだが、それがなんなのかは、けして捉えることができない」───そう語り継がれる、掴みどころのない存在。<br><br>一説には───この王が支配する“闇の時代”は、火の時代が終わったのちに訪れ、世界の再生を待つあいだの、何もない時代であると唱える者もいる。</p></details>
+    <details class="deity spirit reveal" id="deity-アリアンロッド"><summary><span class="g-name">アリアンロッド</span><span class="g-dom">銀の輪の女王〈運命〉</span></summary><p class="g-detail">六つの理のほかに、運命の精霊を司る第七の王が存在するという伝説がある。その名は&quot;銀の輪の女王&quot;アリアンロッド。運命の糸を紡ぎ、断ち、結び直す───語られることは少なく、しかしすべての物語のかたわらに、静かに在るという。</p></details>
     <p class="g-outro reveal">───精霊の王たちには自我と意思がある。だが神々には決して逆らえず、神にしたがって世界の理を司る。彼らを信じ祈る者には“天恵”と呼ばれる加護が授けられることがある。そして神々が世界を洗うと決めたとき───“粛清”を執行するのは、いつもこの王たちであった。</p>
     <h3 class="wsec reveal darkhead">七大邪神<small>THE SEVEN SINS</small></h3>
     <p class="g-intro reveal">光あるところに、影がある。伝承に曰く、邪神とは古の戦いに敗れた神々───その多くは、魔界へと封じられたという。人の心に巣くう負の感情、その一つひとつを体現するという。封印の底からなお、弱った心へそっと囁きかけ、力と引き換えに魂を奪ってゆく。とりわけ名高いのが、七つの感情を司る邪神たちである。</p>
-    <details class="deity dark reveal"><summary><span class="g-name">トリアラク</span><span class="g-dom">恐怖</span></summary><p class="g-detail">顔を隠す漆黒のフードの下を、誰も見た者がない。&quot;闇の公子&quot;と囁かれる邪神。その瘴気は、恐怖に怯える者を、やがて恐怖を与える者へと変えてしまうという。<br><br>その眠りの場所を、伝承はふたつ挙げる───エルーラン王国の“死人の沼”の奥底、あるいは、沈黙の氷原の底であると。聖暦730年頃にエルーランを襲った寒波と疫病はこの邪神の身じろぎだとされ、数千を超える犠牲を出した“邪教徒狩り”の惨劇を招いた。</p></details>
-    <details class="deity dark reveal"><summary><span class="g-name">クロムクルー</span><span class="g-dom">憎悪</span></summary><p class="g-detail">毒の湾曲した短剣を二振り携えた、やせた老人の姿。古き竜の姿と力を奪ったといい、毒と、眷属を強くする力と、憎悪を煽る黒───三つの吐息を吐き分ける。<br><br>地の時代、妖魔の王に眠りを揺り起こされて神界への侵攻を試みたが、敗れて地底へ封じられたという。暗殺者の教団“竜の顎門”が、今もこの邪神を奉じている。</p></details>
-    <details class="deity dark reveal"><summary><span class="g-name">インディマ</span><span class="g-dom">傲慢</span></summary><p class="g-detail">漆黒の馬にまたがり、大剣を背負う&quot;剛力王&quot;。邪神たちの王とも、その力は最強とも伝わる。主を失った黒馬が、今も主を探して彷徨っているという。<br><br>神々との戦いでは、神々の王と一騎打ちを演じて互角だったと伝わる。最後は鍛冶の神が打った魔法の鎖に縛られ、首を刎ねられて魔界に封じられた。</p></details>
-    <details class="deity dark reveal"><summary><span class="g-name">モリーアン</span><span class="g-dom">嫉妬</span></summary><p class="g-detail">灰色の髪と瞳を持つ、二槍を操る女戦士。&quot;カラスの女王&quot;。微笑みを絶やさぬまま、嫉妬の対象を打ち砕く力を人に与える。<br><br>神の使いに恋をし、叶わぬと知るとその手にかけ、みずからカラスと化して魔界へ去ったという。欲望の女神マハディルグとは、双子の姉妹とされる。</p></details>
-    <details class="deity dark reveal"><summary><span class="g-name">ミーヴァル</span><span class="g-dom">猜疑</span></summary><p class="g-detail">清楚な少女の姿をした、猜疑の女神。かつて月の女神との魔法合戦に敗れて封じられ───その呪いゆえに、夜空の月は満ち欠けするようになったと伝わる。<br><br>そもそもの発端は、虚栄の女神ブレーグとともに天空神を誘惑しようと企てたことだった───と伝える書もある。</p></details>
-    <details class="deity dark reveal"><summary><span class="g-name">ブレーグ</span><span class="g-dom">虚栄</span></summary><p class="g-detail">美しく着飾り、化粧をほどこした妖女。偽りの言葉で人の心を操り、「いかなる方法でも傷つけられぬ」と囁かれる。ひとつの姿に留まらず、いくつもの&quot;現し身&quot;を世に放つという。<br><br>かつて交易都市アレスタでは、令嬢に化けたこの女神が球根の投機熱を煽って町を混乱させ、去り際に「自分は邪神ブレーグの現し身のひとつ」と明かしたという記録が残る。天空神への誘惑を月の女神に見破られ、魔界へ封じられたと伝えられる。</p></details>
-    <details class="deity dark reveal"><summary><span class="g-name">マハディルグ</span><span class="g-dom">欲望</span></summary><p class="g-detail">尽きることを知らぬ欲望を司る邪神。求める者に力を与えるが、満たされぬ渇きは、いつしかその身を内側から滅ぼしてゆく。<br><br>深紅の髪と瞳を持ち、血に濡れた双斧を振るい、一本脚の赤い馬を駆る“戦の女神”の姿でも語られる。エリンディルを破壊するため受肉したその瞬間、神々に石化されて封じられた───だが強い怨念は現し身を生み、今も人を惑わすという。古い教訓譚は言う───「ひとつを得れば、ふたつを欲す」。</p></details>
+    <details class="deity dark reveal" id="deity-トリアラク"><summary><span class="g-name">トリアラク</span><span class="g-dom">恐怖</span></summary><p class="g-detail">顔を隠す漆黒のフードの下を、誰も見た者がない。&quot;闇の公子&quot;と囁かれる邪神。その瘴気は、恐怖に怯える者を、やがて恐怖を与える者へと変えてしまうという。<br><br>その眠りの場所を、伝承はふたつ挙げる───エルーラン王国の“死人の沼”の奥底、あるいは、沈黙の氷原の底であると。聖暦730年頃にエルーランを襲った寒波と疫病はこの邪神の身じろぎだとされ、数千を超える犠牲を出した“邪教徒狩り”の惨劇を招いた。</p></details>
+    <details class="deity dark reveal" id="deity-クロムクルー"><summary><span class="g-name">クロムクルー</span><span class="g-dom">憎悪</span></summary><p class="g-detail">毒の湾曲した短剣を二振り携えた、やせた老人の姿。古き竜の姿と力を奪ったといい、毒と、眷属を強くする力と、憎悪を煽る黒───三つの吐息を吐き分ける。<br><br>地の時代、妖魔の王に眠りを揺り起こされて神界への侵攻を試みたが、敗れて地底へ封じられたという。暗殺者の教団“竜の顎門”が、今もこの邪神を奉じている。</p></details>
+    <details class="deity dark reveal" id="deity-インディマ"><summary><span class="g-name">インディマ</span><span class="g-dom">傲慢</span></summary><p class="g-detail">漆黒の馬にまたがり、大剣を背負う&quot;剛力王&quot;。邪神たちの王とも、その力は最強とも伝わる。主を失った黒馬が、今も主を探して彷徨っているという。<br><br>神々との戦いでは、神々の王と一騎打ちを演じて互角だったと伝わる。最後は鍛冶の神が打った魔法の鎖に縛られ、首を刎ねられて魔界に封じられた。</p></details>
+    <details class="deity dark reveal" id="deity-モリーアン"><summary><span class="g-name">モリーアン</span><span class="g-dom">嫉妬</span></summary><p class="g-detail">灰色の髪と瞳を持つ、二槍を操る女戦士。&quot;カラスの女王&quot;。微笑みを絶やさぬまま、嫉妬の対象を打ち砕く力を人に与える。<br><br>神の使いに恋をし、叶わぬと知るとその手にかけ、みずからカラスと化して魔界へ去ったという。欲望の女神マハディルグとは、双子の姉妹とされる。</p></details>
+    <details class="deity dark reveal" id="deity-ミーヴァル"><summary><span class="g-name">ミーヴァル</span><span class="g-dom">猜疑</span></summary><p class="g-detail">清楚な少女の姿をした、猜疑の女神。かつて月の女神との魔法合戦に敗れて封じられ───その呪いゆえに、夜空の月は満ち欠けするようになったと伝わる。<br><br>そもそもの発端は、虚栄の女神ブレーグとともに天空神を誘惑しようと企てたことだった───と伝える書もある。</p></details>
+    <details class="deity dark reveal" id="deity-ブレーグ"><summary><span class="g-name">ブレーグ</span><span class="g-dom">虚栄</span></summary><p class="g-detail">美しく着飾り、化粧をほどこした妖女。偽りの言葉で人の心を操り、「いかなる方法でも傷つけられぬ」と囁かれる。ひとつの姿に留まらず、いくつもの&quot;現し身&quot;を世に放つという。<br><br>かつて交易都市アレスタでは、令嬢に化けたこの女神が球根の投機熱を煽って町を混乱させ、去り際に「自分は邪神ブレーグの現し身のひとつ」と明かしたという記録が残る。天空神への誘惑を月の女神に見破られ、魔界へ封じられたと伝えられる。</p></details>
+    <details class="deity dark reveal" id="deity-マハディルグ"><summary><span class="g-name">マハディルグ</span><span class="g-dom">欲望</span></summary><p class="g-detail">尽きることを知らぬ欲望を司る邪神。求める者に力を与えるが、満たされぬ渇きは、いつしかその身を内側から滅ぼしてゆく。<br><br>深紅の髪と瞳を持ち、血に濡れた双斧を振るい、一本脚の赤い馬を駆る“戦の女神”の姿でも語られる。エリンディルを破壊するため受肉したその瞬間、神々に石化されて封じられた───だが強い怨念は現し身を生み、今も人を惑わすという。古い教訓譚は言う───「ひとつを得れば、ふたつを欲す」。</p></details>
     <p class="g-outro reveal">───だが、七柱ですべてではない。感情の数だけ邪神は生まれうるといい、名を伏せられた者、伝承にすら残らぬ者も、どこかで、誰かの心の隙をうかがっている。旅の途上で耳にする甘い囁きには、気をつけたほうがいい。</p>
   </div>
 </div>
@@ -1309,21 +1320,21 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
     <p class="arc-note reveal">凍結の回路で起きたことは、最後にはすべてこの棚に集まる。───整理・保管：フロストゲート 安全通行責任者 レイフ・ストーム</p>
     <h3 class="wsec reveal" style="margin-top:0;">話数の記録<small>SESSIONS</small></h3>
 
-    <article class="ep ep-done reveal">
+    <article class="ep ep-done reveal has-still" id="ep-0"><div class="ep-still" style="background-image:url(assets/ep0_still.jpg)"></div>
       <div class="ep-head"><span class="ep-no">第0話</span><h4>月は誰の夢を見る</h4><span class="ep-date">2026-05-25 実施</span></div>
       <p class="ep-sum">ある時、開拓団の団員たちが同じ夢を見た。夢に導かれるように新人の開拓者が姿を消し、捜索に出た仲間たちは、誰も知らない古い遺跡───月光観測所へたどり着く。そこで彼らが見たものは偽りの月、まやかしの女神であった。開拓者たちは幻惑を斬り伏せ、行方不明者を連れ帰った。……だが、あの観測所は「なぜあんな場所に」あったのだろう。</p>
-<div class="ep-blk ep-found"><h5>判明したこと</h5><ul><li>沈黙の氷原の雪山に、古エルダ語の遺跡───天体観測施設「月光観測所」が存在する。</li><li>遺跡そのものはブリガンティア信仰のものだった。だが、そこで月の女神として振る舞っていたものは、女神ではなかった。</li><li>失踪した新人魔術士サルマは無事に救出された。</li></ul></div><div class="ep-blk ep-open"><h5>未解決の記録</h5><ul><li>なぜ、あの観測所は六千メートル級の山腹にあるのか。あれほどの知識と技術を持った文明が、天体を観るためにあの場所を選ぶとは考えにくい。───救出されたサルマ本人が、報告書でそう指摘している。</li><li>遺跡から回収された魔石は開拓団が買い取り、フロストゲートの保管庫に納められた。分析は、いまも続けられている。</li></ul></div>
+<div class="ep-blk ep-found"><h5>判明したこと</h5><ul><li>沈黙の氷原の雪山に、古エルダ語の遺跡───天体観測施設「月光観測所」が存在する。</li><li>遺跡そのものは<a class="nlink" href="#/myth" data-ep="deity-ブリガンティア">ブリガンティア</a>信仰のものだった。だが、そこで月の女神として振る舞っていたものは、女神ではなかった。</li><li>失踪した新人魔術士サルマは無事に救出された。</li></ul></div><div class="ep-blk ep-open"><h5>未解決の記録</h5><ul><li>なぜ、あの観測所は六千メートル級の山腹にあるのか。あれほどの知識と技術を持った文明が、天体を観るためにあの場所を選ぶとは考えにくい。───救出されたサルマ本人が、報告書でそう指摘している。</li><li>遺跡から回収された魔石は開拓団が買い取り、フロストゲートの保管庫に納められた。分析は、いまも続けられている。</li></ul></div>
       <p class="ep-log"><a class="ep-loglink" href="assets/log_ep0.html" target="_blank" rel="noopener">📜 セッションログ</a> <a class="ep-loglink" href="assets/handout_ep0_salma.pdf" target="_blank" rel="noopener">📎 報告書 月光観測所について（報告者：サルマ）</a></p>
     </article>
 
-    <article class="ep ep-done reveal">
+    <article class="ep ep-done reveal" id="ep-1">
       <div class="ep-head"><span class="ep-no">第1話</span><h4>深く、長い闇</h4><span class="ep-date">2026-11-16・11-25 実施</span></div>
-      <p class="ep-sum">死んだはずの冒険者が凍結の回路内で目撃された。調査に向かった開拓団員が野営地で見たモノは、居合わせた者達の記憶が光となって闇の中へと溢れ出す光景だった。野営地には変身妖魔が2体紛れており、開拓団員と交戦。1体を逃すが、開拓団員はかろうじて迎撃に成功する。だが、問題は漏れ出した記憶の方だった。ラーフの錬金術師から漏出したそれは、まるでゴヴァノンとブリガンティアが何者かに討たれたかのような内容だったのだ。</p>
-<div class="ep-blk ep-found"><h5>判明したこと</h5><ul><li>回廊の内側に、他者の姿に化ける妖魔が潜んでいた。ロイに化けていた妖魔召喚士は仮面を持っており、そこには他者の姿を変える魔術が古エルダ語で刻まれていた。マルタに扮していた妖魔司祭もまた、同じ力を使っていたのだろう。</li><li>野営地を包んだ光、周囲の存在がもつ記憶を漏出させた力の正体は《リメンブランスフレア》。伝承にあるブリガンティアの館から持ち出された、女神の魔術だった。</li><li>光の中にラーフの錬金術師、テシャの記憶が映し出された。凍りついた街。氷の裂け目に倒れた鍛冶神ゴヴァノンと月の女神ブリガンティアに似た影。テシャはそれを二年前に地底湖のそばの裂け目の先で見たという。</li></ul></div><div class="ep-blk ep-open"><h5>未解決の記録</h5><ul><li>なぜ、姿を変える妖魔が回廊の内側にいるのか。死んだはずの冒険者もまた、誰かが化けた姿だったのか。</li><li>なぜ、女神の魔術が妖魔の手にあったのか。</li><li>テシャが見たのは、神々が討たれた光景だったのか。───真相を確かめるため、開拓団員たちは地底湖の調査に向かう。</li></ul></div>
+      <p class="ep-sum">死んだはずの冒険者が凍結の回路内で目撃された。調査に向かった開拓団員が野営地で見たモノは、居合わせた者達の記憶が光となって闇の中へと溢れ出す光景だった。野営地には変身妖魔が2体紛れており、開拓団員と交戦。1体を逃すが、開拓団員はかろうじて迎撃に成功する。だが、問題は漏れ出した記憶の方だった。ラーフの錬金術師から漏出したそれは、まるで<a class="nlink" href="#/myth" data-ep="deity-ゴヴァノン">ゴヴァノン</a>と<a class="nlink" href="#/myth" data-ep="deity-ブリガンティア">ブリガンティア</a>が何者かに討たれたかのような内容だったのだ。</p>
+<div class="ep-blk ep-found"><h5>判明したこと</h5><ul><li>回廊の内側に、他者の姿に化ける妖魔が潜んでいた。人に化けていた妖魔召喚士は仮面を持っており、そこには他者の姿を変える魔術が古エルダ語で刻まれていた。別の者に扮していた妖魔司祭もまた、同じ力を使っていたのだろう。</li><li>野営地を包んだ光、周囲の存在がもつ記憶を漏出させた力の正体は《リメンブランスフレア》。伝承にある<a class="nlink" href="#/myth" data-ep="deity-ブリガンティア">ブリガンティア</a>の館から持ち出された、女神の魔術だった。</li><li>光の中にラーフの錬金術師、<button type="button" class="plink t-open" data-cat="people" data-name="テシャ・スウィン">テシャ</button>の記憶が映し出された。凍りついた街。氷の裂け目に倒れた鍛冶神<a class="nlink" href="#/myth" data-ep="deity-ゴヴァノン">ゴヴァノン</a>と月の女神<a class="nlink" href="#/myth" data-ep="deity-ブリガンティア">ブリガンティア</a>に似た影。<button type="button" class="plink t-open" data-cat="people" data-name="テシャ・スウィン">テシャ</button>はそれを二年前に地底湖のそばの裂け目の先で見たという。</li></ul></div><div class="ep-blk ep-open"><h5>未解決の記録</h5><ul><li>なぜ、姿を変える妖魔が回廊の内側にいるのか。死んだはずの冒険者もまた、誰かが化けた姿だったのか。</li><li>なぜ、女神の魔術が妖魔の手にあったのか。</li><li><button type="button" class="plink t-open" data-cat="people" data-name="テシャ・スウィン">テシャ</button>が見たのは、神々が討たれた光景だったのか。───真相を確かめるため、開拓団員たちは地底湖の調査に向かう。</li></ul></div>
       <p class="ep-log"><a class="ep-loglink" href="assets/log_ep1.html" target="_blank" rel="noopener">📜 セッションログ</a></p>
     </article>
 
-    <article class="ep ep-next reveal">
+    <article class="ep ep-next reveal" id="ep-2">
       <div class="ep-head"><span class="ep-no">第2話</span><h4>地底湖の悪魔</h4><span class="ep-date">参加者募集中（日程は調整中）</span></div>
       <p class="ep-sum ep-tba">この話の記録は、まだ書かれていない。</p>
     </article>
@@ -1331,7 +1342,7 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
 
     <h3 class="wsec reveal">回廊の現在<small>STATE OF THE CIRCUIT</small></h3>
     <p class="cs-note reveal">旅のたびに、回廊は少しずつ変わっていく。───この欄は、各話の終わりに書き換えられる。</p>
-    <div class="cs-grid reveal"><div class="cs-row cs-ok"><span class="cs-k">凍結の回路 通行状況</span><span class="cs-v">通行可（記録係が照合を続けている）</span></div><div class="cs-row cs-warn"><span class="cs-k">荷の紛失</span><span class="cs-v">半年で複数件。原因不明</span></div><div class="cs-row cs-warn"><span class="cs-k">月光観測所の立地</span><span class="cs-v">未解明</span></div><div class="cs-row cs-warn"><span class="cs-k">保管庫の魔石</span><span class="cs-v">分析中───「ただの魔石ではない」</span></div></div>
+    <div class="cs-grid reveal"><div class="cs-row cs-ok"><span class="cs-k">凍結の回路 通行状況</span><span class="cs-v">通行可（記録係が照合を続けている）</span></div><div class="cs-row cs-warn"><span class="cs-k">荷の紛失</span><span class="cs-v">半年で複数件。原因不明</span></div><div class="cs-row cs-warn"><span class="cs-k">月光観測所の立地</span><span class="cs-v">未解明</span></div><div class="cs-row cs-warn"><span class="cs-k">保管庫の魔石</span><span class="cs-v">分析中───「ただの魔石ではない」</span></div><div class="cs-row cs-warn"><span class="cs-k">原生生物</span><span class="cs-v">動きが活発</span></div><div class="cs-row cs-warn"><span class="cs-k">神々の殞落の真相</span><span class="cs-v">検証中</span></div><div class="cs-row cs-warn"><span class="cs-k">回廊内の妖魔</span><span class="cs-v">調査中</span></div></div>
   </div>
 </div>
 
@@ -1736,6 +1747,22 @@ footer p { font-size:11.5px; color:var(--dim); max-width:640px; margin:0 auto; l
   }
   function stepLB(dir) { var set = SETS[lbCat]; if (!set) return; lbIdx = (lbIdx + dir + set.length) % set.length; renderLB(); }
   function closeLB() { lb.classList.remove('on'); lb.classList.remove('lb-person'); lbImg.removeAttribute('src'); lbCat = null; }
+  // NEWS の「記録保管庫」→ ページが切り替わって最上部に戻ったあとで、その話のカードまで送って光らせる（2026-11-26）
+  document.querySelectorAll('.nlink[data-ep]').forEach(function(a) {
+    a.addEventListener('click', function() {
+      var id = a.dataset.ep; if (!id) return;
+      setTimeout(function() {
+        var el = document.getElementById(id); if (!el) return;
+        el.classList.add('on'); if (el.tagName === 'DETAILS') el.open = true;
+        // smooth指定のscrollIntoViewはモバイルで暴れる（ルーターの注記と同じ）＝scrollTopを直接入れる。カードの頭を、上の帯の少し下へ
+        var se = document.scrollingElement || document.documentElement;
+        var y = el.getBoundingClientRect().top + se.scrollTop - 140;
+        se.scrollTop = Math.max(0, y); document.body.scrollTop = Math.max(0, y);
+        el.classList.add('ep-flash');
+        setTimeout(function() { el.classList.remove('ep-flash'); }, 1800);
+      }, 260);
+    });
+  });
   var PIDX = {};
   (SETS.people || []).forEach(function(it, i) { PIDX[it.name] = i; });
   document.querySelectorAll('.t-open').forEach(function(b) {
